@@ -1,5 +1,6 @@
 import {
   AlipayCircleOutlined,
+  GoogleOutlined,
   LockOutlined,
   MobileOutlined,
   TaobaoCircleOutlined,
@@ -84,9 +85,7 @@ const Login: React.FC = () => {
       </div>
       <div className={styles.content}>
         <LoginForm
-          logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
+          title="Memo"
           initialValues={{
             autoLogin: true,
           }}
@@ -94,11 +93,9 @@ const Login: React.FC = () => {
             <FormattedMessage
               key="loginWith"
               id="pages.login.loginWith"
-              defaultMessage="其他登录方式"
+              defaultMessage="Login With"
             />,
-            <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.icon} />,
-            <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.icon} />,
-            <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
+            <GoogleOutlined  key="GoogleOutlined" className={styles.icon} />,
           ]}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
@@ -206,7 +203,7 @@ const Login: React.FC = () => {
                     message: (
                       <FormattedMessage
                         id="pages.login.phoneNumber.invalid"
-                        defaultMessage="手机号格式错误！"
+                        defaultMessage="Phone number is invalid!"
                       />
                     ),
                   },
