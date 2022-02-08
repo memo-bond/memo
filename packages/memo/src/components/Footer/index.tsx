@@ -10,11 +10,7 @@ const Footer: React.FC = () => {
 
   const currentYear = new Date().getFullYear();
 
-  return (
-    <DefaultFooter
-      copyright={`${currentYear} ${defaultMessage}`}
-    />
-  );
+  return <DefaultFooter copyright={`${currentYear} ${defaultMessage}`} />;
 };
 
 export default Footer;

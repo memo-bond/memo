@@ -67,7 +67,9 @@ if (pwa) {
     );
     notification.open({
       message: useIntl().formatMessage({ id: 'app.pwa.serviceworker.updated' }),
-      description: useIntl().formatMessage({ id: 'app.pwa.serviceworker.updated.hint' }),
+      description: useIntl().formatMessage({
+        id: 'app.pwa.serviceworker.updated.hint',
+      }),
       btn,
       key,
       onClose: async () => null,
@@ -86,6 +88,5 @@ if (pwa) {
   serviceWorker.getRegistration().then((sw) => {
     if (sw) sw.unregister();
   });
-
   clearCache();
 }
