@@ -1,21 +1,13 @@
-import {
-  AlipayCircleOutlined,
-  GoogleOutlined,
-  LockOutlined,
-  MobileOutlined,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
-} from '@ant-design/icons';
-import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
-import { ProFormCaptcha, ProFormCheckbox, ProFormText, LoginForm } from '@ant-design/pro-form';
-import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
-
+import { GoogleOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
+import { Alert, message, Tabs } from 'antd';
+import React, { useState } from 'react';
+import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi';
 import styles from './index.less';
+import { googleSignIn } from '@/services/auth/google-auth';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -45,6 +37,12 @@ const Login: React.FC = () => {
         currentUser: userInfo,
       }));
     }
+  };
+
+  const signInWithPopUp = async () => {
+    console.log('Signin');
+    const res = await googleSignIn();
+    console.log('res : ', res);
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
@@ -91,7 +89,11 @@ const Login: React.FC = () => {
               id="pages.login.loginWith"
               defaultMessage="Login With"
             />,
-            <GoogleOutlined  key="GoogleOutlined" className={styles.icon} />,
+            <GoogleOutlined
+              key="GoogleOutlined"
+              onClick={signInWithPopUp}
+              className={styles.icon}
+            />,
           ]}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
