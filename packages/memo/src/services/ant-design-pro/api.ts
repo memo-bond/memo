@@ -30,6 +30,11 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
   });
 }
 
+export async function register(body: API.RegisterParams, options?: { [key: string]: any }) {
+  // TODO : Firebase register email & password
+}
+
+
 /** GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   return request<API.NoticeIconList>('/api/notices', {
