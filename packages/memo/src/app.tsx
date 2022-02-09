@@ -3,10 +3,12 @@ import RightContent from '@/components/RightContent';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading, SettingDrawer } from '@ant-design/pro-layout';
+import { Auth, User, UserCredential } from '@firebase/auth';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { auth } from './services/auth/google-auth';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -24,6 +26,7 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchFirebaseUserInfo?: (userCredential: UserCredential) => API.CurrentUser | undefined;
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -34,17 +37,92 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
+
+  const fetchFirebaseUserInfo = (userCredential: UserCredential): API.CurrentUser | undefined => {
+    try {
+      // console.log(`User Credential full info: ${JSON.stringify(userCredential)}`);
+      if (userCredential) {
+        const { user } = userCredential;
+        return {
+          name: user.displayName,
+          email: user.email,
+          userid: user.uid,
+          avatar: user.photoURL,
+          access: 'admin',
+        } as API.CurrentUser;
+      }
+      return undefined;
+    } catch (error) {
+      history.push(loginPath);
+    }
+    return undefined;
+  };
+
+  const fetchFirebaseUserInfoLocal = (): API.CurrentUser | undefined => {
+    try {
+      let currentUser;
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log(`222User full info: ${JSON.stringify(user)}`);
+          // User is signed in.
+          currentUser = {
+            name: user.displayName,
+            email: user.email,
+            userid: user.uid,
+            avatar: user.photoURL,
+            access: 'admin',
+          } as API.CurrentUser;
+        } else {
+          console.log(`333User full info: ${JSON.stringify(user)}`);
+          // No user is signed in.
+        }
+      });
+      return currentUser;
+    } catch (error) {
+      history.push(loginPath);
+    }
+    return undefined;
+  };
+
+  const getCurrentFirebaseUser = (auth: Auth): Promise<User | null> => {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        unsubscribe();
+        resolve(user);
+      }, reject);
+    });
+  }
+
   // 如果是登录页面，不执行
   if (history.location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: defaultSettings,
-    };
+    try {
+      let currentUser: API.CurrentUser | undefined;
+      const user = await getCurrentFirebaseUser(auth);
+      if (user) {
+        currentUser = {
+          name: user.displayName,
+          email: user.email,
+          userid: user.uid,
+          avatar: user.photoURL,
+          access: 'admin',
+        } as API.CurrentUser;
+        console.log(`Current Firebase User Refreshed Page: ${JSON.stringify(currentUser)}`);
+      } else {
+        currentUser = await fetchUserInfo();
+      }
+      return {
+        fetchUserInfo,
+        fetchFirebaseUserInfo,
+        currentUser,
+        settings: defaultSettings,
+      };
+    } catch (err: any) {
+      console.log(`Error ${err.message}`);
+    }
   }
   return {
     fetchUserInfo,
+    fetchFirebaseUserInfo,
     settings: defaultSettings,
   };
 }
@@ -67,15 +145,15 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     links: isDev
       ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-          <Link to="/~docs" key="docs">
-            <BookOutlined />
-            <span>业务组件文档</span>
-          </Link>,
-        ]
+        <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
+          <LinkOutlined />
+          <span>OpenAPI 文档</span>
+        </Link>,
+        <Link to="/~docs" key="docs">
+          <BookOutlined />
+          <span>业务组件文档</span>
+        </Link>,
+      ]
       : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面

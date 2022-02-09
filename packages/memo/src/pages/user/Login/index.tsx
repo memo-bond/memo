@@ -1,9 +1,10 @@
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
-import { googleSignIn } from '@/services/auth/google-auth';
+import { auth, googleSignIn } from '@/services/auth/google-auth';
 import { GoogleOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
+import { UserCredential } from '@firebase/auth';
 import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi';
@@ -29,6 +30,11 @@ const Login: React.FC = () => {
 
   const intl = useIntl();
 
+  const defaultLoginSuccessMessage = intl.formatMessage({
+    id: 'pages.login.success',
+    defaultMessage: '登录成功！',
+  });
+
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
@@ -39,20 +45,49 @@ const Login: React.FC = () => {
     }
   };
 
+  const fetchFirebaseUserInfo = async (userCredential: UserCredential) => {
+
+
+    const userInfo = initialState?.fetchFirebaseUserInfo?.(userCredential);
+    if (userInfo) {
+      console.log(`Firebase User Info ${JSON.stringify(userInfo)}`);
+      await setInitialState((s) => ({
+        ...s,
+        currentUser: userInfo,
+      }));
+    }
+  };
+
   const signInWithPopUp = async () => {
-    console.log('Signin');
-    const res = await googleSignIn();
-    console.log('res : ', res);
+    const userCredential: UserCredential = await googleSignIn();
+    if (userCredential) {
+      console.log(`User Credential Info: ${JSON.stringify(userCredential)}`);
+      setUserLoginState({
+        status: 'ok',
+        type: 'account',
+        currentAuthority: 'admin',
+      });
+      message.success(defaultLoginSuccessMessage);
+      await fetchFirebaseUserInfo(userCredential);
+      if (!history) return;
+      const { query } = history.location;
+      const { redirect } = query as { redirect: string };
+      history.push(redirect || '/');
+      return;
+    } else {
+      const defaultLoginFailureMessage = intl.formatMessage({
+        id: 'pages.login.failure',
+        defaultMessage: 'Login failed, please try again!',
+      });
+      message.error(defaultLoginFailureMessage);
+    }
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       const msg = await login({ ...values, type });
       if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
+        console.log(`Success login ${JSON.stringify(msg)}`);
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
         if (!history) return;
@@ -267,6 +302,13 @@ const Login: React.FC = () => {
               style={{
                 float: 'right',
               }}
+              onClick={
+                () => {
+                  const user = auth.currentUser;
+                  console.log(`Current User Info : ${JSON.stringify(user)}`);
+                  
+                }
+              }
             >
               <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
             </a>
