@@ -62,10 +62,17 @@ declare namespace API {
   };
 
   type LoginParams = {
-    username?: string;
-    password?: string;
+    username: string;
+    password: string;
     autoLogin?: boolean;
     type?: string;
+  };
+
+  type RegisterParams = {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
   };
 
   type ErrorResponse = {

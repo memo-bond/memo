@@ -8,7 +8,7 @@ import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { auth } from './services/auth/google-auth';
+import { firebaseAuth } from './services/firebase-service';
 import { debug } from './utils/log';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -59,32 +59,6 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
 
-  const fetchFirebaseUserInfoLocal = (): API.CurrentUser | undefined => {
-    try {
-      let currentUser;
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          debug(`222User full info: ${JSON.stringify(user)}`);
-          // User is signed in.
-          currentUser = {
-            name: user.displayName,
-            email: user.email,
-            userid: user.uid,
-            avatar: user.photoURL,
-            access: 'admin',
-          } as API.CurrentUser;
-        } else {
-          debug(`333User full info: ${JSON.stringify(user)}`);
-          // No user is signed in.
-        }
-      });
-      return currentUser;
-    } catch (error) {
-      history.push(loginPath);
-    }
-    return undefined;
-  };
-
   const getCurrentFirebaseUser = (auth: Auth): Promise<User | null> => {
     return new Promise((resolve, reject) => {
       const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -94,11 +68,10 @@ export async function getInitialState(): Promise<{
     });
   }
 
-  // 如果是登录页面，不执行
   if (history.location.pathname !== loginPath) {
     try {
       let currentUser: API.CurrentUser | undefined;
-      const user = await getCurrentFirebaseUser(auth);
+      const user = await getCurrentFirebaseUser(firebaseAuth);
       if (user) {
         currentUser = {
           name: user.displayName,
@@ -109,7 +82,7 @@ export async function getInitialState(): Promise<{
         } as API.CurrentUser;
         debug(`Current Firebase User Refreshed Page: ${JSON.stringify(currentUser)}`);
       } else {
-        currentUser = await fetchUserInfo();
+        currentUser = await fetchUserInfo(); // TODO : replace by login email & password
       }
       return {
         fetchUserInfo,

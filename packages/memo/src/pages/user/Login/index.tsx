@@ -1,7 +1,8 @@
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
-import { auth, googleSignIn } from '@/services/auth/google-auth';
+import { emailSignIn } from '@/services/auth/email-auth';
+import { googleSignIn } from '@/services/auth/google-auth';
 import { debug } from '@/utils/log';
 import { GoogleOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
@@ -9,7 +10,7 @@ import { UserCredential } from '@firebase/auth';
 import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi';
-import styles from './index.less';
+import styles from '../style.less';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -47,8 +48,6 @@ const Login: React.FC = () => {
   };
 
   const fetchFirebaseUserInfo = async (userCredential: UserCredential) => {
-
-
     const userInfo = initialState?.fetchFirebaseUserInfo?.(userCredential);
     if (userInfo) {
       debug(`Firebase User Info ${JSON.stringify(userInfo)}`);
@@ -84,20 +83,30 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.LoginParams) => {
+  const emailSignInSubmit = async (values: API.LoginParams) => {
     try {
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
-        debug(`Success login ${JSON.stringify(msg)}`);
+      const userCredential: UserCredential = await emailSignIn(values.username, values.password);
+      if (userCredential) {
+        debug(`User Credential Info: ${JSON.stringify(userCredential)}`);
+        setUserLoginState({
+          status: 'ok',
+          type: 'account',
+          currentAuthority: 'admin',
+        });
         message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
+        await fetchFirebaseUserInfo(userCredential);
         if (!history) return;
         const { query } = history.location;
         const { redirect } = query as { redirect: string };
         history.push(redirect || '/');
         return;
+      } else {
+        const defaultLoginFailureMessage = intl.formatMessage({
+          id: 'pages.login.failure',
+          defaultMessage: 'Login failed, please try again!',
+        });
+        message.error(defaultLoginFailureMessage);
       }
-      setUserLoginState(msg);
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
@@ -130,9 +139,12 @@ const Login: React.FC = () => {
               onClick={signInWithPopUp}
               className={styles.icon}
             />,
+            <a style={{ float: 'right' }} href="/user/register">
+              Register
+            </a>
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await emailSignInSubmit(values as API.LoginParams);
           }}
         >
           <Tabs activeKey={type} onChange={setType}>
@@ -303,13 +315,6 @@ const Login: React.FC = () => {
               style={{
                 float: 'right',
               }}
-              onClick={
-                () => {
-                  const user = auth.currentUser;
-                  debug(`Current User Info : ${JSON.stringify(user)}`);
-                  
-                }
-              }
             >
               <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
             </a>
