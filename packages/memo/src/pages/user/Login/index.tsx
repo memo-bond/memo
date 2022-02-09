@@ -1,7 +1,8 @@
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
-import { auth, googleSignIn } from '@/services/auth/google-auth';
+import { googleSignIn } from '@/services/auth/google-auth';
+import { firebaseAuth } from '@/services/firebase-service';
 import { debug } from '@/utils/log';
 import { GoogleOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
@@ -47,8 +48,6 @@ const Login: React.FC = () => {
   };
 
   const fetchFirebaseUserInfo = async (userCredential: UserCredential) => {
-
-
     const userInfo = initialState?.fetchFirebaseUserInfo?.(userCredential);
     if (userInfo) {
       debug(`Firebase User Info ${JSON.stringify(userInfo)}`);
@@ -303,13 +302,6 @@ const Login: React.FC = () => {
               style={{
                 float: 'right',
               }}
-              onClick={
-                () => {
-                  const user = auth.currentUser;
-                  debug(`Current User Info : ${JSON.stringify(user)}`);
-                  
-                }
-              }
             >
               <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
             </a>
