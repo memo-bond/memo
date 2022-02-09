@@ -9,6 +9,7 @@ import { history, Link } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { auth } from './services/auth/google-auth';
+import { debug } from './utils/log';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -40,7 +41,7 @@ export async function getInitialState(): Promise<{
 
   const fetchFirebaseUserInfo = (userCredential: UserCredential): API.CurrentUser | undefined => {
     try {
-      // console.log(`User Credential full info: ${JSON.stringify(userCredential)}`);
+      // log(`User Credential full info: ${JSON.stringify(userCredential)}`);
       if (userCredential) {
         const { user } = userCredential;
         return {
@@ -63,7 +64,7 @@ export async function getInitialState(): Promise<{
       let currentUser;
       auth.onAuthStateChanged((user) => {
         if (user) {
-          console.log(`222User full info: ${JSON.stringify(user)}`);
+          debug(`222User full info: ${JSON.stringify(user)}`);
           // User is signed in.
           currentUser = {
             name: user.displayName,
@@ -73,7 +74,7 @@ export async function getInitialState(): Promise<{
             access: 'admin',
           } as API.CurrentUser;
         } else {
-          console.log(`333User full info: ${JSON.stringify(user)}`);
+          debug(`333User full info: ${JSON.stringify(user)}`);
           // No user is signed in.
         }
       });
@@ -106,7 +107,7 @@ export async function getInitialState(): Promise<{
           avatar: user.photoURL,
           access: 'admin',
         } as API.CurrentUser;
-        console.log(`Current Firebase User Refreshed Page: ${JSON.stringify(currentUser)}`);
+        debug(`Current Firebase User Refreshed Page: ${JSON.stringify(currentUser)}`);
       } else {
         currentUser = await fetchUserInfo();
       }
@@ -117,7 +118,7 @@ export async function getInitialState(): Promise<{
         settings: defaultSettings,
       };
     } catch (err: any) {
-      console.log(`Error ${err.message}`);
+      debug(`Error ${err.message}`);
     }
   }
   return {

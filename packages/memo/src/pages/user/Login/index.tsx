@@ -2,6 +2,7 @@ import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import { auth, googleSignIn } from '@/services/auth/google-auth';
+import { debug } from '@/utils/log';
 import { GoogleOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { UserCredential } from '@firebase/auth';
@@ -50,7 +51,7 @@ const Login: React.FC = () => {
 
     const userInfo = initialState?.fetchFirebaseUserInfo?.(userCredential);
     if (userInfo) {
-      console.log(`Firebase User Info ${JSON.stringify(userInfo)}`);
+      debug(`Firebase User Info ${JSON.stringify(userInfo)}`);
       await setInitialState((s) => ({
         ...s,
         currentUser: userInfo,
@@ -61,7 +62,7 @@ const Login: React.FC = () => {
   const signInWithPopUp = async () => {
     const userCredential: UserCredential = await googleSignIn();
     if (userCredential) {
-      console.log(`User Credential Info: ${JSON.stringify(userCredential)}`);
+      debug(`User Credential Info: ${JSON.stringify(userCredential)}`);
       setUserLoginState({
         status: 'ok',
         type: 'account',
@@ -87,7 +88,7 @@ const Login: React.FC = () => {
     try {
       const msg = await login({ ...values, type });
       if (msg.status === 'ok') {
-        console.log(`Success login ${JSON.stringify(msg)}`);
+        debug(`Success login ${JSON.stringify(msg)}`);
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
         if (!history) return;
@@ -305,7 +306,7 @@ const Login: React.FC = () => {
               onClick={
                 () => {
                   const user = auth.currentUser;
-                  console.log(`Current User Info : ${JSON.stringify(user)}`);
+                  debug(`Current User Info : ${JSON.stringify(user)}`);
                   
                 }
               }
