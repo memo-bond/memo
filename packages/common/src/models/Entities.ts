@@ -1,4 +1,4 @@
-export declare namespace Model {
+export namespace Model {
   interface BaseModel {
     id: string; // unique 
     isDeleted: boolean;
