@@ -28,8 +28,6 @@
     "src/**/*",
     "playwright.config.ts",
     "tests/**/*",
-    "test/**/*",
-    "__test__/**/*",
     "typings/**/*",
     "config/**/*",
     ".eslintrc.js",

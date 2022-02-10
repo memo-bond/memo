@@ -1,8 +1,8 @@
 {
     "name": "functions",
     "scripts": {
-        "build:dev": "rimraf ./lib/**/* && tsc --watch",
-        "build": "rimraf ./lib/**/* && npm run lint && rollup -c rollup.config.js",
+        "build:dev": "rimraf ./dist/**/* && tsc --watch",
+        "build": "rimraf ./dist/**/* && npm run lint && rollup -c rollup.config.js",
         "serve:dev": "firebase emulators:start --only functions",
         "serve": "npm run build && firebase emulators:start --only functions",
         "shell": "firebase functions:shell",
@@ -12,7 +12,7 @@
         "lint": "eslint . --ext .ts",
         "test": "mocha tests/**/*.spec.ts"
     },
-    "main": "lib/index.js",
+    "main": "dist/index.js",
     "dependencies": {
         "@google-cloud/functions-framework": "^2.1.0",
         "cors": "^2.8.5",
