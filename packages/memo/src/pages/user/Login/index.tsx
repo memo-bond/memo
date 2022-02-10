@@ -1,5 +1,4 @@
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import { emailSignIn } from '@/services/auth/email-auth';
 import { googleSignIn } from '@/services/auth/google-auth';
@@ -11,6 +10,7 @@ import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi';
 import styles from '../style.less';
+import Model from '@memo/common/dist/models/Entities';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -26,6 +26,20 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC = () => {
+
+  const book: Model.Book = {
+    id: '123',
+    ownerId: '123',
+    name: 'ABC',
+    authorEmail: 'lamle@gmx.com',
+    isDeleted: false,
+    createdAt: 0,
+    updatedAt: 0,
+    createdBy: null,
+    updatedBy: null
+  };
+  debug(`Book ${JSON.stringify(book)}`);
+
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -36,16 +50,6 @@ const Login: React.FC = () => {
     id: 'pages.login.success',
     defaultMessage: '登录成功！',
   });
-
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
-    if (userInfo) {
-      await setInitialState((s) => ({
-        ...s,
-        currentUser: userInfo,
-      }));
-    }
-  };
 
   const fetchFirebaseUserInfo = async (userCredential: UserCredential) => {
     const userInfo = initialState?.fetchFirebaseUserInfo?.(userCredential);
@@ -115,6 +119,7 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
+  
   const { status, type: loginType } = userLoginState;
 
   return (

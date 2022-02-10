@@ -14,8 +14,17 @@ const options: cors.CorsOptions = {
  */
 export const httpFunction = functions.https.onRequest((request: functions.Request, response: functions.Response) => {
     console.log('received http request');
-    
+
     cors(options)(request, response, () => analysisFunction(request, response));
 });
 
-// Add here other functions.
+export const helloWorld = functions.https.onRequest((request: functions.Request, response: functions.Response) => {
+    cors(options)(request, response, () => {
+        response
+            .header('content-type', 'application/json')
+            .status(200)
+            .send({
+                text: 'Hello Back'
+            });
+    });
+});

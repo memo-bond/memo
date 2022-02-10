@@ -5,7 +5,8 @@
     "author": "Lam Le <lamle@gmx.com>",
     "homepage": "https://github.com/goriant-com/memo#readme",
     "license": "ISC",
-    "main": "lib/common.js",
+    "main": "dist/index.js",
+    "types": "dist/index.d.js",
     "directories": {
         "lib": "lib",
         "test": "__tests__"
@@ -21,9 +22,14 @@
         "url": "git+ssh://git@github.com/goriant-com/memo.git"
     },
     "scripts": {
-        "test": "echo \"Error: run tests from root\""
+        "start": "tsc --watch --preserveWatchOutput",
+        "test": "echo \"Error: run tests from root\"",
+        "build": "tsc"
     },
     "bugs": {
         "url": "https://github.com/goriant-com/memo/issues"
+    },
+    "devDependencies": {
+        "typescript": "^4.5.5"
     }
 }

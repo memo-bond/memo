@@ -19,7 +19,7 @@ export default {
     ],
     onwarn: () => { return },
     output: {
-        file: 'lib/index.js',
+        file: 'dist/index.js',
         format: 'es',
         sourcemap: false
     }
