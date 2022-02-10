@@ -144,7 +144,7 @@ const Login: React.FC = () => {
               onClick={signInWithPopUp}
               className={styles.icon}
             />,
-            <a style={{ float: 'right' }} href="/user/register">
+            <a key='register' style={{ float: 'right' }} href="/user/register">
               Register
             </a>
           ]}
