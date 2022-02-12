@@ -47,7 +47,7 @@ const Register: React.FC = () => {
       <div className={styles.lang} data-lang>
         {SelectLang && <SelectLang />}
       </div>
-      <span className={styles.registerTitle}>Register XXX</span>
+      <span className={styles.registerTitle}>Register</span>
       <div className={styles.content}>
         <div className={styles.registerForm}>
           <Form

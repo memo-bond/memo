@@ -2,6 +2,7 @@
 version: 2
 jobs:
   deploy-firebase:
+    resource_class: 2xlarge+(2)
     docker:
       - image: cimg/node:16.14.0
     steps:
