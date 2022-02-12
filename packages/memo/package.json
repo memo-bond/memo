@@ -66,7 +66,7 @@
     "classnames": "^2.3.0",
     "firebase": "^9.6.6",
     "firebaseui": "^6.0.0",
-    "firebase-tools": "^9.11.0",
+    "firebase-tools": "10.2.0",
     "lodash": "^4.17.0",
     "moment": "^2.29.0",
     "omit.js": "^2.0.2",
