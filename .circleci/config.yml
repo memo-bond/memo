@@ -10,13 +10,13 @@ jobs:
           path: ~/packages/memo
       - restore_cache:
           keys:
-            - v1-npm-deps-{{ checksum "package-lock.json" }}
+            - v1-npm-deps-{{ checksum "~/packages/memo/yarn-lock.json" }}
             - v1-npm-deps-
       - run:
           name: Install Dependencies
           command: yarn
       - save_cache:
-          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          key: v1-npm-deps-{{ checksum "~/packages/memo/yarn-lock.json" }}
           paths:
             - ./node_modules
       - run:
