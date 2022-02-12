@@ -1,20 +1,40 @@
 import { userRegister } from '@/services/auth/email-auth';
 import { debug } from '@/utils/log';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { UserCredential } from '@firebase/auth';
+import { Button, Form, Input } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import React from 'react';
-import { SelectLang } from 'umi';
+import { history, SelectLang, useModel } from 'umi';
 import styles from '../style.less';
 
 const Register: React.FC = () => {
 
+  const { initialState, setInitialState } = useModel('@@initialState');
+
+  const fetchFirebaseUserInfo = async (userCredential: UserCredential) => {
+    const userInfo = initialState?.fetchFirebaseUserInfo?.(userCredential);
+    if (userInfo) {
+      debug(`Firebase User Info ${JSON.stringify(userInfo)}`);
+      await setInitialState((s: any) => ({
+        ...s,
+        currentUser: userInfo,
+      }));
+    }
+  };
+  
   const onFinish = async (registerParams: API.RegisterParams) => {
     debug(`Success: ${registerParams.email}`);
-    const result = await userRegister(registerParams);
-    if(typeof result !== 'string' ) {
-      debug(`Register Complete for new User ${JSON.stringify(result)}`);
+    const userCredential = await userRegister(registerParams);
+    if(typeof userCredential !== 'string' ) {
+      debug(`Register Complete for new User ${JSON.stringify(userCredential)}`);
+      await fetchFirebaseUserInfo(userCredential);
+      if (!history) return;
+      const { query } = history.location;
+      const { redirect } = query as { redirect: string };
+      history.push(redirect || '/');
+      return;
     } else {
-      debug(`Register Failed due to Error '${result}'`);
+      debug(`Register Failed due to Error '${userCredential}'`);
     }
   };
 
