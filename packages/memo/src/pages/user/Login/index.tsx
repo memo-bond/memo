@@ -10,7 +10,6 @@ import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi';
 import styles from '../style.less';
-import Model from '@memo/common/dist/models/Entities';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -26,19 +25,6 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC = () => {
-
-  const book: Model.Book = {
-    id: '123',
-    ownerId: '123',
-    name: 'ABC',
-    authorEmail: 'lamle@gmx.com',
-    isDeleted: false,
-    createdAt: 0,
-    updatedAt: 0,
-    createdBy: null,
-    updatedBy: null
-  };
-  debug(`Book ${JSON.stringify(book)}`);
 
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');

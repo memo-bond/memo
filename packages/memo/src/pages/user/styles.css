@@ -1,0 +1,9 @@
+.registerForm {
+  width: 400px;
+  display: flex;
+  margin: auto;
+}
+
+.registerForm .ant-form {
+  width: 100% !important;
+}

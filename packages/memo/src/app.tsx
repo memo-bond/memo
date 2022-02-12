@@ -41,7 +41,6 @@ export async function getInitialState(): Promise<{
 
   const fetchFirebaseUserInfo = (userCredential: UserCredential): API.CurrentUser | undefined => {
     try {
-      // log(`User Credential full info: ${JSON.stringify(userCredential)}`);
       if (userCredential) {
         const { user } = userCredential;
         return {

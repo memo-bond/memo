@@ -1,21 +1,23 @@
 import { userRegister } from '@/services/auth/email-auth';
 import { debug } from '@/utils/log';
 import { UserCredential } from '@firebase/auth';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
-import React from 'react';
+import React, { useState } from 'react';
 import { history, SelectLang, useModel } from 'umi';
 import styles from '../style.less';
+import '../styles.css';
 
 const Register: React.FC = () => {
 
   const { initialState, setInitialState } = useModel('@@initialState');
+  const [ submit, setSubmit ] = useState<boolean>(false);
 
   const fetchFirebaseUserInfo = async (userCredential: UserCredential) => {
     const userInfo = initialState?.fetchFirebaseUserInfo?.(userCredential);
     if (userInfo) {
       debug(`Firebase User Info ${JSON.stringify(userInfo)}`);
-      await setInitialState((s: any) => ({
+      await setInitialState((s) => ({
         ...s,
         currentUser: userInfo,
       }));
@@ -23,18 +25,23 @@ const Register: React.FC = () => {
   };
 
   const onFinish = async (registerParams: API.RegisterParams) => {
+    setSubmit(true);
     debug(`Success: ${registerParams.email}`);
-    const userCredential = await userRegister(registerParams);
-    if (typeof userCredential !== 'string') {
-      debug(`Register Complete for new User ${JSON.stringify(userCredential)}`);
-      await fetchFirebaseUserInfo(userCredential);
+    const result = await userRegister(registerParams);
+    if (typeof result !== 'string') {
+      debug(`Register Complete for new User ${JSON.stringify(result)}`);
+      await fetchFirebaseUserInfo(result);
       if (!history) return;
       const { query } = history.location;
       const { redirect } = query as { redirect: string };
       history.push(redirect || '/');
+      setSubmit(false);
+      message.success(`Register Complete for new User`);
       return;
     } else {
-      debug(`Register Failed due to Error '${userCredential}'`);
+      debug(`Register Failed due to Error '${result}'`);
+      message.error(`Register Failed due to Error '${result}'`);
+      setSubmit(false);
     }
   };
 
@@ -47,9 +54,9 @@ const Register: React.FC = () => {
       <div className={styles.lang} data-lang>
         {SelectLang && <SelectLang />}
       </div>
+      <span className={styles.registerTitle}>Register</span>
       <div className={styles.content}>
-        <div className={styles.registerForm}>
-          <span className={styles.registerTitle}>Register</span>
+        <div className='registerForm'>
           <Form
             name="basic"
             labelCol={{ span: 8 }}
@@ -83,7 +90,7 @@ const Register: React.FC = () => {
               <Input.Password />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={submit}>
                 Submit
               </Button>
             </Form.Item>
