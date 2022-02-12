@@ -1,0 +1,36 @@
+# CircleCI Firebase Deployment Config
+version: 2
+jobs:
+  deploy-firebase:
+    working_directory: ~/packages/memo
+    docker:
+      - image: cimg/node:16.14.0
+    steps:
+      - checkout:
+        path: ~/packages/memo
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "package-lock.json" }}
+            - v1-npm-deps-
+      - run:
+          name: Install Dependencies
+          command: yarn
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Firebase Deploy
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT"
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - deploy-firebase:
+          filters:
+            branches:
+              only:
+                - production
