@@ -21,11 +21,11 @@ const Register: React.FC = () => {
       }));
     }
   };
-  
+
   const onFinish = async (registerParams: API.RegisterParams) => {
     debug(`Success: ${registerParams.email}`);
     const userCredential = await userRegister(registerParams);
-    if(typeof userCredential !== 'string' ) {
+    if (typeof userCredential !== 'string') {
       debug(`Register Complete for new User ${JSON.stringify(userCredential)}`);
       await fetchFirebaseUserInfo(userCredential);
       if (!history) return;
@@ -47,9 +47,9 @@ const Register: React.FC = () => {
       <div className={styles.lang} data-lang>
         {SelectLang && <SelectLang />}
       </div>
-      <span className={styles.registerTitle}>Register</span>
       <div className={styles.content}>
         <div className={styles.registerForm}>
+          <span className={styles.registerTitle}>Register</span>
           <Form
             name="basic"
             labelCol={{ span: 8 }}
