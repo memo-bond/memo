@@ -22,12 +22,23 @@
 
 - GCP for Dev VM HIGH CPU :D :D :D
 
+### prerequire
+
+typescipt 
+```
+npm install -g typescript
+```
+
+lerna multi package management
+```
+npm install --global lerna
+```
 
 ### build @memo/common
 
 
 ```
-  cd packages/common && yarn build => dist folder generated
+  yarn --cwd packages/common/ build
 ```
 
 ### for link lerna
@@ -41,13 +52,15 @@
 
 
 ```
-  cd packages/common && yarn link => create yarn link
+  yarn --cwd packages/common link
 
-  cd packages/memo && yarn link "@memo/common" => link @memo/common to @memo/memo
+  yarn --cwd packages/common link "@memo/common"
 ```
 
 ### start memo local PORT 8000 is default
 
 ```
-  cd packages/memo && yarn && yarn start
+  cd packages/memo
+  yarn
+  PORT=8880 yarn start
 ```
