@@ -23,7 +23,7 @@ export const helloWorld = functions.https.onRequest((request: functions.Request,
         response
             .status(200)
             .send(JSON.stringify({
-                text: 'Hello Cloud Functions - Serverless Computing',
+                text: 'Hello Cloud Functions - Ngon lun',
             }));
     });
 });
