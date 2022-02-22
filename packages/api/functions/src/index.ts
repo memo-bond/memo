@@ -21,10 +21,9 @@ export const httpFunction = functions.https.onRequest((request: functions.Reques
 export const helloWorld = functions.https.onRequest((request: functions.Request, response: functions.Response) => {
     cors(options)(request, response, () => {
         response
-            .header('content-type', 'application/json')
             .status(200)
-            .send({
-                text: 'Hello Back'
-            });
+            .send(JSON.stringify({
+                text: 'Hello Cloud Functions - Serverless Computing :D',
+            }));
     });
 });
