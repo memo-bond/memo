@@ -1,29 +1,28 @@
 import * as functions from 'firebase-functions';
-import cors from 'cors';
+import * as admin from 'firebase-admin';
+import * as express from 'express';
+import * as cors from 'cors';
+import * as bodyParser from 'body-parser';
+import { routesConfig } from './config/routes-config';
+import { initializeApp } from "firebase/app";
+import { Constants } from './constants';
 
-import { analysisFunction } from './analysis.function.js';
-import { functionsConfig } from './functions-config.js';
-
-// CORS configuration.
-const options: cors.CorsOptions = {
-    origin: functionsConfig.whitelist
+const firebaseConfig = {
+  apiKey: "AIzaSyD3IzAH-FOh3_SDOBecJZtv4LRjwHfvc0s",
+  authDomain: "memo-9b895.firebaseapp.com",
+  projectId: "memo-9b895",
+  storageBucket: "memo-9b895.appspot.com",
+  messagingSenderId: "701798161487",
+  appId: "1:701798161487:web:48dd766a316c63911bde3a"
 };
+export const firebaseApp = initializeApp(firebaseConfig);
+admin.initializeApp();
+const app = express();
+app.use(bodyParser.json());
+app.use(cors({ origin: true }));
 
-/**
- * Trigger a function with an HTTP request.
- */
-export const httpFunction = functions.https.onRequest((request: functions.Request, response: functions.Response) => {
-    console.log('received http request');
+routesConfig(app);
 
-    cors(options)(request, response, () => analysisFunction(request, response));
-});
+export const api = functions.https.onRequest(app);
 
-export const helloWorld = functions.https.onRequest((request: functions.Request, response: functions.Response) => {
-    cors(options)(request, response, () => {
-        response
-            .status(200)
-            .send(JSON.stringify({
-                text: 'Hello Cloud Functions - Ngon lun',
-            }));
-    });
-});
+export const SpaceRepository = admin.firestore().collection(Constants.SPACES);

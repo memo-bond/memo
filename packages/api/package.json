@@ -1,9 +1,9 @@
 {
     "name": "@memo/api",
     "version": "1.0.0",
-    "description": "> TODO: description",
-    "author": "Lam Le <lamle@gmx.com>",
-    "homepage": "https://github.com/goriant-com/memo#readme",
+    "description": "Memo API",
+    "author": "Lam Le <lam.le@memo.bond>",
+    "homepage": "https://github.com/memo-bond/memo",
     "license": "ISC",
     "main": "lib/api.js",
     "directories": {
@@ -18,10 +18,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/goriant-com/memo.git"
+        "url": "git+ssh://git@github.com/memo-bond/memo.git"
     },
     "scripts": {},
     "bugs": {
-        "url": "https://github.com/goriant-com/memo/issues"
+        "url": "https://github.com/memo-bond/memo/issues"
     }
 }
