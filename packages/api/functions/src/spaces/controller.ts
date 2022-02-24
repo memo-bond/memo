@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import e = require("express");
 import { SpaceRepository } from "..";
 import { handleError, handleSuccess } from "../utils";
 
