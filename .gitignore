@@ -68,3 +68,6 @@ node_modules/
 # umi
 .umi
 .umi-production
+
+# intellij idea
+.idea

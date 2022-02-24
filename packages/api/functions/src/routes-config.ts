@@ -3,6 +3,8 @@ import { login, CreateUser, GetAll, GetUser, PatchUser, RemoveUser } from "./use
 import { CreateSpace, DeleteSpace, GetSpace, UpdateSpace } from './spaces/controller';
 import { isAuthenticated } from "./auth/authenticated";
 import { isAuthorized } from "./auth/authorized";
+import { Validate } from "./middlewares/validation.mdw";
+import { createUserRequestValidator } from "./dtos/users";
 
 export function routesConfig(app: Application) {
     app.post('/spaces', isAuthenticated, CreateSpace);
@@ -17,8 +19,9 @@ export function routesConfig(app: Application) {
         login
     );
     app.post('/users',
-        isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'] }),
+        Validate(createUserRequestValidator),
+        // isAuthenticated,
+        // isAuthorized({ hasRole: ['admin', 'manager'] }),
         CreateUser
     );
     app.get('/users', [
