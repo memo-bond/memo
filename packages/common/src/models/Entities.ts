@@ -2,28 +2,36 @@ export namespace Model {
 
   /**
    * shared mechanism: 
-   *    - store ReGex string to match Authenticator with this resource
-   *    - null mean public internet, * mean public for Authenticated Users
+   *  - store ReGex string to match Authenticator with this resource
+   *  - default value null means public internet
+   *  - * means public for Authenticated Users
+   *  - '' means private - only owner can see
    * isDeleted: soft delete
-   * createdBy & updatedBy should be email/username
+   * createdBy & updatedBy should be email
    */
   interface BaseModel {
     id: string;
-    ownerId: string;
+    userId: string;
     isDeleted: boolean;
-    shared: string | null;
     createdAt: number;
     updatedAt: number;
     createdBy: string;
     updatedBy: string;
   }
 
+  interface Shared {
+    shared: string | null;
+  }
+
   /**
    * username:
    *  - SEO URL
    *  - should be unique entire DB
+   *  - avoid bad words as much as possible
+   * email:
+   *  - unique: it is handled by firebase authentication
    */
-  export interface User extends BaseModel {
+  export interface User extends BaseModel, Shared {
     username: string;
     email: string;
     firstName?: string;
@@ -39,14 +47,14 @@ export namespace Model {
    *  - using for SEO URL
    * md: markdown
    */
-  export interface Space {
+  export interface Space extends Shared {
     name: string;
     description: string;
     md: string;
     groups: Group[] | null;
   }
 
-  export interface Group {
+  export interface Group extends Shared {
     name: string;
     parentId?: string;
     tags?: string[];
@@ -55,7 +63,7 @@ export namespace Model {
   /**
    * Memo is a separated DB collection
    */
-  export interface Memo extends BaseModel {
+  export interface Memo extends BaseModel, Shared {
     name: string | null;
     content: string;
     groupId: string;

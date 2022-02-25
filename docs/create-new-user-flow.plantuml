@@ -1,0 +1,12 @@
+@startuml "Create New User Flow"
+
+Customer -> Firebase Authentication: login
+
+' group My own label [My own label 2]
+'     Alice -> Log : Log attack start
+'     loop 1000 times
+'         Alice -> Bob: DNS Attack
+'     end
+'     Alice -> Log : Log attack end
+' end
+@enduml
