@@ -19,4 +19,4 @@ const schema: JSONSchemaType<CreateUserDTO> = {
     additionalProperties: false
 }
 
-export const createUserRequestValidator = new Ajv().compile(schema)
+export const createUserSchema = new Ajv().compile(schema)

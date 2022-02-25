@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as admin from 'firebase-admin';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { handleError } from "../utils";
+import {CreateUserDTO} from "../dtos/users";
 
 export const login = async (req: Request, res: Response) => {
   console.log(`Request body ${JSON.stringify(req.body)}`);
@@ -21,18 +22,12 @@ export const login = async (req: Request, res: Response) => {
 
 export const CreateUser = async (req: Request, res: Response) => {
   try {
-    const { displayName, password, email, role } = req.body;
-    if (!displayName || !password || !email || !role) {
-      return res.status(400).send({ message: 'Missing fields' });
-    }
-    const userCredentials = await admin.auth().createUser({
-      displayName,
-      password,
-      email
-    });
-    await admin.auth().setCustomUserClaims(userCredentials.uid, { role });
+    const createUserDTO: CreateUserDTO = req.body;
+    const userCredentials = await admin.auth().createUser(createUserDTO);
+
+    await admin.auth().setCustomUserClaims(userCredentials.uid, { role: createUserDTO.role });
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, createUserDTO.email, createUserDTO.password)
       .then(async (userCredential) => {
         const token = await userCredential.user.getIdToken();
         return res.status(201).send({

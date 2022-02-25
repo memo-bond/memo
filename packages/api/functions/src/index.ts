@@ -25,3 +25,4 @@ routesConfig(webApp);
 export const api = functions.https.onRequest(webApp);
 export const firebaseApp = initializeApp(firebaseConfig);
 export const SpaceRepository = admin.firestore().collection(Constants.SPACES);
+export const BookRepository = admin.firestore().collection(Constants.BOOKS);
