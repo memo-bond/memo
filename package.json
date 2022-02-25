@@ -9,6 +9,6 @@
     "@types/node": "^17.0.16"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*", "packages/api/*"
   ]
 }

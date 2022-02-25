@@ -1,36 +1,64 @@
 export namespace Model {
+
+  /**
+   * shared mechanism: 
+   *    - store ReGex string to match Authenticator with this resource
+   *    - null mean public internet, * mean public for Authenticated Users
+   * isDeleted: soft delete
+   * createdBy & updatedBy should be email/username
+   */
   interface BaseModel {
-    id: string; // unique 
+    id: string;
+    ownerId: string;
     isDeleted: boolean;
+    shared: string | null;
     createdAt: number;
     updatedAt: number;
-    createdBy: string | null;
-    updatedBy: string | null;
+    createdBy: string;
+    updatedBy: string;
   }
 
+  /**
+   * username:
+   *  - SEO URL
+   *  - should be unique entire DB
+   */
   export interface User extends BaseModel {
-    userName: string;
+    username: string;
     email: string;
     firstName?: string;
     lastName?: string;
     github?: string;
     linkedIn?: string;
-    books?: string[];
+    spaces: Space[];
   }
 
-  export interface Book extends BaseModel {
+  /**
+   * name:
+   *  - is unique in user scope
+   *  - using for SEO URL
+   * md: markdown
+   */
+  export interface Space {
     name: string;
-    ownerId: string;
-    shared?: string[]; // list ID of Users
-    parentId?: string; // null is root
-    authorEmail: string;
-    authorName?: string;
+    description: string;
+    md: string;
+    groups: Group[] | null;
+  }
+
+  export interface Group {
+    name: string;
+    parentId?: string;
     tags?: string[];
   }
 
-  export interface JMemo extends BaseModel {
+  /**
+   * Memo is a separated DB collection
+   */
+  export interface Memo extends BaseModel {
+    name: string | null;
     content: string;
-    bookId: string;
+    groupId: string;
     tags?: string[];
   }
 }
