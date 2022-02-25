@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
+import { Roles } from "../constants"
 
-export function hasRole(roles: Array<'admin' | 'manager' | 'user'>) {
+export function hasRole(roles: Array<Roles>) {
     return (req: Request, res: Response, next: NextFunction) => {
         const { role } = res.locals
 
@@ -15,7 +16,7 @@ export function hasRole(roles: Array<'admin' | 'manager' | 'user'>) {
     }
 }
 
-export function isAuthorized(opts: { hasRole: Array<'admin' | 'manager' | 'user'>, allowSameUser?: boolean }) {
+export function isAuthorized(opts: { hasRole: Array<Roles>, allowSameUser?: boolean }) {
     return (req: Request, res: Response, next: Function) => {
         const { role, uid } = res.locals
         const { id } = req.params

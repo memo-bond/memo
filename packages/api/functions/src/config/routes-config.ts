@@ -3,6 +3,7 @@ import { login, CreateUser, GetAll, GetUser, PatchUser, RemoveUser } from "../us
 import { CreateSpace, DeleteSpace, GetSpace, UpdateSpace } from '../spaces/controller';
 import { isAuthenticated } from "../auth/authenticated";
 import { isAuthorized } from "../auth/authorized";
+import { Roles } from "../constants";
 
 export function routesConfig(app: Application) {
     app.post('/spaces', isAuthenticated, CreateSpace);
@@ -21,22 +22,22 @@ export function routesConfig(app: Application) {
     );
     app.get('/users', [
         isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'] }),
+        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER] }),
         GetAll
     ]);
     app.get('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
+        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
         GetUser
     ]);
     app.patch('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
+        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
         PatchUser
     ]);
     app.delete('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
+        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
         RemoveUser
     ]);
 }
