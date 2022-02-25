@@ -7,6 +7,10 @@ yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
 
+yarn.lock
+packages/*/yarn.lock
+packages/api/*/yarn.lock
+
 # Firebase cache
 .firebase/
 
@@ -68,3 +72,6 @@ node_modules/
 # umi
 .umi
 .umi-production
+
+# intellij idea
+.idea
