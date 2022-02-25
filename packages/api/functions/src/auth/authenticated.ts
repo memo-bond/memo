@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import * as admin from 'firebase-admin'
+import { Request, Response, NextFunction } from "express";
+import * as admin from 'firebase-admin';
 
-export async function isAuthenticated(req: Request, res: Response, next: Function) {
+export async function isAuthenticated(req: Request, res: Response, next: NextFunction) {
     const { authorization } = req.headers
 
     if (!authorization)
