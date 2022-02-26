@@ -10,5 +10,5 @@
   "workspaces": [
     "packages/*", "packages/api/*"
   ],
-  "nohoist": ["**/packages/common"]
+  "private": true
 }
