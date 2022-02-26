@@ -1,6 +1,6 @@
 {
-  "name": "@memo/memo",
-  "version": "1.0.1",
+  "name": "@memo-bond/memo",
+  "version": "1.0.2",
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
@@ -148,5 +148,6 @@
   },
   "gitHooks": {
     "commit-msg": "fabric verify-commit"
-  }
+  },
+  "gitHead": "692869f2ee83bcc0f7e82db8bd2386253d270c15"
 }
