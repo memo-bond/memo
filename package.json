@@ -12,6 +12,6 @@
   ],
   "private": true,
   "scripts": {
-    "artifactregistry-login": "npx google-artifactregistry-auth"
+    "login": "npx google-artifactregistry-auth"
   }
 }
