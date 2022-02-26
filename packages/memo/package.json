@@ -1,6 +1,6 @@
 {
   "name": "@memo-bond/memo",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
@@ -59,7 +59,7 @@
     "@ant-design/pro-layout": "^6.32.0",
     "@ant-design/pro-table": "^2.61.0",
     "@firebase/auth": "^0.19.8",
-    "@memo-bond/common": "^1.0.2",
+    "@memo-bond/common": "^1.0.7",
     "@umijs/route-utils": "^2.0.0",
     "antd": "^4.17.0",
     "classnames": "^2.3.0",
@@ -149,5 +149,5 @@
   "gitHooks": {
     "commit-msg": "fabric verify-commit"
   },
-  "gitHead": "aaca08b29398cd299b604cd67247b6ffe9c84da2"
+  "gitHead": "cad214b28460ab8634bcd8f8597b1c893b90b5d1"
 }
