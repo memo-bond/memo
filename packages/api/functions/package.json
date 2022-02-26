@@ -1,6 +1,6 @@
 {
     "name": "@memo-bond/functions",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "scripts": {
         "lint": "tslint --project tsconfig.json",
         "build": "tsc",
