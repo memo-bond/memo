@@ -1,6 +1,6 @@
 {
     "name": "@memo/api",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Memo API",
     "author": "Lam Le <lam.le@memo.bond>",
     "homepage": "https://github.com/memo-bond/memo",
@@ -23,5 +23,6 @@
     "scripts": {},
     "bugs": {
         "url": "https://github.com/memo-bond/memo/issues"
-    }
+    },
+    "gitHead": "09fd9c70ce4cac4e9ff4202e62554e395a8cc108"
 }

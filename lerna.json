@@ -3,6 +3,11 @@
     "packages": [
         "packages/*"
     ],
-    "version": "1.0.0",
-    "useWorkspaces": true
+    "version": "1.0.1",
+    "useWorkspaces": true,
+    "command": {
+        "publish": {
+            "registry": "https://npm.pkg.github.com"
+        }
+    }
 }

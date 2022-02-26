@@ -1,9 +1,9 @@
 {
-    "name": "@memo/common",
-    "version": "1.0.0",
+    "name": "@memo-bond/common",
+    "version": "1.0.1",
     "description": "Memo common models, utils",
     "author": "Lam Le <lamle@gmx.com>",
-    "homepage": "https://github.com/goriant-com/memo#readme",
+    "homepage": "https://memo.bond",
     "license": "ISC",
     "main": "dist/index.js",
     "types": "dist/index.d.js",
@@ -11,15 +11,15 @@
         "lib": "lib",
         "test": "__tests__"
     },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
     "files": [
         "lib"
     ],
-    "publishConfig": {
-        "access": "public"
-    },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/goriant-com/memo.git"
+        "url": "git+ssh://git@github.com/memo-bond/memo.git"
     },
     "scripts": {
         "start": "tsc --watch --preserveWatchOutput",
@@ -27,9 +27,10 @@
         "build": "tsc"
     },
     "bugs": {
-        "url": "https://github.com/goriant-com/memo/issues"
+        "url": "https://github.com/memo-bond/memo/issues"
     },
     "devDependencies": {
         "typescript": "^4.5.5"
-    }
+    },
+    "gitHead": "09fd9c70ce4cac4e9ff4202e62554e395a8cc108"
 }
