@@ -3,11 +3,11 @@
     "packages": [
         "packages/*"
     ],
-    "version": "1.0.13",
+    "version": "1.0.14",
     "useWorkspaces": true,
     "command": {
         "publish": {
-          "registry": "us-central1-npm.pkg.dev/memo-9b895/memo-bond/"
+            "registry": "us-central1-npm.pkg.dev/memo-9b895/memo-bond/"
         }
     }
 }
