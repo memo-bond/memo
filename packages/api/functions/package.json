@@ -10,6 +10,10 @@
         "deploy": "firebase deploy --only functions",
         "logs": "firebase functions:log"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/memo-bond/memo.git"
+    },
     "engines": {
         "node": "16"
     },
@@ -30,5 +34,5 @@
         "tslint": "^5.12.0",
         "typescript": "^4.5.5"
     },
-    "gitHead": "5104d59d65bf98979f2705e60767f156345358aa"
+    "gitHead": "feea239cda1e9a2a622c792ea4094cb73df6e9bc"
 }
