@@ -1,0 +1,29 @@
+@startuml CreateNewSocialAuthenticatedUserFlow
+
+Guest -> FirebaseAuth: Google/Github Login
+
+alt#Gold #LightBlue New User
+
+  UI -> NewUserForm: Redirect
+
+  NewUserForm -> FirebaseFunctions: Input username
+
+  FirebaseFunctions -> Firestore
+  note right
+    Run Transaction:
+    1. check user exists => throw ERROR_MSG.USER_EXISTS
+    1. check username owned by requester => throw ERROR_MSG.OWNED
+    2. check username exists (unique constraints) => throw ERROR_MSG.USERNAME_EXISTS
+    3. update username for authenticated user
+    4. create new unique username in unique_username collection
+    5. create new user in users collection
+  end note
+
+  FirebaseFunctions -> UI: The user was successfully created
+
+else #Pink Existing User
+
+  FirebaseAuth -> UserProfile: Redirect
+
+end
+@enduml

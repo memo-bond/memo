@@ -28,4 +28,5 @@ const customFunctions = functions
 
 export const api = customFunctions.https.onRequest(webApp);
 export const firebaseApp = initializeApp(firebaseConfig);
+export const database = admin.firestore();
 export const SpaceRepository = admin.firestore().collection(Constants.SPACES);
