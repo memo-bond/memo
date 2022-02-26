@@ -19,8 +19,8 @@ export namespace Model {
     updatedBy: string;
   }
 
-  interface Shared {
-    shared: string | null;
+  interface Sharing {
+    sharing: string | null;
   }
 
   /**
@@ -31,7 +31,7 @@ export namespace Model {
    * email:
    *  - unique: it is handled by firebase authentication
    */
-  export interface User extends BaseModel, Shared {
+  export interface User extends BaseModel, Sharing {
     username: string;
     email: string;
     firstName?: string;
@@ -47,14 +47,14 @@ export namespace Model {
    *  - using for SEO URL
    * md: markdown
    */
-  export interface Space extends Shared {
+  export interface Space extends Sharing {
     name: string;
     description: string;
     md: string;
     groups: Group[] | null;
   }
 
-  export interface Group extends Shared {
+  export interface Group extends Sharing {
     name: string;
     parentId?: string;
     tags?: string[];
@@ -63,7 +63,7 @@ export namespace Model {
   /**
    * Memo is a separated DB collection
    */
-  export interface Memo extends BaseModel, Shared {
+  export interface Memo extends BaseModel, Sharing {
     name: string | null;
     content: string;
     groupId: string;
