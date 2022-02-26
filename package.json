@@ -1,6 +1,5 @@
 {
   "name": "root",
-  "private": true,
   "devDependencies": {
     "lerna": "^4.0.0",
     "typescript": "^4.5.5"
@@ -11,5 +10,8 @@
   "workspaces": [
     "packages/*", "packages/api/*"
   ],
-  "nohoist": ["**/packages/common"]
+  "private": true,
+  "scripts": {
+    "login": "npx google-artifactregistry-auth"
+  }
 }
