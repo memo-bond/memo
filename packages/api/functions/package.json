@@ -1,6 +1,6 @@
 {
     "name": "@memo-bond/functions",
-    "version": "1.0.13",
+    "version": "1.0.16",
     "scripts": {
         "lint": "tslint --project tsconfig.json",
         "build": "tsc",
@@ -22,7 +22,7 @@
     },
     "main": "lib/index.js",
     "dependencies": {
-        "@memo-bond/common": "^1.0.12",
+        "@memo-bond/common": "^1.0.16",
         "@types/morgan": "^1.9.3",
         "ajv": "^8.10.0",
         "body-parser": "1.19.2",
