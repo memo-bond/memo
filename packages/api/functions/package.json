@@ -34,5 +34,11 @@
         "tslint": "^5.12.0",
         "typescript": "^4.5.5"
     },
-    "gitHead": "feea239cda1e9a2a622c792ea4094cb73df6e9bc"
+    "gitHead": "feea239cda1e9a2a622c792ea4094cb73df6e9bc",
+    "workspaces": {
+        "nohoist": [
+            "**"
+        ]
+    },
+    "private": true
 }
