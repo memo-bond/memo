@@ -14,7 +14,7 @@
         "lib"
     ],
     "publishConfig": {
-        "access": "public"
+        "registry": "https://us-central1-npm.pkg.dev/memo-9b895/memo-bond/"
     },
     "repository": {
         "type": "git",
@@ -24,5 +24,5 @@
     "bugs": {
         "url": "https://github.com/memo-bond/memo/issues"
     },
-    "gitHead": "1caf2cd990b7254ac37a24d08efc42f435797e6d"
+    "gitHead": "7bf7ed7ebff269f3dd88a89a4688e9568527dab7"
 }
