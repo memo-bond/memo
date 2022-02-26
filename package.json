@@ -10,5 +10,8 @@
   "workspaces": [
     "packages/*", "packages/api/*"
   ],
-  "private": true
+  "private": true,
+  "scripts": {
+    "artifactregistry-login": "npx google-artifactregistry-auth"
+  }
 }
