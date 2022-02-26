@@ -1,6 +1,6 @@
 {
-    "name": "@memo/functions",
-    "version": "1.0.0",
+    "name": "@memo-bond/functions",
+    "version": "1.0.28",
     "scripts": {
         "lint": "tslint --project tsconfig.json",
         "build": "tsc",
@@ -10,24 +10,38 @@
         "deploy": "firebase deploy --only functions",
         "logs": "firebase functions:log"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/memo-bond/memo.git"
+    },
+    "publishConfig": {
+        "registry": "https://us-central1-npm.pkg.dev/memo-9b895/memo-bond/"
+    },
     "engines": {
-        "node": "16"
+        "node": "14"
     },
     "main": "lib/index.js",
     "dependencies": {
+        "@memo-bond/common": "^1.0.28",
         "@types/morgan": "^1.9.3",
         "ajv": "^8.10.0",
         "body-parser": "1.19.2",
         "cors": "2.8.5",
         "express": "4.17.3",
+        "firebase": "^9.6.7",
         "firebase-admin": "10.0.2",
-        "firebase-functions": "3.18.1",
-        "@memo/common": "^1.0.0"
+        "firebase-functions": "3.18.1"
     },
     "devDependencies": {
         "@types/express": "4.17.13",
         "tslint": "^5.12.0",
         "typescript": "^4.5.5"
+    },
+    "gitHead": "feea239cda1e9a2a622c792ea4094cb73df6e9bc",
+    "workspaces": {
+        "nohoist": [
+            "**"
+        ]
     },
     "private": true
 }

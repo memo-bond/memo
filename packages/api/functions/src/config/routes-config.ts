@@ -4,6 +4,8 @@ import { CreateSpace, DeleteSpace, GetSpace, UpdateSpace } from '../spaces/contr
 import { isAuthenticated } from "../auth/authenticated";
 import { isAuthorized } from "../auth/authorized";
 import { Roles } from "../constants";
+import { Validate } from "../middlewares/validation.mdw";
+import { createUserRequestValidator } from "../dtos/users";
 
 export function routesConfig(app: Application) {
     app.post('/spaces', isAuthenticated, CreateSpace);
@@ -18,6 +20,7 @@ export function routesConfig(app: Application) {
         login
     );
     app.post('/users',
+        Validate(createUserRequestValidator),
         CreateUser
     );
     app.get('/users', [
