@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { database as db } from "..";
-import { Constants } from "../constants";
+import { CONSTANTS, ROLES } from "../constants";
 import { handleError, handleSuccess } from "../utils";
 
 abstract class ERROR_MSG {
@@ -14,9 +14,9 @@ type NewUserRequest = {
   username: string;
 }
 
-export const CreateAuthenticatedUser = async (req: Request, res: Response) => {
-  const usernames = db.collection(Constants.UNIQUE_USERNAME);
-  const users = db.collection(Constants.USERS);
+export const CreateAuthenticatedUser = async (req: Request, res: Response, next: NextFunction) => {
+  const usernames = db.collection(CONSTANTS.UNIQUE_USERNAME);
+  const users = db.collection(CONSTANTS.USERS);
   const request: NewUserRequest = req.body;
 
   const unameRef = usernames.doc(request.username);
@@ -60,14 +60,16 @@ export const CreateAuthenticatedUser = async (req: Request, res: Response) => {
         .then(() => {
           transaction.set(userRef, {
             uid: request.uid,
-            username: request.username
+            username: request.username,
+            role: ROLES.USER
           })
         })
         .catch((err) => {
           throw err;
         });
     });
-    return handleSuccess(res, { username: request.username, message: 'The user was successfully created' });
+    next();
+    // return handleSuccess(res, { username: request.username, message: 'The user was successfully created' });
   } catch (err: any) {
     return handleError(res, err);
   }

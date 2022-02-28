@@ -5,7 +5,7 @@ import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import { routesConfig } from './config/routes-config';
 import { initializeApp } from "firebase/app";
-import { Constants } from './constants';
+import { CONSTANTS } from './constants';
 
 admin.initializeApp();
 
@@ -29,4 +29,7 @@ const customFunctions = functions
 export const api = customFunctions.https.onRequest(webApp);
 export const firebaseApp = initializeApp(firebaseConfig);
 export const database = admin.firestore();
-export const SpaceRepository = admin.firestore().collection(Constants.SPACES);
+
+// Repository
+export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
+export const UserRepository = admin.firestore().collection(CONSTANTS.USERS);
