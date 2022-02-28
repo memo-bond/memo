@@ -5,7 +5,7 @@ import { handleError } from "../utils";
 import {CreateUserDTO} from "../dtos/users";
 
 export const login = async (req: Request, res: Response) => {
-  console.log(`Request body ${JSON.stringify(req.body)}`);
+  console.log('Welcome changes and instance deploy');
   const { email, password } = req.body;
   const auth = getAuth();
   signInWithEmailAndPassword(auth, email, password)

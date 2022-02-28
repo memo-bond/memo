@@ -1,6 +1,6 @@
 {
-    "name": "@memo/api",
-    "version": "1.0.0",
+    "name": "@memo-bond/api",
+    "version": "1.0.28",
     "description": "Memo API",
     "author": "Lam Le <lam.le@memo.bond>",
     "homepage": "https://github.com/memo-bond/memo",
@@ -14,7 +14,7 @@
         "lib"
     ],
     "publishConfig": {
-        "access": "public"
+        "registry": "https://us-central1-npm.pkg.dev/memo-9b895/memo-bond/"
     },
     "repository": {
         "type": "git",
@@ -23,5 +23,6 @@
     "scripts": {},
     "bugs": {
         "url": "https://github.com/memo-bond/memo/issues"
-    }
+    },
+    "gitHead": "9b02e5b29ec0d11b306ad9aee7161df2f82a8b76"
 }

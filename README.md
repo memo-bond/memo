@@ -34,7 +34,7 @@ lerna multi package management
 npm install --global lerna
 ```
 
-### build @memo/common
+### build @memo-bond/common
 
 
 ```
@@ -54,7 +54,7 @@ npm install --global lerna
 ```
   yarn --cwd packages/common link
 
-  yarn --cwd packages/common link "@memo/common"
+  yarn --cwd packages/common link "@memo-bond/common"
 ```
 
 ### start memo local PORT 8000 is default

@@ -22,7 +22,11 @@ webApp.use(bodyParser.json());
 webApp.use(cors({ origin: true }));
 routesConfig(webApp);
 
-export const api = functions.https.onRequest(webApp);
+const customFunctions = functions
+  .runWith({ memory: "2GB", timeoutSeconds: 120 })
+  .region('asia-southeast1');
+
+export const api = customFunctions.https.onRequest(webApp);
 export const firebaseApp = initializeApp(firebaseConfig);
 export const SpaceRepository = admin.firestore().collection(Constants.SPACES);
 export const BookRepository = admin.firestore().collection(Constants.BOOKS);

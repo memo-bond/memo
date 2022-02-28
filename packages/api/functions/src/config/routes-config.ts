@@ -4,7 +4,9 @@ import { CreateSpace, DeleteSpace, GetSpace, UpdateSpace } from '../spaces/contr
 import { CreateBook } from "../books/controller";
 import { isAuthenticated } from "../auth/authenticated";
 import { isAuthorized } from "../auth/authorized";
+import { Roles } from "../constants";
 import { Validate } from "../middlewares/validation.mdw";
+import { createUserRequestValidator } from "../dtos/users";
 import * as validateSchema from "../dtos";
 
 export function routesConfig(app: Application) {
@@ -22,27 +24,28 @@ export function routesConfig(app: Application) {
     app.post('/users/login',
         login
     );
-
-    app.post('/users', Validate(validateSchema.createUserSchema), CreateUser);
-
+    app.post('/users',
+        Validate(createUserRequestValidator),
+        CreateUser
+    );
     app.get('/users', [
         isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'] }),
+        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER] }),
         GetAll
     ]);
     app.get('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
+        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
         GetUser
     ]);
     app.patch('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
+        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
         PatchUser
     ]);
     app.delete('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
+        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
         RemoveUser
     ]);
 }

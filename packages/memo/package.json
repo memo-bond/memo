@@ -1,7 +1,6 @@
 {
-  "name": "@memo/memo",
-  "version": "1.0.0",
-  "private": true,
+  "name": "@memo-bond/memo",
+  "version": "1.0.28",
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
@@ -60,13 +59,13 @@
     "@ant-design/pro-layout": "^6.32.0",
     "@ant-design/pro-table": "^2.61.0",
     "@firebase/auth": "^0.19.8",
-    "@memo/common": "^1.0.0",
+    "@memo-bond/common": "^1.0.28",
     "@umijs/route-utils": "^2.0.0",
     "antd": "^4.17.0",
     "classnames": "^2.3.0",
     "firebase": "^9.6.6",
-    "firebaseui": "^6.0.0",
     "firebase-tools": "10.2.0",
+    "firebaseui": "^6.0.0",
     "lodash": "^4.17.0",
     "moment": "^2.29.0",
     "omit.js": "^2.0.2",
@@ -118,6 +117,13 @@
   "engines": {
     "node": ">=10.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/memo-bond/memo.git"
+  },
+  "publishConfig": {
+    "registry": "https://us-central1-npm.pkg.dev/memo-9b895/memo-bond/"
+  },
   "create-umi": {
     "ignoreScript": [
       "docker*",
@@ -149,5 +155,6 @@
   },
   "gitHooks": {
     "commit-msg": "fabric verify-commit"
-  }
+  },
+  "gitHead": "9b02e5b29ec0d11b306ad9aee7161df2f82a8b76"
 }

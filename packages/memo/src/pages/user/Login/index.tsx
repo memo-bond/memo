@@ -1,9 +1,9 @@
 import Footer from '@/components/Footer';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import { emailSignIn } from '@/services/auth/email-auth';
-import { googleSignIn } from '@/services/auth/google-auth';
+import { googleSignIn, githubSignIn } from '@/services/auth/auth-providers';
 import { debug } from '@/utils/log';
-import { GoogleOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
+import { GithubOutlined, GoogleOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { UserCredential } from '@firebase/auth';
 import { Alert, message, Tabs } from 'antd';
@@ -48,8 +48,19 @@ const Login: React.FC = () => {
     }
   };
 
-  const signInWithPopUp = async () => {
+  const googleSignInWithPopUp = async () => {
     const userCredential: UserCredential = await googleSignIn();
+    processCredentials(userCredential);
+  };
+
+  const githubSignInWithPopUp = async () => {
+    const userCredential: UserCredential = await githubSignIn();
+    processCredentials(userCredential);
+  };
+
+  const processCredentials = async(userCredential: UserCredential) => {
+    console.log(JSON.stringify(userCredential));
+    
     if (userCredential) {
       debug(`User Credential Info: ${JSON.stringify(userCredential)}`);
       setUserLoginState({
@@ -71,7 +82,7 @@ const Login: React.FC = () => {
       });
       message.error(defaultLoginFailureMessage);
     }
-  };
+  }
 
   const emailSignInSubmit = async (values: API.LoginParams) => {
     try {
@@ -127,7 +138,12 @@ const Login: React.FC = () => {
             />,
             <GoogleOutlined
               key="GoogleOutlined"
-              onClick={signInWithPopUp}
+              onClick={googleSignInWithPopUp}
+              className={styles.icon}
+            />,
+            <GithubOutlined
+              key="GithubOutlined"
+              onClick={githubSignInWithPopUp}
               className={styles.icon}
             />,
             <a key='register' style={{ float: 'right' }} href="/user/register">
