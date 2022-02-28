@@ -1,12 +1,14 @@
 import Ajv, { JSONSchemaType } from "ajv"
 
-export interface CreateBookDTO {
+export interface CreateGroupDTO {
     name: string,
     parentId?: string,
     tagNames?: Array<string>
 }
 
-const schema: JSONSchemaType<CreateBookDTO> = {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const schema: JSONSchemaType<CreateGroupDTO> = {
     type: "object",
     properties: {
         name: { type: "string"},
@@ -17,4 +19,4 @@ const schema: JSONSchemaType<CreateBookDTO> = {
     additionalProperties: false
 }
 
-export const createBookSchema = new Ajv().compile(schema)
+export const createGroupSchema = new Ajv().compile(schema)

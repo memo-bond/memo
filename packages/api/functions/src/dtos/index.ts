@@ -1,2 +1,2 @@
-export { CreateUserDTO, createUserSchema } from "./users";
-export { CreateBookDTO, createBookSchema } from "./books";
+export * from "./users";
+export * from "./groups";

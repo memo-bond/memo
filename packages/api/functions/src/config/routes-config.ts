@@ -1,17 +1,24 @@
 import { Application } from "express";
 import { login, CreateUser, GetAll, GetUser, PatchUser, RemoveUser } from "../users/controller";
 import { CreateSpace, DeleteSpace, GetSpace, UpdateSpace } from '../spaces/controller';
-import { CreateBook } from "../books/controller";
+import {CreateGroup, DeleteGroup, GetGroup, GetGroups, UpsertGroup} from "../groups/controller";
 import { isAuthenticated } from "../auth/authenticated";
 import { isAuthorized } from "../auth/authorized";
 import { Roles } from "../constants";
 import { Validate } from "../middlewares/validation.mdw";
-import { createUserRequestValidator } from "../dtos/users";
 import * as validateSchema from "../dtos";
 
 export function routesConfig(app: Application) {
 
-    app.post('/books', Validate(validateSchema.createBookSchema), CreateBook)
+    app.post('/groups', isAuthenticated, Validate(validateSchema.createGroupSchema), CreateGroup)
+
+    app.get('/groups', GetGroups)
+
+    app.get('/groups/:id', GetGroup)
+
+    app.put('/groups/:id', isAuthenticated, Validate(validateSchema.upsertGroupSchema), UpsertGroup)
+
+    app.delete('/groups/:id', isAuthenticated, DeleteGroup)
 
     app.post('/spaces', isAuthenticated, CreateSpace);
 
@@ -25,7 +32,7 @@ export function routesConfig(app: Application) {
         login
     );
     app.post('/users',
-        Validate(createUserRequestValidator),
+        Validate(validateSchema.createUserSchema),
         CreateUser
     );
     app.get('/users', [

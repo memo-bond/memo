@@ -1,6 +1,6 @@
 export abstract class Constants {
   static readonly SPACES: string = 'spaces';
-  static readonly BOOKS: string = 'books';
+  static readonly GROUPS: string = 'groups';
 }
 
 export abstract class Roles {
