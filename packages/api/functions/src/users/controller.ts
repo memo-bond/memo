@@ -3,24 +3,26 @@ import * as admin from 'firebase-admin';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { handleError } from "../utils";
 
-export const login = async (req: Request, res: Response) => {
-  console.log('Welcome changes and instance deploy');
+export const Login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const auth = getAuth();
   signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;
       const token = await user.getIdToken();
-      return res.status(200).send({ token });
+      return res.status(200).send({
+        uid: user.uid,
+        token
+      });
     }).catch((err: any) => {
       console.error(`ERROR while login ${err.message}}`);
       return handleError(res, err);
     });
 }
 
-
 export const CreateUser = async (req: Request, res: Response) => {
   try {
+    // todo : uid, username
     const { displayName, password, email, role } = req.body;
     if (!displayName || !password || !email || !role) {
       return res.status(400).send({ message: 'Missing fields' });
