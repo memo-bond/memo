@@ -28,6 +28,13 @@ export const CreateGroup = async (req: Request, res: Response) => {
         newGroup.parentId = findParentQuery.id;
     }
 
+    const groupHasNameWithUserId = await Repository.Group.where("ownerId", "==", uid)
+        .where("name", "==", createGroupDTO.name).get();
+
+    if (groupHasNameWithUserId.size > 0) {
+        return handleError(res, `you already created this group with name ${createGroupDTO.name}`);
+    }
+
     const result = await Repository.Group.add(newGroup);
     return handleSuccess(res, `group '${result.id}' is created`);
 }
