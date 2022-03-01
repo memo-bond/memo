@@ -2,8 +2,6 @@ import { Application } from "express";
 import { isAuthenticated } from "../auth/authenticated";
 import { isAuthorized } from "../auth/authorized";
 import { ROLES } from "../constants";
-import { CreateAuthenticatedUserValidator } from "../dtos/user-authenticated";
-import { createUserValidator } from "../dtos/users";
 import { Validate } from "../middlewares/validation.mdw";
 import { CreateSpace, DeleteSpace, GetSpace, InitDefaultSpace, UpdateSpace } from '../spaces/controller';
 import { CreateUser, GetAll, GetUser, Login, PatchUser, RemoveUser } from "../users/controller";
@@ -34,12 +32,12 @@ export const routesConfig = (app: Application) => {
         Login
     );
     app.post('/users',
-        Validate(createUserValidator),
+        Validate(validateSchema.createUserValidator),
         CreateUser
     );
     app.post('/authenticated-users',
         isAuthenticated,
-        Validate(CreateAuthenticatedUserValidator),
+        Validate(validateSchema.createAuthenticatedUserValidator),
         CreateAuthenticatedUser,
         InitDefaultSpace,
     );
