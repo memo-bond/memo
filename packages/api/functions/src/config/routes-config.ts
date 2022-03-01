@@ -1,15 +1,17 @@
 import { Application } from "express";
-import { login, CreateUser, GetAll, GetUser, PatchUser, RemoveUser } from "../users/controller";
-import { CreateSpace, DeleteSpace, GetSpace, UpdateSpace } from '../spaces/controller';
-import {CreateGroup, DeleteGroup, GetGroup, GetGroups, UpsertGroup} from "../groups/controller";
 import { isAuthenticated } from "../auth/authenticated";
 import { isAuthorized } from "../auth/authorized";
-import { Roles } from "../constants";
+import { ROLES } from "../constants";
+import { CreateAuthenticatedUserValidator } from "../dtos/user-authenticated";
+import { createUserValidator } from "../dtos/users";
 import { Validate } from "../middlewares/validation.mdw";
+import { CreateSpace, DeleteSpace, GetSpace, InitDefaultSpace, UpdateSpace } from '../spaces/controller';
+import { CreateUser, GetAll, GetUser, Login, PatchUser, RemoveUser } from "../users/controller";
+import {CreateGroup, DeleteGroup, GetGroup, GetGroups, UpsertGroup} from "../groups/controller";
+import { CreateAuthenticatedUser } from "../users/create-authenticated-user";
 import * as validateSchema from "../dtos";
 
-export function routesConfig(app: Application) {
-
+export const routesConfig = (app: Application) => {
     app.post('/groups', isAuthenticated, Validate(validateSchema.createGroupSchema), CreateGroup)
 
     app.get('/groups', GetGroups)
@@ -29,30 +31,36 @@ export function routesConfig(app: Application) {
     app.get('/spaces', isAuthenticated, GetSpace);
 
     app.post('/users/login',
-        login
+        Login
     );
     app.post('/users',
-        Validate(validateSchema.createUserSchema),
+        Validate(createUserValidator),
         CreateUser
+    );
+    app.post('/authenticated-users',
+        isAuthenticated,
+        Validate(CreateAuthenticatedUserValidator),
+        CreateAuthenticatedUser,
+        InitDefaultSpace,
     );
     app.get('/users', [
         isAuthenticated,
-        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER] }),
+        isAuthorized({ hasRole: [ROLES.ADMIN, ROLES.SUPER_ADMIN] }),
         GetAll
     ]);
     app.get('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
+        isAuthorized({ hasRole: [ROLES.ADMIN, ROLES.SUPER_ADMIN], allowSameUser: true }),
         GetUser
     ]);
     app.patch('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
+        isAuthorized({ hasRole: [ROLES.ADMIN, ROLES.SUPER_ADMIN], allowSameUser: true }),
         PatchUser
     ]);
     app.delete('/users/:id', [
         isAuthenticated,
-        isAuthorized({ hasRole: [ Roles.ADMIN, Roles.MANAGER], allowSameUser: true }),
+        isAuthorized({ hasRole: [ROLES.ADMIN, ROLES.SUPER_ADMIN], allowSameUser: true }),
         RemoveUser
     ]);
 }

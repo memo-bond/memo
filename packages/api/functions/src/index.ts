@@ -5,7 +5,7 @@ import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import { routesConfig } from './config/routes-config';
 import { initializeApp } from "firebase/app";
-import { Constants } from './constants';
+import { CONSTANTS } from './constants';
 import {GroupEntity} from "./entities/Group";
 import {BaseEntity} from "./entities/BaseEntity";
 
@@ -30,9 +30,12 @@ const customFunctions = functions
 
 export const api = customFunctions.https.onRequest(webApp);
 export const firebaseApp = initializeApp(firebaseConfig);
-export const SpaceRepository = admin.firestore().collection(Constants.SPACES);
-
 export const database = admin.firestore();
+
+// Repository
+export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
+export const UserRepository = admin.firestore().collection(CONSTANTS.USERS);
+
 database.settings({ ignoreUndefinedProperties: true })
 
 const converter = <T extends BaseEntity>() => ({
@@ -48,5 +51,5 @@ const dataPoint = <T>(collectionPath: string) => database.collection(collectionP
 
 export const Repository = {
   // list your collections here
-  Group: dataPoint<GroupEntity>(Constants.GROUPS)
+  Group: dataPoint<GroupEntity>(CONSTANTS.GROUPS)
 }

@@ -3,18 +3,18 @@ version: 2
 jobs:
   deploy-firebase:
     docker:
-      - image: cimg/node:16.14.0
+      - image: cimg/node:14.19.0
     steps:
       - checkout:
       - restore_cache:
           keys:
-            - v1-npm-deps-{{ checksum "packages/memo/yarn.lock" }}
+            - v1-npm-deps-{{ checksum "yarn.lock" }}
             - v1-npm-deps-
       - run:
           name: Resolve dependencies & Build & Deploy
           command: pwd && ls -lha && cd packages/memo && yarn && yarn build && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT"
       - save_cache:
-          key: v1-npm-deps-{{ checksum "packages/memo/yarn.lock" }}
+          key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
       # - run:
