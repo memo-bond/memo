@@ -22,7 +22,6 @@ export const Login = async (req: Request, res: Response) => {
 
 export const CreateUser = async (req: Request, res: Response) => {
   try {
-    // todo : uid, username
     const { displayName, password, email, role } = req.body;
     if (!displayName || !password || !email || !role) {
       return res.status(400).send({ message: 'Missing fields' });
@@ -32,10 +31,10 @@ export const CreateUser = async (req: Request, res: Response) => {
       password,
       email
     });
-    await admin.auth().setCustomUserClaims(userCredentials.uid, { role });
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
+        await admin.auth().setCustomUserClaims(userCredentials.uid, { role });
         const token = await userCredential.user.getIdToken();
         return res.status(201).send({
           uid: userCredentials.uid,
