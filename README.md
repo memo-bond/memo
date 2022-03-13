@@ -1,3 +1,41 @@
+## Setup Dev (MacOS)
+
+```
+
+      brew install nvm
+      nvm install v14.18.3
+      npm i -g yarn
+      
+```
+
+## At root directory of our project, run build yarn workspace
+
+```
+
+      yarn
+      
+```
+
+## Start FrontEnd - AntDesign Pro
+
+```
+
+      cd packages/memo
+      yarn
+      yarn start
+      
+```
+
+## Start Firebase Functions Emulator
+
+```
+
+      cd packages/api/functions
+      yarn
+      yarn serve
+
+```
+
 ## Tech stack
 
 - typescript ^4.5.5
