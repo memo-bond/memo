@@ -25,6 +25,8 @@
       yarn start
       
 ```
+==> http://localhost:8000
+
 
 ## Start Firebase Functions Emulator
 
@@ -35,6 +37,8 @@
       yarn serve
 
 ```
+
+==> http://localhost:5001/memo-9b895/asia-southeast1/api
 
 ## Tech stack
 
