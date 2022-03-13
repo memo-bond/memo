@@ -1,3 +1,13 @@
+## Setup Dev (MacOS)
+
+```
+
+      brew install nvm
+      nvm install v14.18.3
+      npm i -g yarn
+      
+```
+
 ## Tech stack
 
 - typescript ^4.5.5
