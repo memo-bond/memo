@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { database as db } from "..";
 import { CONSTANTS, ROLES } from "../constants";
-import { handleError} from "../utils";
+import { handleError } from "../utils";
 
 abstract class ERROR_MSG {
   static readonly OWNED: string = 'USERNAME_OWNED_BY_REQUESTER';

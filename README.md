@@ -1,3 +1,45 @@
+## Setup Dev (MacOS)
+
+```
+
+      brew install nvm
+      nvm install v14.18.3
+      npm i -g yarn
+      
+```
+
+## At root directory of our project, run build yarn workspace
+
+```
+
+      yarn
+      
+```
+
+## Start FrontEnd - AntDesign Pro
+
+```
+
+      cd packages/memo
+      yarn
+      yarn start
+      
+```
+==> http://localhost:8000
+
+
+## Start Firebase Functions Emulator
+
+```
+
+      cd packages/api/functions
+      yarn
+      yarn serve
+
+```
+
+==> http://localhost:5001/memo-9b895/asia-southeast1/api
+
 ## Tech stack
 
 - typescript ^4.5.5

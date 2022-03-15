@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Model } from '@memo-bond/common/dist/models/Entities';
+import { Model } from '@memo-bond/common/src/models/Entities';
 import { SpaceRepository, UserRepository } from '..';
 import { CONSTANTS } from '../constants';
 import { handleError, handleSuccess } from '../utils';
