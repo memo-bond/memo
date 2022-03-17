@@ -15,4 +15,4 @@ const userAuthenticatedSchema: JSONSchemaType<CreateUserAuthenticatedDTO> = {
   additionalProperties: false
 }
 
-export const CreateAuthenticatedUserValidator = new Ajv().compile(userAuthenticatedSchema)
+export const createAuthenticatedUserValidator = new Ajv().compile(userAuthenticatedSchema)

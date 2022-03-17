@@ -6,6 +6,8 @@ import * as bodyParser from 'body-parser';
 import { routesConfig } from './config/routes-config';
 import { initializeApp } from "firebase/app";
 import { CONSTANTS } from './constants';
+import {GroupEntity} from "./entities/Group";
+import {BaseEntity} from "./entities/BaseEntity";
 
 admin.initializeApp();
 
@@ -33,3 +35,21 @@ export const database = admin.firestore();
 // Repository
 export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
 export const UserRepository = admin.firestore().collection(CONSTANTS.USERS);
+
+database.settings({ ignoreUndefinedProperties: true })
+
+const converter = <T extends BaseEntity>() => ({
+  toFirestore: (data: Partial<T>) => data,
+  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) => {
+    const entity = snap.data() as T;
+    entity.id = snap.id;
+    return entity;
+  }
+})
+
+const dataPoint = <T>(collectionPath: string) => database.collection(collectionPath).withConverter(converter<T>())
+
+export const Repository = {
+  // list your collections here
+  Group: dataPoint<GroupEntity>(CONSTANTS.GROUPS)
+}

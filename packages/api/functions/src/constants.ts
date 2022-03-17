@@ -4,6 +4,7 @@ export abstract class CONSTANTS {
   // db collections
   static readonly SPACES: string = 'spaces';
   static readonly USERS: string = 'users';
+  static readonly GROUPS: string = 'groups';
 
   static readonly DEFAULT_SPACE = {
     PUBLIC: 'public',
