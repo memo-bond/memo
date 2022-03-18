@@ -8,6 +8,7 @@ import { initializeApp } from "firebase/app";
 import { CONSTANTS } from './constants';
 import {GroupEntity} from "./entities/Group";
 import {BaseEntity} from "./entities/BaseEntity";
+import {SpaceEntity} from "./entities/Space";
 
 admin.initializeApp();
 
@@ -33,8 +34,10 @@ export const firebaseApp = initializeApp(firebaseConfig);
 export const database = admin.firestore();
 
 // Repository
-export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
 export const UserRepository = admin.firestore().collection(CONSTANTS.USERS);
+export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
+export const MemoRepository = admin.firestore().collection(CONSTANTS.MEMOS);
+
 
 database.settings({ ignoreUndefinedProperties: true })
 
@@ -51,5 +54,6 @@ const dataPoint = <T>(collectionPath: string) => database.collection(collectionP
 
 export const Repository = {
   // list your collections here
-  Group: dataPoint<GroupEntity>(CONSTANTS.GROUPS)
+  Group: dataPoint<GroupEntity>(CONSTANTS.GROUPS),
+  Space: dataPoint<SpaceEntity>(CONSTANTS.SPACES),
 }

@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
-import {Repository} from "..";
-import {GroupEntity} from "../entities/Group";
-import {handleError, handleSuccess} from "../utils";
-import {CreateGroupDTO, GroupDTO, UpsertGroupDTO} from "../dtos";
+import {Repository} from "../../index";
+import {GroupEntity} from "../../entities/Group";
+import {handleError, handleSuccess} from "../../utils";
+import {CreateGroupDTO, GroupDTO, UpsertGroupDTO} from "../../dtos";
 
 
 export const CreateGroup = async (req: Request, res: Response) => {
