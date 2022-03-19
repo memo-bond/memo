@@ -15,7 +15,7 @@ export const Login = async (req: Request, res: Response) => {
         token
       });
     }).catch((err: any) => {
-      console.error(`ERROR while login ${err.message}}`);
+      console.error(`ERROR login ${err.message}}`);
       return handleError(res, err);
     });
 }
