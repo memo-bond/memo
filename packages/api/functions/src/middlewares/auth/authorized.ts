@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ROLES } from "../constants"
+import { ROLES } from "../../constants"
 
 export function hasRole(roles: Array<ROLES>) {
     return (req: Request, res: Response, next: NextFunction) => {

@@ -18,3 +18,7 @@ export abstract class ROLES {
   static readonly ADMIN: string = 'admin';
   static readonly USER: string = 'user';
 }
+
+export abstract class CONTENT {
+  static readonly DEFAULT_SPACE_MD = `Welcome to new Space`;
+}

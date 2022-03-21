@@ -1,17 +1,17 @@
 import { Application } from "express";
-import { isAuthenticated } from "../auth/authenticated";
-import { isAuthorized } from "../auth/authorized";
+import { isAuthenticated } from "../middlewares/auth/authenticated";
+import { isAuthorized } from "../middlewares/auth/authorized";
 import { ROLES } from "../constants";
 import { Validate } from "../middlewares/validation.mdw";
-import { CreateSpace, DeleteSpace, GetSpace, InitDefaultSpace, UpdateSpace } from '../spaces/controller';
-import { CreateUser, GetAll, GetUser, Login, PatchUser, RemoveUser } from "../users/controller";
-import {CreateGroup, DeleteGroup, GetGroup, GetGroups, UpsertGroup} from "../groups/controller";
-import { CreateAuthenticatedUser } from "../users/create-authenticated-user";
+import { CreateSpace, DeleteSpace, GetSpace, InitDefaultSpace, UpdateSpace } from '../controllers/spaces/controller';
+import { CreateUser, GetAll, GetUser, Login, PatchUser, RemoveUser } from "../controllers/users/controller";
+import { CreateGroup, DeleteGroup, GetGroup, GetGroups, UpsertGroup} from "../controllers/groups/controller";
+import { CreateAuthenticatedUser } from "../controllers/users/create-authenticated-user";
 import * as validateSchema from "../dtos";
-import { GetMemo, SaveMemo } from "../memos/controller";
+import { GetMemo, SaveMemo } from "../controllers/memos/controller";
 
 export const routesConfig = (app: Application) => {
-    app.post('/memos', SaveMemo)
+    app.post('/memos', isAuthenticated, SaveMemo)
 
     app.get('/memos/:id', GetMemo)
 
@@ -25,13 +25,15 @@ export const routesConfig = (app: Application) => {
 
     app.delete('/groups/:id', isAuthenticated, DeleteGroup)
 
-    app.post('/spaces', isAuthenticated, CreateSpace);
+    // Space
+    app.post('/spaces', isAuthenticated, Validate(validateSchema.createSpaceSchema), CreateSpace);
 
     app.delete('/spaces', isAuthenticated, DeleteSpace);
 
-    app.put('/spaces', isAuthenticated, UpdateSpace);
+    app.put('/spaces/:id', isAuthenticated, Validate(validateSchema.createSpaceSchema), UpdateSpace);
 
-    app.get('/spaces', isAuthenticated, GetSpace);
+    app.get('/spaces/:id', isAuthenticated, GetSpace);
+    // --------------------------------
 
     app.post('/users/login',
         Login

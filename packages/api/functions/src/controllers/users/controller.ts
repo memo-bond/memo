@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as admin from 'firebase-admin';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { handleError } from "../utils";
+import { handleError } from "../../utils";
 
 export const Login = async (req: Request, res: Response) => {
   const { email, password } = req.body;

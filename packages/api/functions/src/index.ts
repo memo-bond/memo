@@ -8,6 +8,7 @@ import { initializeApp } from "firebase/app";
 import { CONSTANTS } from './constants';
 import {GroupEntity} from "./entities/Group";
 import {BaseEntity} from "./entities/BaseEntity";
+import {SpaceEntity} from "./entities/Space";
 
 admin.initializeApp();
 
@@ -53,5 +54,6 @@ const dataPoint = <T>(collectionPath: string) => database.collection(collectionP
 
 export const Repository = {
   // list your collections here
-  Group: dataPoint<GroupEntity>(CONSTANTS.GROUPS)
+  Group: dataPoint<GroupEntity>(CONSTANTS.GROUPS),
+  Space: dataPoint<SpaceEntity>(CONSTANTS.SPACES),
 }
