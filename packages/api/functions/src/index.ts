@@ -33,8 +33,10 @@ export const firebaseApp = initializeApp(firebaseConfig);
 export const database = admin.firestore();
 
 // Repository
-export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
 export const UserRepository = admin.firestore().collection(CONSTANTS.USERS);
+export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
+export const MemoRepository = admin.firestore().collection(CONSTANTS.MEMOS);
+
 
 database.settings({ ignoreUndefinedProperties: true })
 

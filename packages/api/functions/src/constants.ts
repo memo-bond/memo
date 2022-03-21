@@ -2,9 +2,10 @@ export abstract class CONSTANTS {
   static readonly UNIQUE_USERNAME: string = 'unique_username';
 
   // db collections
-  static readonly SPACES: string = 'spaces';
   static readonly USERS: string = 'users';
+  static readonly SPACES: string = 'spaces';
   static readonly GROUPS: string = 'groups';
+  static readonly MEMOS: string = 'memos';
 
   static readonly DEFAULT_SPACE = {
     PUBLIC: 'public',
