@@ -1,11 +1,18 @@
-# `@memo-bond/common`
+## Release @memo-bond/common
 
-> TODO: description
-
-## Usage
+Authentication
 
 ```
-const common = require('@memo-bond/common');
+    gcloud auth login
+    
+    npx google-artifactregistry-auth
 
-// TODO: DEMONSTRATE API
+```
+
+Release to GCP private node registry - for version please follow semver.org, thanks
+
+```
+
+    yarn publish
+
 ```

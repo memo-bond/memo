@@ -50,8 +50,8 @@ export namespace Model {
   export interface Space extends Sharing {
     name: string;
     description: string;
-    md: string;
-    groups: Group[] | null;
+    md?: string;
+    groups?: Group[] | null;
   }
 
   export interface Group extends Sharing {

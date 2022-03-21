@@ -22,7 +22,7 @@
     },
     "main": "lib/index.js",
     "dependencies": {
-        "@memo-bond/common": "^1.0.28",
+        "@memo-bond/common": "1.1.1",
         "ajv": "^8.10.0",
         "body-parser": "1.19.2",
         "cors": "2.8.5",
