@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { database as db } from "../../index";
+import { database as db } from "../../repository";
 import { CONSTANTS, ROLES } from "../../constants";
 import { handleError } from "../../utils";
 

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { MemoRepository } from '../../index';
+import { MemoRepository } from '../../repository';
 import { handleError, handleSuccess } from '../../utils';
 
 export const SaveMemo = async (req: Request, res: Response) => {

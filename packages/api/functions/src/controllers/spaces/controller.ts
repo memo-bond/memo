@@ -1,11 +1,11 @@
 import {Request, Response} from 'express';
-import {Repository, SpaceRepository, UserRepository} from '../../index';
 import {CONSTANTS, CONTENT} from '../../constants';
 import {handleError, handleSuccess} from '../../utils';
 import {SpaceEntity} from "../../entities/Space";
 import {CreateSpaceDTO} from "../../dtos";
 import {firestore} from "firebase-admin";
 import DocumentReference = firestore.DocumentReference;
+import { Repository, SpaceRepository, UserRepository } from '../../repository';
 
 export const CreateSpace = async (req: Request, res: Response) => {
     console.log(`Create Space res.locals ${JSON.stringify(res.locals)}`);

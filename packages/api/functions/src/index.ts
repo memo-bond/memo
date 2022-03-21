@@ -1,18 +1,11 @@
-import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as express from 'express';
-import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
-import { routesConfig } from './config/routes-config';
+import * as cors from 'cors';
+import * as express from 'express';
+import * as functions from 'firebase-functions';
 import { initializeApp } from "firebase/app";
-import { CONSTANTS } from './constants';
-import {GroupEntity} from "./entities/Group";
-import {BaseEntity} from "./entities/BaseEntity";
-import {SpaceEntity} from "./entities/Space";
-
-admin.initializeApp();
-
-const firebaseConfig = {
+import { routesConfig } from './config/routes-config';
+export const firebaseConfig = {
   apiKey: "AIzaSyD3IzAH-FOh3_SDOBecJZtv4LRjwHfvc0s",
   authDomain: "memo-9b895.firebaseapp.com",
   projectId: "memo-9b895",
@@ -20,6 +13,9 @@ const firebaseConfig = {
   messagingSenderId: "701798161487",
   appId: "1:701798161487:web:48dd766a316c63911bde3a"
 };
+initializeApp(firebaseConfig);
+admin.initializeApp();
+
 export const webApp = express();
 webApp.use(bodyParser.json());
 webApp.use(cors({ origin: true }));
@@ -30,30 +26,3 @@ const customFunctions = functions
   .region('asia-southeast1');
 
 export const api = customFunctions.https.onRequest(webApp);
-export const firebaseApp = initializeApp(firebaseConfig);
-export const database = admin.firestore();
-
-// Repository
-export const UserRepository = admin.firestore().collection(CONSTANTS.USERS);
-export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
-export const MemoRepository = admin.firestore().collection(CONSTANTS.MEMOS);
-
-
-database.settings({ ignoreUndefinedProperties: true })
-
-const converter = <T extends BaseEntity>() => ({
-  toFirestore: (data: Partial<T>) => data,
-  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) => {
-    const entity = snap.data() as T;
-    entity.id = snap.id;
-    return entity;
-  }
-})
-
-const dataPoint = <T>(collectionPath: string) => database.collection(collectionPath).withConverter(converter<T>())
-
-export const Repository = {
-  // list your collections here
-  Group: dataPoint<GroupEntity>(CONSTANTS.GROUPS),
-  Space: dataPoint<SpaceEntity>(CONSTANTS.SPACES),
-}

@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
-import {Repository} from "../../index";
 import {GroupEntity} from "../../entities/Group";
 import {handleError, handleSuccess} from "../../utils";
 import {CreateGroupDTO, GroupDTO, UpsertGroupDTO} from "../../dtos";
+import { Repository } from "../../repository";
 
 
 export const CreateGroup = async (req: Request, res: Response) => {
@@ -17,7 +17,6 @@ export const CreateGroup = async (req: Request, res: Response) => {
     }
 
     if (createGroupDTO.parentId) {
-
         const parentGroup = await Repository.Group.doc(createGroupDTO.parentId).get();
         if (!parentGroup.exists) {
             return handleError(res, "parentId not exist");
