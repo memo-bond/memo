@@ -8,8 +8,13 @@ import { CreateUser, GetAll, GetUser, Login, PatchUser, RemoveUser } from "../us
 import {CreateGroup, DeleteGroup, GetGroup, GetGroups, UpsertGroup} from "../groups/controller";
 import { CreateAuthenticatedUser } from "../users/create-authenticated-user";
 import * as validateSchema from "../dtos";
+import { GetMemo, SaveMemo } from "../memos/controller";
 
 export const routesConfig = (app: Application) => {
+    app.post('/memos', SaveMemo)
+
+    app.get('/memos/:id', GetMemo)
+
     app.post('/groups', isAuthenticated, Validate(validateSchema.createGroupSchema), CreateGroup)
 
     app.get('/groups', GetGroups)
