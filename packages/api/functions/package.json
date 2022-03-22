@@ -8,28 +8,29 @@
         "shell": "yarn run build && firebase functions:shell",
         "start": "yarn run shell",
         "deploy": "firebase deploy --only functions",
-        "logs": "firebase functions:log"
+        "logs": "firebase functions:log",
+        "artifactregistry-login": "npx google-artifactregistry-auth"
     },
     "repository": {
         "type": "git",
         "url": "git+ssh://git@github.com/memo-bond/memo.git"
     },
     "publishConfig": {
-        "registry": "https://us-central1-npm.pkg.dev/memo-9b895/memo-bond/"
+        "private": true
     },
     "engines": {
         "node": "14"
     },
     "main": "lib/index.js",
     "dependencies": {
-        "@memo-bond/common": "1.1.1",
+        "@memo-bond/common": "1.1.2",
         "ajv": "^8.10.0",
         "body-parser": "1.19.2",
         "cors": "2.8.5",
         "express": "4.17.3",
         "firebase": "^9.6.7",
         "firebase-admin": "10.0.2",
-        "firebase-functions": "3.18.1"
+        "firebase-functions": "3.19.0"
     },
     "devDependencies": {
         "@types/express": "4.17.13",
