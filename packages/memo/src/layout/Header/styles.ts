@@ -30,7 +30,7 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       '&:hover': {
         backgroundColor: '#FFF',
       },
-      '& .MomoPortal-MuiButton-label': {
+      '& .Memo-MuiButton-label': {
         letterSpacing: '1.25px',
       },
     },
