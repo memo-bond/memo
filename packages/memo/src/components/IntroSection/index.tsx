@@ -8,15 +8,15 @@ import {
 import { useHistory } from 'react-router-dom';
 import useStyles from './styles';
 
-const BannerSection = () => {
+const IntroSection = () => {
   const css = useStyles();
 
   return (
     <Box className={css.root}>
-    <a>BannerSection</a>
+    <a>IntroSection</a>
     </Box>
   );
 };
 
 
-export default BannerSection;
+export default IntroSection;

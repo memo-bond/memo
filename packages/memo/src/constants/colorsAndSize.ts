@@ -51,7 +51,7 @@ export const green09 = '#d9f7be';
 
 export const red05 = '#f5222d';
 
-export const momoCheckbox = '#52c41a';
+export const memoCheckbox = '#52c41a';
 
 export const dartmouthGreenColor = '#e8e8e8';
 export const blueLink = '#0060a5';

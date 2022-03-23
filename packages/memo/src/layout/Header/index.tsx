@@ -13,8 +13,10 @@ import {
   // Popover,
 } from '@mui/material';
 
+import logo from 'assets/images/logo.svg';
 import { useHistory } from 'react-router-dom';
 import useStyles from './styles';
+
 
 export function ListItemLink(props: ListItemProps<'a', { button?: true }>) {
   return <ListItem button component="a" {...props} />;
@@ -29,7 +31,7 @@ const Header = () => {
         <Grid container className={css.header}>
           <Grid item className={css.logoContainer}>
             <Link aria-label="homepage" className={css.logoLink}>
-              {/* <img src={logo} alt="logo" className={css.logo} /> */}
+              <img src={logo} alt="logo" className={css.logo} />
             </Link>
             <Typography component="h3" className={css.forMemoTxt}>
               Memo

@@ -5,6 +5,8 @@ import Footer from 'layout/Footer';
 import Header from 'layout/Header';
 import React, { memo } from 'react';
 import useStyles from './styles';
+import logo from 'assets/images/logo.svg';
+
 
 // import Header from 'pages/Home/Header';
 // import Footer from 'pages/Home/Header';
