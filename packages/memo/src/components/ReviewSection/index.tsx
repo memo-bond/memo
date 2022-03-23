@@ -8,15 +8,15 @@ import {
 import { useHistory } from 'react-router-dom';
 import useStyles from './styles';
 
-const Footer = () => {
-  const classes = useStyles();
+const BannerSection = () => {
+  const css = useStyles();
 
   return (
-    <Box>
-    <a>Footer</a>
+    <Box className={css.root}>
+    <a>BannerSection</a>
     </Box>
   );
 };
 
 
-export default Footer;
+export default BannerSection;
