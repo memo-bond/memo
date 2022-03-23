@@ -9,6 +9,7 @@ firebase-debug.*.log*
 
 packages/*/yarn.lock
 packages/api/*/yarn.lock
+packages/.DS_Store
 
 # Firebase cache
 .firebase/
