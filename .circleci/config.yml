@@ -12,7 +12,7 @@ jobs:
             - v1-npm-deps-
       - run:
           name: Resolve dependencies & Build & Deploy
-          command: yarn install && cd packages/memo && yarn install && yarn build && ls -lha node_modules/.bin | grep firebase  && cd ../.. && ./node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
+          command: yarn && cd packages/memo && yarn && yarn build && ../../node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
       - save_cache:
           key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
