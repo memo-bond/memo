@@ -27,7 +27,7 @@ jobs:
           command: npm install --prefix=./firebase-deploy firebase-tools
       - run:
           name:  Deploy
-          command:  ./node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
+          command:  ./firebase-deploy/node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
       # - run:
       #     name: Build
       #     command: yarn build
