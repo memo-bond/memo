@@ -15,7 +15,8 @@ jobs:
           command: yarn && cd packages/memo && yarn
       - save_cache:
           key: v1-npm-deps-{{ checksum "yarn.lock" }}
-          path: ./node_modules
+          paths:
+            - ./node_modules
   build:
     docker: 
       - image: cimg/node:14.19.0
