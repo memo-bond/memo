@@ -24,10 +24,10 @@ jobs:
       - checkout:
       - run:
           name: Install Firebase Tools
-          command: npm install --prefix=./firebase-deploy firebase-tools 
+          command: npm install --prefix=./packages firebase-tools 
       - run:
           name:  Deploy
-          command:  pwd && ls && ls firebase-deploy/node_modules && ./firebase-deploy/node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
+          command:  cd packages/memo && ../../firebase-deploy/node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
       # - run:
       #     name: Build
       #     command: yarn build
