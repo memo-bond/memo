@@ -17,6 +17,12 @@ jobs:
           key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
+      - run:
+          name: Install Firebase Tools
+          command: npm install --prefix=./firebase-deploy firebase-tools 
+      - run:
+          name:  Deploy
+          command:  cd packages/memo && pwd && ls ../../ && ../../firebase-deploy/node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
   deploy-firebase:
     docker: 
       - image: cimg/node:14.19.0
@@ -39,11 +45,6 @@ workflows:
   build-deploy:
     jobs:
       - build:
-          filters:
-            branches:
-              only:
-                - infra/setup-cicd-memo-ui-fe-sangle
-      - deploy-firebase:
           filters:
             branches:
               only:
