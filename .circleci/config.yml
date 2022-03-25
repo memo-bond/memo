@@ -11,7 +11,7 @@ jobs:
             - v1-npm-deps-{{ checksum "yarn.lock" }}
             - v1-npm-deps-
       - run:
-          name: Resolve dependencies
+          name: Resolve dependencies and Buil
           command: yarn && cd packages/memo && yarn && yarn build
       - save_cache:
           key: v1-npm-deps-{{ checksum "yarn.lock" }}
@@ -22,6 +22,9 @@ jobs:
       - image: cimg/node:14.19.0
     steps:
       - checkout:
+      - run:
+          name: Install Firebase Tools
+          command: npm install --prefix=./firebase-deploy firebase-tools
       - run:
           name:  Deploy
           command:  ../../node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
