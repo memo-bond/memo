@@ -25,6 +25,8 @@ jobs:
           name: Resolve dependencies & Build
           command: cd packages/memo && yarn build
   deploy-firebase:
+    docker: 
+      - image: cimg/node:14.19.0
     steps:
       - checkout:
       - run:
