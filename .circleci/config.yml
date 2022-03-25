@@ -1,7 +1,7 @@
 # CircleCI Firebase Deployment Config
 version: 2
 jobs:
-  resolve-dependencies:
+  build:
     docker:
       - image: cimg/node:14.19.0
     steps:
@@ -12,19 +12,11 @@ jobs:
             - v1-npm-deps-
       - run:
           name: Resolve dependencies
-          command: yarn && cd packages/memo && yarn
+          command: yarn && cd packages/memo && yarn && yarn build
       - save_cache:
           key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
-  build:
-    docker: 
-      - image: cimg/node:14.19.0
-    steps:
-      - checkout:
-      - run:
-          name: Resolve dependencies & Build
-          command: cd packages/memo && yarn build
   deploy-firebase:
     docker: 
       - image: cimg/node:14.19.0
@@ -43,11 +35,6 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - resolve-dependencies:
-          filters:
-            branches:
-              only:
-                - infra/setup-cicd-memo-ui-fe-sangle
       - build:
           filters:
             branches:
