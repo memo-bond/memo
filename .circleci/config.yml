@@ -24,7 +24,7 @@ jobs:
       - checkout:
       - run:
           name: Install Firebase Tools
-          command: npm install --prefix=./firebase-deploy firebase-tools && pwd && ls
+          command: npm install --prefix=./firebase-deploy firebase-tools && pwd && ls && ls firebase-deploy 
       - run:
           name:  Deploy
           command:  ./firebase-deploy/node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
