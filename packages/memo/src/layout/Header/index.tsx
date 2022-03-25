@@ -62,6 +62,11 @@ const Header = () => {
               </Grid>
             </Hidden>
             <Hidden smDown>
+            <Box display="flex" alignItems="center">
+                <Button className={css.signup} variant="text" size="small">
+                  Sign up
+                </Button>
+              </Box>
               <Box display="flex" alignItems="center">
                 <Button className={css.codingBtn} variant="text" size="small">
                   Start Coding

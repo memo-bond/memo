@@ -42,6 +42,9 @@ const styles = ({ spacing, breakpoints }: Theme) =>
     },
     navLink: {
       alignItems: "center",
+      "&:focus": {
+        boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
+      },
     },
     btn: {
       backgroundColor: "#FFF",
@@ -93,9 +96,12 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       alignItems: "flex-end",
     },
     signup: {
-      backgroundColor: "white",
+      border : '1px solid',
+      borderColor : colorPrimary,
+      marginRight : '1rem',
       alignSelf: "center",
-      color: colorPrimary,
+      color: white01,
+      padding: '0 20px',
       marginLeft: "40px",
       ".MuiButton-root:hover": {
         backgroundColor: "white",
@@ -135,6 +141,9 @@ const styles = ({ spacing, breakpoints }: Theme) =>
 
       "&:hover": {
         textDecoration: "underline",
+      },
+      "&:focus": {
+        color : white01,
       },
     },
     divVer: {
