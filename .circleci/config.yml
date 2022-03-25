@@ -4,6 +4,7 @@ jobs:
   build:
     docker:
       - image: cimg/node:14.19.0
+    working-directory: ./packages/memo
     steps:
       - checkout:
       - restore_cache:
