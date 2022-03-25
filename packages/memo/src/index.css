@@ -1,13 +1,83 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("assets/fonts/SFProText-Bold.woff2") format("woff2"), url("assets/fonts/SFProText-Bold.woff") format("woff"),
+    url("assets/fonts/SFProText-Bold.ttf") format("truetype"),
+    url("assets/fonts/SFProText-Bold.svg#SFProText-Bold") format("svg");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("assets/fonts/SFProText-Semibold.woff2") format("woff2"),
+    url("assets/fonts/SFProText-Semibold.woff") format("woff"),
+    url("assets/fonts/SFProText-Semibold.ttf") format("truetype"),
+    url("assets/fonts/SFProText-Semibold.svg#SFProText-Semibold") format("svg");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("assets/fonts/SFProText-Medium.woff2") format("woff2"),
+    url("assets/fonts/SFProText-Medium.woff") format("woff"),
+    url("assets/fonts/SFProText-Medium.ttf") format("truetype"),
+    url("assets/fonts/SFProText-Medium.svg#SFProText-Medium") format("svg");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("assets/fonts/SFProText-Regular.woff2") format("woff2"),
+    url("assets/fonts/SFProText-Regular.woff") format("woff"),
+    url("assets/fonts/SFProText-Regular.ttf") format("truetype"),
+    url("assets/fonts/SFProText-Regular.svg#SFProText-Regular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: "none";
+  margin: 0;
+}
+
+body {
+  font-size: 14px;
+}
+
+img {
+  max-width: 100%;
+}
+.Mui-disabled {
+  background-color: #f7f7f7;
+}
+*:focus-visible {
+  outline: none;
+}
+a {
+  color: #1890ff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.MomoPortal-MuiDataGrid-root .MuiDataGrid-columnHeader {
+  background: #f0f0f0;
+  font-weight: bold;
 }
