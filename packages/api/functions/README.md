@@ -1,5 +1,11 @@
 Auto Reload Dev ENV
 ```
-    npm i
-    npm run serve
+    yarn
+    yarn serve
+```
+
+Test
+
+```
+    yarn test
 ```
