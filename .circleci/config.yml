@@ -1,7 +1,7 @@
 # CircleCI Firebase Deployment Config
 version: 2
 jobs:
-  deploy-firebase:
+  resolve-dependencies:
     docker:
       - image: cimg/node:14.19.0
     steps:
@@ -11,12 +11,25 @@ jobs:
             - v1-npm-deps-{{ checksum "yarn.lock" }}
             - v1-npm-deps-
       - run:
-          name: Resolve dependencies & Build & Deploy
-          command: yarn && cd packages/memo && yarn && yarn build && ../../node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
+          name: Resolve dependencies
+          command: yarn && cd packages/memo && yarn
       - save_cache:
           key: v1-npm-deps-{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
+          path: ./node_modules
+  build:
+    docker: 
+      - image: cimg/node:14.19.0
+    steps:
+      - checkout:
+      - run:
+          name: Resolve dependencies & Build
+          command: cd packages/memo && yarn build
+  deploy-firebase:
+    steps:
+      - checkout:
+      - run:
+          name:  Deploy
+          command:  ../../node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
       # - run:
       #     name: Build
       #     command: yarn build
@@ -27,8 +40,18 @@ workflows:
   version: 2
   build-deploy:
     jobs:
+      - resolve-dependencies:
+          filters:
+            branches:
+              only:
+                - infra/setup-cicd-memo-ui-fe-sangle
+      - build:
+          filters:
+            branches:
+              only:
+                - infra/setup-cicd-memo-ui-fe-sangle
       - deploy-firebase:
           filters:
             branches:
               only:
-                - master
+                - infra/setup-cicd-memo-ui-fe-sangle
