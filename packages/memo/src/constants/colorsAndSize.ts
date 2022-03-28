@@ -22,6 +22,7 @@ export const pink09 = '#ffd6e7';
 export const orange05 = '#fa8c16';
 export const sepia09 = '#ffd8bf';
 export const black01 = white01;
+export const blue01 = '#2D2E45';
 export const black02 = '#f9f9f9';
 export const black03 = '#f0f0f0';
 export const black05 = '#e5e5e5';
