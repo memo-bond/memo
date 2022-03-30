@@ -5,12 +5,10 @@ import {
 
 import logo from 'assets/images/logo.svg';
 import memo from 'assets/images/memo.png';
-import facebookIcon from 'assets/images/facebook.png';
+import dribbbleIcon from 'assets/images/dribbble.png';
 import instagramIcon from 'assets/images/instagram.png';
 import twitterIcon from 'assets/images/twitter.png';
 import youtubeIcon from 'assets/images/youtube.png';
-import githubIcon from 'assets/images/github.png';
-import gmailIcon from 'assets/images/gmail.png';
 import useStyles from './styles';
 
 const Footer = () => {
@@ -48,7 +46,7 @@ const Footer = () => {
           <Grid container xs={4} className={css.footerContainerRight}>
             <Grid display="flex" item className={css.navRight}>
               <Link>
-                <img src={facebookIcon} alt="facebookIcon" className={css.iconContact} />
+                <img src={dribbbleIcon} alt="dribbbleIcon" className={css.iconContact} />
               </Link>
               <Link>
                 <img src={instagramIcon} alt="instagramIcon" className={css.iconContact} />
@@ -63,7 +61,7 @@ const Footer = () => {
 
             <Grid item display="flex" justifyContent="flex-end" >
               <Typography component="h5" className={css.normalTxt}>
-                Terms and Conditions
+                Terms $ Conditions
               </Typography>
 
               <Typography component="h5" className={css.normalTxt}>

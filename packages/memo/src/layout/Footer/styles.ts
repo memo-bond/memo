@@ -68,7 +68,6 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       fontWeight: 'bold',
       color: '#FFF',
       marginTop: '-2px',
-      fontFamily: 'Inter',
       marginLeft: spacing(2),
       [breakpoints.down('sm')]: {
         fontSize: '16px',
@@ -85,15 +84,18 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'flex-end',
+      justifyItems: 'space-between',
+
     },
 
     normalTxt: {
       color: '#8F90A6',
       fontSize: '14px',
-      fontFamily: 'Inter',
       letterSpacing: '-0.03px',
       lineHeight: '17px',
-      marginLeft: spacing(2),
+      // marginLeft: spacing(2),
+      marginRight: spacing(4),
+
       marginBottom: '22px',
       marginTop: '30px',
       textAlign: 'left',
@@ -105,22 +107,18 @@ const styles = ({ spacing, breakpoints }: Theme) =>
     },
 
     iconContact: {
-      width: 25,
-      height: 25,
-      marginRight: spacing(2),
+      width: '18px',
+      height: '18px',
+      marginRight: spacing(4),
       [breakpoints.down('sm')]: {
-        width: 15,
-        height: 15,
+        width: '14px',
+        height: '14px',
       },
     },
 
     logoMemo: {
-      width: "60px",
-      height: "60px",
-      [breakpoints.up("md")]: {
-        width: "75px",
-        height: "75px",
-      },
+      width: "55px",
+      height: "55px",
       [breakpoints.down('sm')]: {
         width: "36px",
         height: "36px",
