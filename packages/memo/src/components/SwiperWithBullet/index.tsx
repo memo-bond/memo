@@ -34,10 +34,11 @@ const SwiperWithBullet = ({data}) => {
               }}
               navigation={true} slidesPerView={1} centeredSlides={true} pagination={pagination}>
                 {data.map((item, index) => (
-                  <SwiperSlide className="custom-swiper">
-                    <Grid container direction="row" style={{maxWidth: "80%", margin: "auto"}}>
-                        <div className="swiper-header" style={{marginBottom: 5, width: "100%"}}>Test Header</div>
-                        <div className="swiper-description" style={{color: "#727272", fontSize: "14px", lineHeight: "15px", width: "433px", margin: "auto"}}>Test content</div>
+                  <SwiperSlide className="swiper-with-bullet">
+                    <Grid container direction="row" style={{maxWidth: "80%", margin: "auto", minHeight: "135px"}}>
+                        <div className="swiper-header" style={{marginBottom: 5, width: "100%", textAlign: "center"}}>“My team can finish our Project with light speeds. Very flexible and easy to maintain!”</div>
+                        <div className="swiper-description" style={{color: "#727272", fontSize: "14px", lineHeight: "15px", margin: "auto", textAlign: "center", width: "100%"}}>Lam Le</div>
+                        <div className="swiper-description" style={{color: "#727272", fontSize: "14px", lineHeight: "15px", margin: "auto", textAlign: "center", width: "100%", paddingBottom: "20px"}}>Founder</div>
                         {/* <img src={item.image} /> */}
                     </Grid>
                   </SwiperSlide>

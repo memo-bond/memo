@@ -22,6 +22,15 @@ export const paymentCodeFormat = [
   {
     image: memo,
   },
+  {
+    image: memo,
+  },
+  {
+    image: memo,
+  },
+  {
+    image: memo,
+  }
 ];
 
 const ReviewSection = () => {

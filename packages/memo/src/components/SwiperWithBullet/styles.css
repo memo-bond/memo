@@ -21,12 +21,13 @@
   }
 
 .swiper-with-bullet-container .swiper-pagination-bullet-active {
-    background: rgb(216, 45, 139);
+    background: rgb(172, 93, 217);
 }
 
 .swiper-header {
     font-weight: bold;
     font-size: 16px;
+    color: white;
 }
 
 @media (max-width: 960px) {
