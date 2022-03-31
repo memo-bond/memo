@@ -29,8 +29,8 @@ const BannerSection = () => {
 
   return (
     <Box className={css.root}>
-    <Grid item md={6} xs={12} lg={12} style={{ display: "flex" }} alignItems="center" justifyContent="center">
-      <CustomSwiper data={paymentCodeFormat} />
+    <Grid item md={6} xs={12} lg={12} style={{ display: "flex", maxWidth: "1256px", margin: "auto", backgroundColor: "#000000", borderRadius: "16px" }} alignItems="center" justifyContent="center">
+      <CustomSwiper data={paymentCodeFormat}/>
     </Grid>
     </Box>
   );

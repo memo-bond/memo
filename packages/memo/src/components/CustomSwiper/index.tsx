@@ -35,9 +35,9 @@ const CustomSwiper = ({data}) => {
               navigation={true} slidesPerView={1} centeredSlides={true} pagination={pagination}>
                 {data.map((item, index) => (
                   <SwiperSlide className="custom-swiper">
-                    <Grid container direction="row" style={{ marginTop: 24 }}>
-                        <div className="swiper-header" style={{marginBottom: 5, width: "100%"}}>{item.header}</div>
-                        <div className="swiper-description" style={{color: "#727272", fontSize: "14px", lineHeight: "15px", width: "433px", margin: "auto"}}>{item.description}</div>
+                    <Grid container direction="row" style={{maxWidth: "80%", margin: "auto"}}>
+                        {/* <div className="swiper-header" style={{marginBottom: 5, width: "100%"}}>{item.header}</div> */}
+                        {/* <div className="swiper-description" style={{color: "#727272", fontSize: "14px", lineHeight: "15px", width: "433px", margin: "auto"}}>{item.description}</div> */}
                         <img src={item.image} />
                     </Grid>
                   </SwiperSlide>

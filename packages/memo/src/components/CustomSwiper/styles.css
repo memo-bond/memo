@@ -8,14 +8,34 @@
     transition: opacity .5s ease-in-out;
 }
 
-.custom-swiper img {
-    margin-top: -80px;
+.custom-swiper-container .swiper-pagination-bullet {
+    display: none;
 }
 
-.custom-swiper-container .swiper-pagination-bullet {
-    height: 8px;
-    width: 24px;
-    border-radius: 20%;
+.swiper-button-prev {
+    background-image: url("assets/images/previous.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    width: 40px!important;
+    background-position: center;
+    left: 30px!important;
+  }
+  
+.swiper-button-prev::after {
+   display: none;
+}
+
+.swiper-button-next {
+    background-image: url("assets/images/next.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    width: 40px!important;
+    background-position: center;
+    right: 30px!important;
+  }
+  
+.swiper-button-next::after {
+   display: none;
 }
 
 .custom-swiper-container .swiper-pagination-bullet-active {
