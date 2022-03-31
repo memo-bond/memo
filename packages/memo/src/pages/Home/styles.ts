@@ -6,7 +6,7 @@ const styles = ({ breakpoints }: Theme) =>
     homeRoot: {
       overflowX: 'hidden',
       overflowY: 'hidden',
-      backgroundColor: 'white',
+      backgroundColor: '#28293D',
       paddingTop: '68px',
       [breakpoints.down('sm')]: {
         paddingTop: '52px',

@@ -56,7 +56,7 @@ const Header = () => {
             </Box>
           </Grid>
           <Grid item className={css.navRight}>
-            <Hidden mdUp>
+            <Hidden lgUp>
               <Grid item xs={2} md={8} className={css.burgerBtn}>
                 {/* <Menu Mobile /> */}
               </Grid>
