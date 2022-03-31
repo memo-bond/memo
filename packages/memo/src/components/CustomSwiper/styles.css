@@ -12,7 +12,7 @@
     display: none;
 }
 
-.swiper-button-prev {
+.custom-swiper-container .swiper-button-prev {
     background-image: url("assets/images/previous.png");
     background-repeat: no-repeat;
     background-size: 100% auto;
@@ -21,11 +21,11 @@
     left: 30px!important;
   }
   
-.swiper-button-prev::after {
+.custom-swiper-container .swiper-button-prev::after {
    display: none;
 }
 
-.swiper-button-next {
+.custom-swiper-container .swiper-button-next {
     background-image: url("assets/images/next.png");
     background-repeat: no-repeat;
     background-size: 100% auto;
@@ -34,7 +34,7 @@
     right: 30px!important;
   }
   
-.swiper-button-next::after {
+.custom-swiper-container .swiper-button-next::after {
    display: none;
 }
 

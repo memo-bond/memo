@@ -170,6 +170,6 @@ const styles = ({ spacing, breakpoints }: Theme) =>
   });
 const useStyles = makeStyles(styles, {
   index: 1,
-  classNamePrefix: "HeaderLanding",
+  classNamePrefix: "BannerSection",
 });
 export default useStyles;
