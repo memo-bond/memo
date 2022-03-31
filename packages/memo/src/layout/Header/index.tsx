@@ -39,21 +39,35 @@ const Header = () => {
                 Memo
               </Typography>
             </Grid>
-            <Box className={css.navLink} display = "flex" sx={{ flexGrow: 1, ml: "2rem" }}>
-              <Button className={css.navBtn} variant="text" size="small">
-                Product
-              </Button>
-            </Box>
-            <Box className={css.navLink} display = "flex" sx={{ flexGrow: 1, ml: "2rem" }}>
-              <Button className={css.navBtn} variant="text" size="small">
-                Update
-              </Button>
-            </Box>
-            <Box className={css.navLink} display = "flex" sx={{ flexGrow: 1, ml: "2rem" }}>
-              <Button className={css.navBtn} variant="text" size="small">
-                Pricing
-              </Button>
-            </Box>
+            <Hidden mdDown>
+              <Box
+                className={css.navLink}
+                display="flex"
+                sx={{ flexGrow: 1, ml: "2rem" }}
+              >
+                <Button className={css.navBtn} variant="text" size="small">
+                  Product
+                </Button>
+              </Box>
+              <Box
+                className={css.navLink}
+                display="flex"
+                sx={{ flexGrow: 1, ml: "2rem" }}
+              >
+                <Button className={css.navBtn} variant="text" size="small">
+                  Update
+                </Button>
+              </Box>
+              <Box
+                className={css.navLink}
+                display="flex"
+                sx={{ flexGrow: 1, ml: "2rem" }}
+              >
+                <Button className={css.navBtn} variant="text" size="small">
+                  Pricing
+                </Button>
+              </Box>
+            </Hidden>
           </Grid>
           <Grid item className={css.navRight}>
             <Hidden mdUp>
@@ -62,7 +76,7 @@ const Header = () => {
               </Grid>
             </Hidden>
             <Hidden smDown>
-            <Box display="flex" alignItems="center">
+              <Box display="flex" alignItems="center">
                 <Button className={css.signup} variant="text" size="small">
                   Sign up
                 </Button>
