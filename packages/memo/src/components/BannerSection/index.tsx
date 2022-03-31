@@ -1,19 +1,37 @@
 import React from 'react';
 import {
-  Box
+  Link, Box, Grid
+} from '@mui/material';
+
+import {
+  
   // IconButton,
   // Popover,
 } from '@mui/material';
 
+import CustomSwiper from "../../../src/components/CustomSwiper";
 import { useHistory } from 'react-router-dom';
+import bannerImage from 'assets/images/banner.png';
 import useStyles from './styles';
+import memo from 'assets/images/banner.png';
+
+export const paymentCodeFormat = [
+  {
+    image: memo,
+  },
+  {
+    image: memo,
+  },
+];
 
 const BannerSection = () => {
   const css = useStyles();
 
   return (
     <Box className={css.root}>
-    <a>BannerSection</a>
+    <Grid item md={6} xs={12} lg={12} style={{ display: "flex" }} alignItems="center" justifyContent="center">
+      <CustomSwiper data={paymentCodeFormat} />
+    </Grid>
     </Box>
   );
 };

@@ -1,0 +1,34 @@
+.swiper-slide-prev.custom-swiper img, .swiper-slide-prev.custom-swiper .swiper-header, .swiper-slide-prev.custom-swiper .swiper-description {
+    opacity: 0;
+    transition: opacity .5s ease-in-out;
+}
+
+.swiper-slide-next.custom-swiper img, .swiper-slide-next.custom-swiper .swiper-header, .swiper-slide-next.custom-swiper .swiper-description {
+    opacity: 0;
+    transition: opacity .5s ease-in-out;
+}
+
+.custom-swiper img {
+    margin-top: -80px;
+}
+
+.custom-swiper-container .swiper-pagination-bullet {
+    height: 8px;
+    width: 24px;
+    border-radius: 20%;
+}
+
+.custom-swiper-container .swiper-pagination-bullet-active {
+    background: rgb(216, 45, 139);
+}
+
+.swiper-header {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+@media (max-width: 960px) {
+    .custom-swiper img {
+        margin-top: -30px;
+    }
+  }
