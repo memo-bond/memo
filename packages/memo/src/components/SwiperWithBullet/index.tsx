@@ -36,9 +36,9 @@ const SwiperWithBullet = ({data}) => {
                 {data.map((item, index) => (
                   <SwiperSlide className="swiper-with-bullet">
                     <Grid container direction="row" style={{maxWidth: "80%", margin: "auto", minHeight: "135px"}}>
-                        <div className="swiper-header" style={{marginBottom: 5, width: "100%", textAlign: "center"}}>“My team can finish our Project with light speeds. Very flexible and easy to maintain!”</div>
-                        <div className="swiper-description" style={{color: "#727272", fontSize: "14px", lineHeight: "15px", margin: "auto", textAlign: "center", width: "100%"}}>Lam Le</div>
-                        <div className="swiper-description" style={{color: "#727272", fontSize: "14px", lineHeight: "15px", margin: "auto", textAlign: "center", width: "100%", paddingBottom: "20px"}}>Founder</div>
+                        <div className="swiper-header">“My team can finish our Project with light speeds. Very flexible and easy to maintain!”</div>
+                        <div className="swiper-description-author">Lam Le</div>
+                        <div className="swiper-description-title" style={{color: "#8F90A6", fontSize: "14px", lineHeight: "15px", margin: "auto", textAlign: "center", width: "100%", paddingBottom: "20px"}}>Founder</div>
                         {/* <img src={item.image} /> */}
                     </Grid>
                   </SwiperSlide>
