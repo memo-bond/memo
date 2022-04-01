@@ -64,6 +64,7 @@ export const surface = 'rgba(18, 18, 18, 0.74)';
 export const black004 = 'rgba(0, 0, 0, 0.04)';
 export const blue = '#2C28F0';
 export const blueIndicator = '#096DD9';
+export const purple6600 = '#6600CC';
 
 export const SP_XS = '4px';
 export const SP_L = '16px';
