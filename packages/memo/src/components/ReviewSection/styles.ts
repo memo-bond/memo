@@ -17,8 +17,8 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       width: "100%",
       top: 0,
       left: 0,
+      paddingTop: '5rem',
       zIndex: 1000,
-      borderTop: "2px solid #8F90A6",
     },
     header: {
       display: "flex",

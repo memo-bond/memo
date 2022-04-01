@@ -4,11 +4,11 @@ import {
 } from '@mui/material';
 
 import logo from 'assets/images/logo.svg';
-import memo from 'assets/images/memo.png';
+import memo from 'assets/images/memo.svg';
 import facebookIcon from 'assets/images/facebook.png';
-import instagramIcon from 'assets/images/instagram.png';
-import twitterIcon from 'assets/images/twitter.png';
-import youtubeIcon from 'assets/images/youtube.png';
+import instagramIcon from 'assets/images/instagram.svg';
+import twitterIcon from 'assets/images/twitter.svg';
+import youtubeIcon from 'assets/images/youtube.svg';
 import githubIcon from 'assets/images/github.png';
 import gmailIcon from 'assets/images/gmail.png';
 import useStyles from './styles';
@@ -47,9 +47,7 @@ const Footer = () => {
 
           <Grid container xs={4} className={css.footerContainerRight}>
             <Grid display="flex" item className={css.navRight}>
-              <Link>
-                <img src={facebookIcon} alt="facebookIcon" className={css.iconContact} />
-              </Link>
+   
               <Link>
                 <img src={instagramIcon} alt="instagramIcon" className={css.iconContact} />
               </Link>

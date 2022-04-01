@@ -14,6 +14,7 @@ const styles = ({ spacing, breakpoints }: Theme) =>
     root: {
       backgroundColor: blue01,
       width: "100%",
+      paddingTop: '5rem',
       top: 0,
       left: 0,
       zIndex: 1000,

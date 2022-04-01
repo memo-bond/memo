@@ -68,7 +68,6 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       fontWeight: 'bold',
       color: '#FFF',
       marginTop: '-2px',
-      fontFamily: 'Inter',
       marginLeft: spacing(2),
       [breakpoints.down('sm')]: {
         fontSize: '16px',
@@ -90,7 +89,6 @@ const styles = ({ spacing, breakpoints }: Theme) =>
     normalTxt: {
       color: '#8F90A6',
       fontSize: '14px',
-      fontFamily: 'Inter',
       letterSpacing: '-0.03px',
       lineHeight: '17px',
       marginLeft: spacing(2),

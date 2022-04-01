@@ -46,7 +46,7 @@ const IntroSection = () => {
           onClick={() => {
             alert('clicked');
           }}>
-          #!# Start coding for free
+          {'<\\>'} Start coding for free
         </Button>
       </Grid>
     </Grid >
