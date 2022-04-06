@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { MemoRepository } from '../../index';
 import { handleError, handleSuccess } from '../../utils';
 
-export const SaveMemo = async (req: Request, res: Response) => {
+export const saveMemo = async (req: Request, res: Response) => {
     const { cells } = req.body;
     if (!cells) {
         return handleError(res, 'Missing fields');
@@ -11,7 +11,7 @@ export const SaveMemo = async (req: Request, res: Response) => {
     return handleSuccess(res, 'memo is saved');
 }
 
-export const GetMemo = async (req: Request, res: Response) => {
+export const getMemo = async (req: Request, res: Response) => {
     const { id } = req.params;
     console.log(`id ${id}`);
     

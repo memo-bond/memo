@@ -1,4 +1,4 @@
 export * from "./users";
 export * from "./groups";
-export * from "./space";
+export * from "./spaces";
 export * from "./user-authenticated"

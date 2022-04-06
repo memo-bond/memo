@@ -1,35 +1,39 @@
 import {Request, Response} from 'express';
-import {Repository, SpaceRepository, UserRepository} from '../../index';
-import {CONSTANTS, CONTENT} from '../../constants';
-import {handleError, handleSuccess} from '../../utils';
-import {SpaceEntity} from "../../entities/Space";
-import {CreateSpaceDTO} from "../../dtos";
-import {firestore} from "firebase-admin";
-import DocumentReference = firestore.DocumentReference;
+import {SpaceRepository, database as db} from '../../index';
+import {CONSTANTS, CONTENT, REGEX} from '../../constants';
+import {handleError, handleSuccess, required} from '../../utils';
+import {Model} from "@memo-bond/common/src/models/Entities";
 
-export const CreateSpace = async (req: Request, res: Response) => {
-    console.log(`Create Space res.locals ${JSON.stringify(res.locals)}`);
-    const createSpaceDTO: CreateSpaceDTO = req.body;
-    const uid: string = res.locals.uid;
-    const spaceEntity: SpaceEntity = {
-        ownerId: uid,
-        name: createSpaceDTO.name,
-        md: createSpaceDTO.md,
-        description: createSpaceDTO.description,
-        isDeleted: false,
-        isVisible: createSpaceDTO.isVisible || true,
+/*
+    --- SPACE CRUD ---
+    *note*: each space document has name as id
+*/
 
+export const createSpace = async (req: Request, res: Response) => {
+    try {
+        const {name, md, description, sharing} = req.body;
+
+        const spaceDocRef = SpaceRepository(res).doc(name);
+        if ((await spaceDocRef.get()).exists) {
+            throw(`Space ${name} already exists`);
+        }
+        await spaceDocRef.set({
+            name,
+            md,
+            description,
+            sharing
+        });
+
+        return handleSuccess(res, (await spaceDocRef.get()).data());
+    } catch (err: any) {
+        return handleError(res, err);
     }
-    const result = await Repository.Space.add(spaceEntity);
-    return handleSuccess(res, `space Id is created '${result.id}'`);
 }
 
-export const InitDefaultSpace = async (req: Request, res: Response) => {
-    const {uid} = res.locals;
-    const userRef = UserRepository.doc(uid);
+export const initDefaultSpace = async (req: Request, res: Response) => {
     try {
-        const pubSpaceId = await initSpace(userRef, uid, CONSTANTS.DEFAULT_SPACE.PUBLIC, true);
-        const priSpaceId = await initSpace(userRef, uid, CONSTANTS.DEFAULT_SPACE.PRIVATE, false);
+        const pubSpaceId = await initSpace(res, CONSTANTS.DEFAULT_SPACE.PUBLIC, REGEX.SHARING.PUBLIC);
+        const priSpaceId = await initSpace(res, CONSTANTS.DEFAULT_SPACE.PRIVATE, REGEX.SHARING.PRIVATE);
 
         const responseMsg = {
             message: 'Default spaces are created successful',
@@ -38,76 +42,95 @@ export const InitDefaultSpace = async (req: Request, res: Response) => {
         console.log(`responseMsg : ${JSON.stringify(responseMsg)}`);
         return handleSuccess(res, responseMsg);
     } catch (err: any) {
-        console.error('Error while init default spaces due to: ', err.message);
         return handleError(res, err);
     }
 }
 
-const initSpace = async (userRef: DocumentReference, ownerId: string, spaceName: string, isVisible: boolean): Promise<string> => {
-    const spaceRef = userRef.collection(CONSTANTS.SPACES).doc(spaceName);
-    const spaceEntity: SpaceEntity = {
-        ownerId: ownerId,
-        name: spaceName,
+const initSpace = async (res: Response, name: string, sharing: string): Promise<string> => {
+    const spaceDocRef = SpaceRepository(res).doc(name);
+    const spaceEntity: Model.Space = {
+        name,
+        sharing,
         md: CONTENT.DEFAULT_SPACE_MD,
-        description: CONTENT.DEFAULT_SPACE_MD,
-        isDeleted: false,
-        isVisible: isVisible,
+        description: CONTENT.DEFAULT_SPACE_MD
     }
-    const result = await spaceRef.set(spaceEntity);
+    const result = await spaceDocRef.set(spaceEntity);
     console.log(`Init space result ${JSON.stringify(result)}`);
 
-    return spaceRef.id;
+    return spaceDocRef.id;
 }
 
-export const DeleteSpace = async (req: Request, res: Response) => {
-    const {id} = req.body;
-    if (!id) {
-        return handleError(res, 'Missing fields');
-    }
-    const spaceRef = SpaceRepository.doc(id);
-    spaceRef.onSnapshot((space) => {
-        if (space.exists) {
-            spaceRef.delete();
-            return handleSuccess(res, `space Id '${id}' was deleted`);
-        } else {
-            return handleError(res, `space Id '${id}' does not exists`);
+export const deleteSpace = async (req: Request, res: Response) => {
+    try {
+        const {id} = req.params;
+        required(id);
+
+        const spaceDocRef = SpaceRepository(res).doc(id);
+        if ((await spaceDocRef.get()).exists) {
+            spaceDocRef.delete();
+            return handleSuccess(res, `Space Id '${id}' was deleted`);
         }
-    });
+        throw(`Space Id '${id}' does not exists`);
+    } catch (err: any) {
+        return handleError(res, err);
+    }
 }
 
-export const UpdateSpace = async (req: Request, res: Response) => {
-    const {id} = req.params;
-    const uid: string = res.locals.uid;
-    const upsertSpaceDTO: CreateSpaceDTO = req.body;
+export const updateSpace = async (req: Request, res: Response) => {
+    try {
+        const {id} = req.params;
+        required(id);
 
-    const space = await Repository.Space.doc(id).get();
-    if (!space.exists) {
-        return handleError(res, `Space Id '${id}' does not exists`);
+        const {name, md, description, sharing} = req.body;
+        const spaceRef = SpaceRepository(res);
+        const spaceDocRef = spaceRef.doc(id);
+        const spaceSnapshot = await spaceDocRef.withConverter(null).get();
+        if (!spaceSnapshot.exists) {
+            throw(`Space Id '${id}' does not exists`);
+        }
+
+        const spaceToUpdate: Model.Space = {
+            name,
+            md,
+            description,
+            sharing
+        }
+
+        if (id === name) {
+            await spaceDocRef.update(spaceToUpdate);
+            return handleSuccess(res, (await spaceDocRef.get()).data());
+        }
+
+        const newSpaceDocRef = spaceRef.doc(name);
+
+        const newSpaceSnapshot = await newSpaceDocRef.withConverter(null).get();
+        if (newSpaceSnapshot.exists) {
+            throw(`Space with name '${name}' already exists`);
+        }
+
+        await db.runTransaction(async (transaction) => {
+            transaction.set(newSpaceDocRef, {...spaceSnapshot.data(), ...spaceToUpdate});
+            transaction.delete(spaceDocRef)
+        });
+        
+        return handleSuccess(res, (await newSpaceDocRef.get()).data());
+    } catch (err: any) {
+        return handleError(res, err);
     }
-
-    if (space.data()?.ownerId !== uid) {
-        return handleError(res, "you do not have permission to do this operator");
-    }
-
-    const spaceEntity: SpaceEntity = {
-        ownerId: uid,
-        name: upsertSpaceDTO.name,
-        md: upsertSpaceDTO.md,
-        description: upsertSpaceDTO.description,
-        isDeleted: false,
-        isVisible: upsertSpaceDTO.isVisible || space.data()?.isVisible || true,
-    }
-
-    const result = await Repository.Group.doc(id).update(spaceEntity);
-    return handleSuccess(res, `Group Id '${id}' update success at '${result.writeTime}`);
 }
 
-export const GetSpace = async (req: Request, res: Response) => {
-    const {id} = req.params;
-    const spaceEntity = await Repository.Space.doc(id).get();
-    if (!spaceEntity.exists) {
-        return handleError(res, `Space '${id} not found`);
-    }
+export const getSpace = async (req: Request, res: Response) => {
+    try {
+        const {id} = req.params;
+        required(id);
 
-    return res.status(200).send(spaceEntity.data());
+        const spaceEntity = await SpaceRepository(res).doc(id).get();
+        if (!spaceEntity.exists) {
+            throw(`Space '${id} does not exist`);
+        }
+
+        return handleSuccess(res, spaceEntity.data());  
+    } catch (err: any) {
+        return handleError(res, err);
+    }
 }
