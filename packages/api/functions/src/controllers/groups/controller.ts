@@ -5,22 +5,23 @@ import {handleError, handleSuccess, required} from "../../utils";
 export const createGroup = async (req: Request, res: Response) => {
     try {
         const {name, spaceId, parentId, tags, sharing} = req.body;
+        let parentIdToIns = parentId;
 
         const groupRef = await GroupRepository(res, spaceId);
         if (parentId) {
             const parentSnapshot = await groupRef.doc(parentId).get();
-            if (!parentSnapshot.exists) {
-               throw(`Group parent id ${parentId} does not exist`);
+            if (parentSnapshot.exists) {
+               parentIdToIns = "";
             }
         }
-        const groupDocRef = groupRef.where("parentId", "==", parentId).where("name", "==", name);
+        const groupDocRef = groupRef.where("parentId", "==", parentIdToIns).where("name", "==", name);
         if ((await groupDocRef.get()).size > 0) {
             throw(`Group ${name} already exists`);
         }
 
         const newGroupDocRef = await groupRef.add({
             name,
-            parentId,
+            parentId: parentIdToIns,
             tags,
             sharing
         });

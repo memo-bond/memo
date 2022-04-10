@@ -72,7 +72,7 @@ export const routesConfig = (app: Application) => {
     ]);
 
 
-    // handle error
+    // handle request not found
     app.use(function(req, res, next) {
         res.status(404);
         res.send({
