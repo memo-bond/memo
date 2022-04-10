@@ -14,7 +14,7 @@ type NewUserRequest = {
   username: string;
 }
 
-export const CreateAuthenticatedUser = async (req: Request, res: Response, next: NextFunction) => {
+export const createAuthenticatedUser = async (req: Request, res: Response, next: NextFunction) => {
   const usernames = db.collection(CONSTANTS.UNIQUE_USERNAME);
   const users = db.collection(CONSTANTS.USERS);
   const request: NewUserRequest = req.body;

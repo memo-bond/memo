@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { handleError } from "../../utils";
 
-export const Login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const auth = getAuth();
   signInWithEmailAndPassword(auth, email, password)
@@ -20,7 +20,7 @@ export const Login = async (req: Request, res: Response) => {
     });
 }
 
-export const CreateUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
   try {
     const { displayName, password, email, role } = req.body;
     if (!displayName || !password || !email || !role) {
@@ -46,7 +46,7 @@ export const CreateUser = async (req: Request, res: Response) => {
   }
 }
 
-export async function GetAll(req: Request, res: Response) {
+export async function getAll(req: Request, res: Response) {
   try {
     const listUsers = await admin.auth().listUsers()
     const users = listUsers.users.map(MapUser)
@@ -56,7 +56,7 @@ export async function GetAll(req: Request, res: Response) {
   }
 }
 
-function MapUser(user: admin.auth.UserRecord) {
+function mapUser(user: admin.auth.UserRecord) {
   const customClaims = (user.customClaims || { role: '' }) as { role?: string }
   const role = customClaims.role ? customClaims.role : ''
   return {
@@ -69,7 +69,7 @@ function MapUser(user: admin.auth.UserRecord) {
   }
 }
 
-export async function GetUser(req: Request, res: Response) {
+export async function getUser(req: Request, res: Response) {
   try {
     const { id } = req.params
     const user = await admin.auth().getUser(id)
@@ -80,7 +80,7 @@ export async function GetUser(req: Request, res: Response) {
   }
 }
 
-export async function PatchUser(req: Request, res: Response) {
+export async function patchUser(req: Request, res: Response) {
   try {
     const { id } = req.params
     const { displayName, password, email, role } = req.body
@@ -100,7 +100,7 @@ export async function PatchUser(req: Request, res: Response) {
   }
 }
 
-export async function RemoveUser(req: Request, res: Response) {
+export async function removeUser(req: Request, res: Response) {
   try {
     const { id } = req.params
 

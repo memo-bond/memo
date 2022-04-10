@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { ValidateFunction } from "ajv";
+import {handleError} from '../utils';
 
 export const Validate = (validator: ValidateFunction) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const valid = validator(req.body);
-    if (!valid) {
-      return res.status(400).json(validator.errors);
+    if (!validator(req.body)) {
+      const err: string = validator.errors ? validator.errors[0].message || 'Bad request' : 'Bad request';
+      return handleError(res, err);
     }
 
     return next();

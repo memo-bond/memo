@@ -6,17 +6,20 @@ export namespace Model {
    *  - default value null means public internet
    *  - * means public for Authenticated Users
    *  - '' means private - only owner can see
-   * isDeleted: soft delete
    * createdBy & updatedBy should be email
    */
-  interface BaseModel {
-    id: string;
-    userId: string;
+
+  interface SoftDeleteable {
     isDeleted: boolean;
-    createdAt: number;
-    updatedAt: number;
-    createdBy: string;
-    updatedBy: string;
+  }
+
+  interface BaseModel {
+    id?: string;
+    userId?: string;
+    createdAt?: number;
+    updatedAt?: number;
+    createdBy?: string;
+    updatedBy?: string;
   }
 
   interface Sharing {
@@ -31,7 +34,7 @@ export namespace Model {
    * email:
    *  - unique: it is handled by firebase authentication
    */
-  export interface User extends BaseModel, Sharing {
+  export interface User extends BaseModel, Sharing, SoftDeleteable {
     username: string;
     email: string;
     firstName?: string;
@@ -47,14 +50,14 @@ export namespace Model {
    *  - using for SEO URL
    * md: markdown
    */
-  export interface Space extends Sharing {
+  export interface Space extends BaseModel, Sharing {
     name: string;
-    description: string;
+    description: string | undefined;
     md?: string;
     groups?: Group[] | null;
   }
 
-  export interface Group extends Sharing {
+  export interface Group extends BaseModel, Sharing {
     name: string;
     parentId?: string;
     tags?: string[];
@@ -63,7 +66,7 @@ export namespace Model {
   /**
    * Memo is a separated DB collection
    */
-  export interface Memo extends BaseModel, Sharing {
+  export interface Memo extends BaseModel, Sharing, SoftDeleteable {
     name: string | null;
     content: string;
     groupId: string;

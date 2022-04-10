@@ -22,3 +22,10 @@ export abstract class ROLES {
 export abstract class CONTENT {
   static readonly DEFAULT_SPACE_MD = `Welcome to new Space`;
 }
+
+export abstract class REGEX {
+  static readonly SHARING = {
+    PUBLIC: '**',
+    PRIVATE: '',
+  }
+}

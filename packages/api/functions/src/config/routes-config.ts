@@ -1,11 +1,11 @@
 import { Application } from "express";
 import { ROLES } from "../constants";
-import { CreateGroup, DeleteGroup, GetGroup, GetGroups, UpsertGroup } from "../controllers/groups/controller";
-import { GetMemo, SaveMemo } from "../controllers/memos/controller";
-import { CreateSpace, DeleteSpace, GetSpace, InitDefaultSpace, UpdateSpace } from '../controllers/spaces/controller';
-import { CreateUser, GetAll, GetUser, Login, PatchUser, RemoveUser } from "../controllers/users/controller";
-import { CreateAuthenticatedUser } from "../controllers/users/create-authenticated-user";
-import * as validateSchema from "../dtos";
+import { createGroup, deleteGroup, getGroup, getGroups, updateGroup } from "../controllers/groups/controller";
+import { getMemo, saveMemo } from "../controllers/memos/controller";
+import { createSpace, deleteSpace, getSpace, initDefaultSpace, updateSpace } from '../controllers/spaces/controller';
+import { createUser, getAll, getUser, login, patchUser, removeUser } from "../controllers/users/controller";
+import { createAuthenticatedUser } from "../controllers/users/create-authenticated-user";
+import * as validateSchema from "../jschema";
 import { isAuthenticated } from "../middlewares/auth/authenticated";
 import { isAuthorized } from "../middlewares/auth/authorized";
 import { Validate } from "../middlewares/validation.mdw";
@@ -14,61 +14,69 @@ import { Welcome } from './welcome';
 export const routesConfig = (app: Application) => {
     app.get('/welcome', Welcome);
 
-    app.post('/memos', isAuthenticated, SaveMemo)
+    app.post('/memos', isAuthenticated, saveMemo)
 
-    app.get('/memos/:id', GetMemo)
+    app.get('/memos/:id', getMemo)
 
-    app.post('/groups', isAuthenticated, Validate(validateSchema.createGroupSchema), CreateGroup)
+    app.post('/spaces', isAuthenticated, Validate(validateSchema.createSpaceValidator), createSpace);
 
-    app.get('/groups', GetGroups)
+    app.delete('/spaces/:id', isAuthenticated, deleteSpace);
 
-    app.get('/groups/:id', GetGroup)
+    app.put('/spaces/:id', isAuthenticated, Validate(validateSchema.createSpaceValidator), updateSpace);
 
-    app.put('/groups/:id', isAuthenticated, Validate(validateSchema.upsertGroupSchema), UpsertGroup)
+    app.get('/spaces/:id', isAuthenticated, getSpace);
 
-    app.delete('/groups/:id', isAuthenticated, DeleteGroup)
+    app.post('/spaces/:spaceId/groups', isAuthenticated, Validate(validateSchema.createGroupValidator), createGroup)
 
-    // Space
-    app.post('/spaces', isAuthenticated, Validate(validateSchema.createSpaceSchema), CreateSpace);
+    app.get('/spaces/:spaceId/groups', isAuthenticated, getGroups)
 
-    app.delete('/spaces', isAuthenticated, DeleteSpace);
+    app.get('/spaces/:spaceId/groups/:id', isAuthenticated, getGroup)
 
-    app.put('/spaces/:id', isAuthenticated, Validate(validateSchema.createSpaceSchema), UpdateSpace);
+    app.put('/spaces/:spaceId/groups/:id', isAuthenticated, Validate(validateSchema.updateGroupValidator), updateGroup)
 
-    app.get('/spaces/:id', isAuthenticated, GetSpace);
-    // --------------------------------
+    app.delete('/spaces/:spaceId/groups/:id', isAuthenticated, deleteGroup)
+
 
     app.post('/users/login',
-        Login
+        login
     );
     app.post('/users',
         Validate(validateSchema.createUserValidator),
-        CreateUser
+        createUser
     );
     app.post('/authenticated-users',
         isAuthenticated,
         Validate(validateSchema.createAuthenticatedUserValidator),
-        CreateAuthenticatedUser,
-        InitDefaultSpace,
+        createAuthenticatedUser,
+        initDefaultSpace,
     );
     app.get('/users', [
         isAuthenticated,
         isAuthorized({ hasRole: [ROLES.ADMIN, ROLES.SUPER_ADMIN] }),
-        GetAll
+        getAll
     ]);
     app.get('/users/:id', [
         isAuthenticated,
         isAuthorized({ hasRole: [ROLES.ADMIN, ROLES.SUPER_ADMIN], allowSameUser: true }),
-        GetUser
+        getUser
     ]);
     app.patch('/users/:id', [
         isAuthenticated,
         isAuthorized({ hasRole: [ROLES.ADMIN, ROLES.SUPER_ADMIN], allowSameUser: true }),
-        PatchUser
+        patchUser
     ]);
     app.delete('/users/:id', [
         isAuthenticated,
         isAuthorized({ hasRole: [ROLES.ADMIN, ROLES.SUPER_ADMIN], allowSameUser: true }),
-        RemoveUser
+        removeUser
     ]);
+
+
+    // handle request not found
+    app.use(function(req, res, next) {
+        res.status(404);
+        res.send({
+            status: 'ERROR',
+            message: 'REQUEST NOT FOUND'});
+    });
 }

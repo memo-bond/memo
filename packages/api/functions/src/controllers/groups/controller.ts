@@ -1,115 +1,102 @@
 import {Request, Response} from "express";
-import {Repository} from "../../index";
-import {GroupEntity} from "../../entities/Group";
-import {handleError, handleSuccess} from "../../utils";
-import {CreateGroupDTO, GroupDTO, UpsertGroupDTO} from "../../dtos";
+import {GroupRepository} from '../../index';
+import {handleError, handleSuccess, required} from "../../utils";
 
+export const createGroup = async (req: Request, res: Response) => {
+    try {
+        const {name, spaceId, parentId, tags, sharing} = req.body;
+        let parentIdToIns = parentId;
 
-export const CreateGroup = async (req: Request, res: Response) => {
-    const createGroupDTO: CreateGroupDTO = req.body;
-
-    const uid: string = res.locals.uid;
-    const newGroup: GroupEntity = {
-        isDeleted: false,
-        name: createGroupDTO.name,
-        ownerId: uid,
-        tagNames: createGroupDTO.tagNames
-    }
-
-    if (createGroupDTO.parentId) {
-
-        const parentGroup = await Repository.Group.doc(createGroupDTO.parentId).get();
-        if (!parentGroup.exists) {
-            return handleError(res, "parentId not exist");
+        const groupRef = await GroupRepository(res, spaceId);
+        if (parentId) {
+            const parentSnapshot = await groupRef.doc(parentId).get();
+            if (parentSnapshot.exists) {
+               parentIdToIns = "";
+            }
+        }
+        const groupDocRef = groupRef.where("parentId", "==", parentIdToIns).where("name", "==", name);
+        if ((await groupDocRef.get()).size > 0) {
+            throw(`Group ${name} already exists`);
         }
 
-        newGroup.parentId = parentGroup.id;
+        const newGroupDocRef = await groupRef.add({
+            name,
+            parentId: parentIdToIns,
+            tags,
+            sharing
+        });
+        return handleSuccess(res, (await newGroupDocRef.get()).data());
+    } catch(err: any) {
+        return handleError(res, err);
     }
-
-    const groupHasNameWithUserId = await Repository.Group.where("ownerId", "==", uid)
-        .where("name", "==", createGroupDTO.name).get();
-
-    if (groupHasNameWithUserId.size > 0) {
-        return handleError(res, `you already created this group with name ${createGroupDTO.name}`);
-    }
-
-    const result = await Repository.Group.add(newGroup);
-    return handleSuccess(res, `group '${result.id}' is created`);
 }
 
-export const GetGroups = async (req: Request, res: Response) => {
-    const pageNumber: number = parseInt(<string>req.query['pageNumber'], 10) || 0;
-    const pageSize: number = parseInt(<string>req.query['pageSize'], 10) || 10;
+export const getGroups = async (req: Request, res: Response) => {
+    // const pageNumber: number = parseInt(<string>req.query['pageNumber'], 10) || 0;
+    // const pageSize: number = parseInt(<string>req.query['pageSize'], 10) || 10;
 
-    const offset = pageSize * pageNumber;
+    // const offset = pageSize * pageNumber;
 
-    const query = Repository.Group.where("isDeleted", "==", false).limit(pageSize).offset(offset);
-    const groups = await query.get();
-    const datas = groups.docs.map<GroupEntity>((group) => group.data());
+    // const query = Repository.Group.where("isDeleted", "==", false).limit(pageSize).offset(offset);
+    // const groups = await query.get();
+    // const datas = groups.docs.map<GroupEntity>((group) => group.data());
 
-    return res.status(200).send(datas);
+    return handleSuccess(res, {});
 }
 
-export const GetGroup = async (req: Request, res: Response) => {
-    const {id} = req.params;
+export const getGroup = async (req: Request, res: Response) => {
+    try {
+        const {id, spaceId} = req.params;
+        required(id, spaceId);
 
-    const group = await Repository.Group.doc(id).get();
-    const groupData = group.data();
-
-    if (!group.exists || groupData === undefined) {
-        return handleError(res, "group id not exist");
-    }
-
-    const groupDTO: GroupDTO = {
-        createdAt: group.createTime,
-        updatedAt: group.updateTime,
-        ...groupData
-    }
-
-    return res.status(200).send(groupDTO);
-}
-
-export const UpsertGroup = async (req: Request, res: Response) => {
-    const {id} = req.params;
-    const upsertGroupDTO: UpsertGroupDTO = req.body;
-
-    const uid: string = res.locals.uid;
-    const data: GroupEntity = {
-        ownerId: uid,
-        name: upsertGroupDTO.name,
-        tagNames: upsertGroupDTO.tagNames
-    }
-
-    const group = await Repository.Group.doc(id).get();
-    if (!group.exists) {
-        return handleError(res, `Group Id '${id}' does not exists`);
-    }
-
-    if (group.data()?.ownerId !== uid) {
-        return handleError(res, "you do not have permission to do this operator");
-    }
-
-    if (upsertGroupDTO.parentId) {
-        const parentGroup = await Repository.Group.doc(upsertGroupDTO.parentId).get();
-        if (!parentGroup.exists) {
-            return handleError(res, "parentId not exist");
+        const groupRef = await GroupRepository(res, spaceId);
+        const groupSnapshot = await groupRef.doc(id).get();
+        if (!groupSnapshot.exists) {
+            throw(`group ${id} not exist`);
         }
-
-        data.parentId = parentGroup.id;
+        return handleSuccess(res, groupSnapshot.data());
+    } catch (err: any) {
+        return handleError(res, err);
     }
-
-    const result = await Repository.Group.doc(id).update(data);
-    return handleSuccess(res, `Group Id '${id}' update success at '${result.writeTime}`);
 }
 
-export const DeleteGroup = async (req: Request, res: Response) => {
-    const {id} = req.params;
+export const updateGroup = async (req: Request, res: Response) => {
+    try {
+        const {id, spaceId} = req.params;
+        required(id, spaceId);
+        const {name, tags, sharing} = req.body;
 
-    const group = await Repository.Group.doc(id).get();
-    if (!group.exists) {
-        return handleError(res, `space Id '${id}' does not exists`);
+        const groupRef = await GroupRepository(res, spaceId);
+        const groupDocRef = groupRef.doc(id);
+        if (!(await groupDocRef.get()).exists) {
+            throw(`Group id ${id} does not exist`);
+        }
+        groupDocRef.update({
+            name,
+            tags,
+            sharing
+        });
+        
+        return handleSuccess(res, (await groupDocRef.get()).data());
+    } catch (err: any) {
+        return handleError(res, err);
     }
+}
 
-    await Repository.Group.doc(id).update({isDeleted: true});
-    return handleSuccess(res, `space Id '${id}' was deleted`);
+export const deleteGroup = async (req: Request, res: Response) => {
+    try {
+        const {id, spaceId} = req.params;
+        required(id, spaceId);
+
+        const groupRef = await GroupRepository(res, spaceId);
+        const groupDocRef = groupRef.doc(id);
+        if (!(await groupDocRef.get()).exists) {
+            throw(`Group Id '${id}' does not exists`);
+        }
+        await groupDocRef.delete();
+
+        return handleSuccess(res, `Group Id '${id}' was deleted`);
+    } catch (err: any) {
+        return handleError(res, err);
+    }
 }

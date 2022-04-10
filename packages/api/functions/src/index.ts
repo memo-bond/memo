@@ -6,9 +6,9 @@ import * as bodyParser from 'body-parser';
 import { routesConfig } from './config/routes-config';
 import { initializeApp } from "firebase/app";
 import { CONSTANTS } from './constants';
-import {GroupEntity} from "./entities/Group";
-import {BaseEntity} from "./entities/BaseEntity";
-import {SpaceEntity} from "./entities/Space";
+import {Response} from 'express';
+import DocumentReference = admin.firestore.DocumentReference;
+import { Model } from '@memo-bond/common/src/models/Entities';
 
 admin.initializeApp();
 
@@ -32,16 +32,9 @@ const customFunctions = functions
 export const api = customFunctions.https.onRequest(webApp);
 export const firebaseApp = initializeApp(firebaseConfig);
 export const database = admin.firestore();
+database.settings({ ignoreUndefinedProperties: true });
 
-// Repository
-export const UserRepository = admin.firestore().collection(CONSTANTS.USERS);
-export const SpaceRepository = admin.firestore().collection(CONSTANTS.SPACES);
-export const MemoRepository = admin.firestore().collection(CONSTANTS.MEMOS);
-
-
-database.settings({ ignoreUndefinedProperties: true })
-
-const converter = <T extends BaseEntity>() => ({
+const converter = <T extends {id?: string}>() => ({
   toFirestore: (data: Partial<T>) => data,
   fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) => {
     const entity = snap.data() as T;
@@ -50,10 +43,30 @@ const converter = <T extends BaseEntity>() => ({
   }
 })
 
-const dataPoint = <T>(collectionPath: string) => database.collection(collectionPath).withConverter(converter<T>())
+// Repository
+export const UserRepository = database.collection(CONSTANTS.USERS);
 
-export const Repository = {
-  // list your collections here
-  Group: dataPoint<GroupEntity>(CONSTANTS.GROUPS),
-  Space: dataPoint<SpaceEntity>(CONSTANTS.SPACES),
+export const SpaceRepository = (res: Response) => 
+                                  UserRepository
+                                  .doc(res.locals.uid)
+                                  .collection(CONSTANTS.SPACES)
+                                  .withConverter(converter<Model.Space>());
+
+export const GroupRepository = async (res: Response, spaceId: string) => {
+  try {
+    const spaceDocRef: DocumentReference = UserRepository
+                                            .doc(res.locals.uid)
+                                            .collection(CONSTANTS.SPACES)
+                                            .doc(spaceId);
+    if (!(await spaceDocRef.get()).exists) {
+      throw(`Space ${spaceId} does not exist`);
+    }
+    return spaceDocRef.collection(CONSTANTS.GROUPS).withConverter(converter<Model.Group>());
+  } catch(err: any) {
+    throw err;
+  }
 }
+
+export const MemoRepository = admin.firestore().collection(CONSTANTS.MEMOS);
+
+
