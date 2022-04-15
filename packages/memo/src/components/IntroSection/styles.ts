@@ -20,6 +20,10 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       alignItems: 'center',
       flexDirection: 'column',
       textAlign: 'center',
+      [breakpoints.down('sm')]: {
+        paddingTop: '20px',
+
+      },
     },
 
     titleTxt: {
@@ -30,6 +34,7 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       fontWeight: 'bold',
       [breakpoints.down('sm')]: {
         fontSize: '20px',
+        paddingTop: '35px',
       },
     },
 

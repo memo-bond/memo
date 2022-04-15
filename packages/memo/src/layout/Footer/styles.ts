@@ -96,7 +96,7 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       marginTop: '30px',
       textAlign: 'left',
       [breakpoints.down('sm')]: {
-        fontSize: '12px',
+        fontSize: '10px',
         marginTop: '10px',
       },
 
@@ -124,6 +124,12 @@ const styles = ({ spacing, breakpoints }: Theme) =>
         height: "36px",
       },
     },
+
+    navRightButtom: {
+      display:"flex",
+       justifyContent: "flex-end",
+       
+    }
   });
 
 const useStyles = makeStyles(styles, { index: 1, classNamePrefix: 'Footer' });

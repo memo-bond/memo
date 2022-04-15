@@ -5,12 +5,10 @@ import {
 
 import logo from 'assets/images/logo.svg';
 import memo from 'assets/images/memo.svg';
-import facebookIcon from 'assets/images/facebook.png';
+import dribbbleIcon from 'assets/images/dribbble.png';
 import instagramIcon from 'assets/images/instagram.svg';
 import twitterIcon from 'assets/images/twitter.svg';
 import youtubeIcon from 'assets/images/youtube.svg';
-import githubIcon from 'assets/images/github.png';
-import gmailIcon from 'assets/images/gmail.png';
 import useStyles from './styles';
 
 const Footer = () => {
@@ -20,7 +18,7 @@ const Footer = () => {
     <footer className={css.root}>
       <Container maxWidth="lg" fixed>
         <Grid container className={css.footer} spacing={3} >
-          <Grid container xs={4} className={css.footerContainerLeft}>
+          <Grid container md={4} xs={5} lg={4}  className={css.footerContainerLeft}>
             <Grid display="flex" item className={css.navLeft}>
               <Grid item className={css.logoContainer} >
                 <Link aria-label="homepage" className={css.logoLink}>
@@ -39,15 +37,17 @@ const Footer = () => {
             </Grid>
           </Grid>
 
-          <Grid container xs={4} justifyContent="center" alignItems="center" alignContent="center">
+          <Grid container md={4} xs={2} lg={4} justifyContent="center" alignItems="center" alignContent="center">
             <Link aria-label="homepage" >
               <img src={memo} alt="memo" className={css.logoMemo} />
             </Link>
           </Grid>
 
-          <Grid container xs={4} className={css.footerContainerRight}>
-            <Grid display="flex" item className={css.navRight}>
-   
+          <Grid container md={4} xs={5} lg={4} className={css.footerContainerRight}>
+            <Grid xs={11} item className={css.navRight}>
+              <Link>
+                <img src={dribbbleIcon} alt="dribbbleIcon" className={css.iconContact} />
+              </Link>
               <Link>
                 <img src={instagramIcon} alt="instagramIcon" className={css.iconContact} />
               </Link>
@@ -59,7 +59,7 @@ const Footer = () => {
               </Link>
             </Grid>
 
-            <Grid item display="flex" justifyContent="flex-end" >
+            <Grid item xs={11} className={css.navRightButtom}>
               <Typography component="h5" className={css.normalTxt}>
                 Terms and Conditions
               </Typography>
