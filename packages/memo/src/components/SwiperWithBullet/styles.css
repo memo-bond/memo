@@ -8,10 +8,6 @@
     transition: opacity .5s ease-in-out;
 }
 
-.swiper-with-bullet-container .swiper-pagination-bullet {
-  
-}
-
 .swiper-with-bullet-container .swiper-button-prev {
     display: none;
   }
@@ -45,4 +41,18 @@
     .swiper-with-bullet img {
         margin-top: -30px;
     }
+  }
+
+  @media (max-width: 600px) {
+    .Memo-ReviewSection-root-55 {
+        padding-top: 35px;
+    }
+    .swiper-with-bullet-container .swiper-header {
+        font-size: 18px;
+    }
+
+    .swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal, .swiper-pagination-custom, .swiper-pagination-fraction {        padding-bottom: 0px;
+        bottom: -3px
+    }
+   
   }

@@ -19,6 +19,9 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       left: 0,
       zIndex: 1000,
       borderTop: "2px solid #8F90A6",
+      [breakpoints.down("sm")]: {
+        paddingTop: '35px',
+      },
     },
     header: {
       display: "flex",

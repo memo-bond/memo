@@ -23,7 +23,7 @@ const IntroSection = () => {
         </Typography>
       </Grid>
 
-      <Grid item xs={4} className={css.containerDescription}>
+      <Grid item md={6} xs={8} lg={4} className={css.containerDescription}>
         <Typography component="h5" className={css.descriptionTxt}>
           Create, share, and get feedback with collaborative sandboxes for rapid web development.
         </Typography>
