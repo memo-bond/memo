@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Container, Grid, Typography, Link
+    Container, Grid, Typography, Link, ListItem, Button
 } from '@mui/material';
 
 import logo from 'assets/images/logo.svg';
@@ -9,6 +9,7 @@ import dribbbleIcon from 'assets/images/dribbble.png';
 import instagramIcon from 'assets/images/instagram.svg';
 import twitterIcon from 'assets/images/twitter.svg';
 import youtubeIcon from 'assets/images/youtube.svg';
+import gmailIcon from 'assets/images/gmail.png';
 import useStyles from './styles';
 
 const Footer = () => {
@@ -45,6 +46,9 @@ const Footer = () => {
 
           <Grid container md={4} xs={5} lg={4} className={css.footerContainerRight}>
             <Grid xs={11} item className={css.navRight}>
+                <a href="mailto:lamle@memo.bond" target="_top">
+                  <img src={gmailIcon} alt="gmailIcon" className={css.iconContact} />
+                </a>
               <Link>
                 <img src={dribbbleIcon} alt="dribbbleIcon" className={css.iconContact} />
               </Link>

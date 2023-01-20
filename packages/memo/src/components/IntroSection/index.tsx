@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Box, Button, Grid, Link, Typography
-  // IconButton,
-  // Popover,
-} from '@mui/material';
-
-import { useHistory } from 'react-router-dom';
+import {Button, Grid, Link, Typography} from '@mui/material';
 import useStyles from './styles';
 import reactjs from 'assets/images/reactjs.png';
 import angular from 'assets/images/angular.png';

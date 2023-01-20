@@ -9,7 +9,7 @@ import {
   ListItem,
   Typography,
   Button,
-  styled,
+  styled, Tabs, Tab
   // IconButton,
   // Popover,
 } from "@mui/material";
@@ -40,6 +40,11 @@ const Header = () => {
               </Typography>
             </Grid>
             <Hidden mdDown>
+              <Tabs>
+                <Tab label="Inbox" value="/inbox/:id" to="/inbox/1" component={Link} />
+                <Tab label="Drafts" value="/drafts" to="/drafts" component={Link} />
+                <Tab label="Trash" value="/trash" to="/trash" component={Link} />
+              </Tabs>
               <Box
                 className={css.navLink}
                 display="flex"
