@@ -1,9 +1,14 @@
-import React, { lazy, Suspense, useEffect } from 'react';
-import { Switch, Route, RouteProps, Redirect, useLocation } from 'react-router-dom';
-import ReactGA from 'react-ga';
+import React, { lazy, Suspense, useEffect } from "react";
+import {
+  Switch,
+  Route,
+  RouteProps,
+  Redirect,
+  useLocation,
+} from "react-router-dom";
+import ReactGA from "react-ga";
 
-import Spin from 'ui/Spin';
-
+import Spin from "ui/Spin";
 
 const AppRouter = () => {
   const { pathname, search } = useLocation();
@@ -16,7 +21,12 @@ const AppRouter = () => {
   return (
     <Suspense fallback={<Spin loading />}>
       <Switch>
-        <Route exact path="/" component={lazy(() => import('pages/Home'))} />
+        <Route exact path="/" component={lazy(() => import("pages/Home"))} />
+        <Route
+          exact
+          path="/code"
+          component={lazy(() => import("pages/Coding"))}
+        />
       </Switch>
     </Suspense>
   );

@@ -10,6 +10,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { ReactQueryDevtools } from "react-query/devtools";
 import theme from "theme";
 import AppRouter from "AppRouter";
+import { atom } from "recoil";
+import { User } from "models/user";
 
 const generateClassName = createGenerateClassName({
   seed: "Memo",
@@ -26,6 +28,11 @@ export const queryClient = new QueryClient({
   },
 });
 
+export const authUser = atom({
+  key: "authUser",
+  default: {} as User,
+});
+
 const App = () => (
   <StylesProvider generateClassName={generateClassName}>
     <StyledEngineProvider injectFirst>
@@ -35,9 +42,9 @@ const App = () => (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             {/* <QueryClientProvider client={queryClient}>
               <ReactQueryDevtools initialIsOpen={false} /> */}
-              <BrowserRouter basename="/">
-                <AppRouter />
-              </BrowserRouter>
+            <BrowserRouter basename="/">
+              <AppRouter />
+            </BrowserRouter>
             {/* </QueryClientProvider> */}
           </LocalizationProvider>
         </SnackbarProvider>
