@@ -4,6 +4,8 @@ import { Theme } from "@mui/material";
 const styles = ({ breakpoints }: Theme) =>
   createStyles({
     homeRoot: {
+      textAlign: "center",
+      margin: "auto",
       overflowX: "hidden",
       overflowY: "hidden",
       backgroundColor: "#28293D",
@@ -25,14 +27,12 @@ const styles = ({ breakpoints }: Theme) =>
         },
       },
     },
-    codingBox: {
-      width: "80%",
-      height: 1200,
-      backgroundColor: "primary.dark",
-      "&:hover": {
-        backgroundColor: "primary.main",
-        opacity: [0.9, 0.8, 0.7],
-      },
+    landingBody: {
+      transition: "all 0.3s ease-in-out",
+    },
+    edit: {
+      textAlign: "center",
+      margin: "auto",
     },
   });
 const useStyles = makeStyles(styles, { index: 1, classNamePrefix: "HomePage" });
