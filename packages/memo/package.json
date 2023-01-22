@@ -31,7 +31,6 @@
     "clsx": "^1.1.1",
     "firebase": "^9.16.0",
     "firebase-tools": "10.2.0",
-    "firebaseui": "^6.0.2",
     "monaco-editor": "0.21.2",
     "monaco-jsx-highlighter": "0.0.15",
     "notistack": "^2.0.3",
