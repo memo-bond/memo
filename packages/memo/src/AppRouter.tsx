@@ -22,11 +22,6 @@ const AppRouter = () => {
     <Suspense fallback={<Spin loading />}>
       <Switch>
         <Route exact path="/" component={lazy(() => import("pages/Home"))} />
-        <Route
-          exact
-          path="/code"
-          component={lazy(() => import("pages/Coding"))}
-        />
       </Switch>
     </Suspense>
   );
