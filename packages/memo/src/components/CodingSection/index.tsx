@@ -10,6 +10,7 @@ import memo from "assets/images/banner.png";
 import { getDocs, limit, query } from "firebase/firestore";
 import { memosRef } from "repository";
 import { Memo } from "models/memo";
+import { useHistory } from "react-router-dom";
 
 export const paymentCodeFormat = [
   {
@@ -32,6 +33,7 @@ export const paymentCodeFormat = [
 const CodingSection = () => {
   const css = useStyles();
   const [memos, setMemos] = useState<Memo[]>();
+  const navigate = useHistory();
 
   useEffect(() => {
     console.log("fetch data 1");
@@ -56,14 +58,14 @@ const CodingSection = () => {
   }, [memos]);
 
   const goToBlog = (memo: Memo) => {
-    location.href =
-      "/code/" + memo.title.toLowerCase().replaceAll(" ", "-") + "-" + memo.id;
+    navigate.push(
+      "/code/" + memo.title.toLowerCase().replaceAll(" ", "-") + "-" + memo.id
+    );
   };
 
   return (
     <Box className={css.root}>
       <Grid
-        item
         md={6}
         xs={12}
         lg={12}
@@ -79,10 +81,10 @@ const CodingSection = () => {
         spacing={2}
       >
         {memos ? (
-          memos.map((m: Memo) => (
+          memos.map((m: Memo, i) => (
             <>
-              <Grid item xs={16}>
-                <Card id={m.id}>
+              <Grid item xs={16} key={i}>
+                <Card>
                   <Typography
                     sx={{ fontSize: 14 }}
                     color="text.secondary"
@@ -97,7 +99,7 @@ const CodingSection = () => {
             </>
           ))
         ) : (
-          <>ABC</>
+          <>Loading</>
         )}
       </Grid>
     </Box>

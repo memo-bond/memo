@@ -1,5 +1,5 @@
 import Footer from "layout/Footer";
-import Header, { authUser } from "layout/Header";
+import Header, { AuthUser } from "layout/Header";
 import { memo, useState } from "react";
 import useStyles from "./styles";
 import {
@@ -18,8 +18,8 @@ import { User } from "models/user";
 
 const ProfilePageComponent = () => {
   const css = useStyles();
-  const loggedUser = useRecoilValue(authUser);
-  const setLoggedUser = useSetRecoilState(authUser);
+  const loggedUser = useRecoilValue(AuthUser);
+  const setLoggedUser = useSetRecoilState(AuthUser);
   const [edit, setEdit] = useState<boolean>(false);
   const [username, setUsername] = useState();
   const [displayName, setDisplayName] = useState("");
