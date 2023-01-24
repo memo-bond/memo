@@ -2,12 +2,20 @@ import Footer from "layout/Footer";
 import Header, { AuthUser } from "layout/Header";
 import { memo, useEffect, useState } from "react";
 import useStyles from "./styles";
-import { getDocs, query, where } from "firebase/firestore";
+import {
+  getDocs,
+  query,
+  updateDoc,
+  where,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
 import { Button, Card, Grid, TextField, Typography } from "@mui/material";
 import { contentsRef } from "repository";
 import { MemoContent } from "models/memo";
 import { useRecoilValue } from "recoil";
 import MDEditor from "@uiw/react-md-editor";
+import { db } from "../../index";
 
 const CodingPageComponent = () => {
   const css = useStyles();
@@ -16,15 +24,19 @@ const CodingPageComponent = () => {
   const [edit, setEdit] = useState(false);
   const [content, setContent] = useState<any>();
   const [title, setTitle] = useState<String>();
+  const [contentId, setContentId] = useState<string>();
 
   const fetchData = async (memoId) => {
-    let content;
+    let contentDoc;
     const q = query(contentsRef, where("memo.id", "==", memoId));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      content = doc.data();
+      contentDoc = doc.data();
+      console.log("doc.id ", doc.id);
+
+      setContentId(doc.id);
     });
-    const memo = content.memo;
+    const memo = contentDoc.memo;
     setMemoContent({
       memo: {
         title: memo.title,
@@ -34,11 +46,11 @@ const CodingPageComponent = () => {
         createdAt: memo.createdAt,
         modifiedAt: memo.modifiedAt,
       },
-      content: content.content,
-      createdAt: content.createdAt,
-      modifiedAt: content.modifiedAt,
+      content: contentDoc.content,
+      createdAt: contentDoc.createdAt,
+      modifiedAt: contentDoc.modifiedAt,
     });
-    setContent(content.content);
+    setContent(contentDoc.content);
     setTitle(memo.title);
   };
 
@@ -57,25 +69,33 @@ const CodingPageComponent = () => {
     }
   }, [memoContent]);
 
-  const save = () => {};
-  const cancel = () => {};
+  const save = async () => {
+    console.log("contentId ", contentId);
+    console.log("title ", title);
+    console.log("content ", content);
+    // update content
+    await updateDoc(doc(db, "contents", contentId!), {
+      "memo.title": title,
+      content,
+    });
+    // update memo title
+    await updateDoc(doc(db, "memos", memoContent?.memo.id!), {
+      title,
+    });
+    setEdit(false);
+  };
 
   return (
     <div className={css.homeRoot}>
       <Header />
-      {Object.keys(loggedUser).length > 0 && !edit ? (
-        <>
-          <Button onClick={() => setEdit(true)}>Edit</Button>
-        </>
-      ) : (
-        <></>
-      )}
       <Grid>
         <Grid item xs={8}>
           {!edit ? (
             <Card>
-              <Typography>{memoContent?.memo.title}</Typography>
-              <Typography>{memoContent?.content}</Typography>
+              <Button>
+                <Typography>{memoContent?.memo.title}</Typography>
+              </Button>
+              <MDEditor.Markdown source={content} />
             </Card>
           ) : (
             <>
@@ -97,6 +117,13 @@ const CodingPageComponent = () => {
           )}
         </Grid>
       </Grid>
+      {Object.keys(loggedUser).length > 0 && !edit ? (
+        <>
+          <Button onClick={() => setEdit(true)}>Edit</Button>
+        </>
+      ) : (
+        <></>
+      )}
       <Footer />
     </div>
   );
