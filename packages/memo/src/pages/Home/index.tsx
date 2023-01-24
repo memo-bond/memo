@@ -1,16 +1,12 @@
-import BannerSection from 'components/BannerSection';
-import IntroSection from 'components/IntroSection';
-import ReviewSection from 'components/ReviewSection';
-import Footer from 'layout/Footer';
-import Header from 'layout/Header';
-import React, { memo } from 'react';
-import useStyles from './styles';
-import logo from 'assets/images/logo.svg';
-
-
-// import Header from 'pages/Home/Header';
-// import Footer from 'pages/Home/Header';
-
+import BannerSection from "components/BannerSection";
+import IntroSection from "components/IntroSection";
+import ReviewSection from "components/ReviewSection";
+import Footer from "layout/Footer";
+import Header from "layout/Header";
+import React, { memo } from "react";
+import useStyles from "./styles";
+import logo from "assets/images/logo.svg";
+import CodingSection from "components/CodingSection";
 
 const HomePageComponent = () => {
   const css = useStyles();
@@ -19,13 +15,14 @@ const HomePageComponent = () => {
       <div id="sectionBody" className={css.landingBody}>
         <Header />
         <BannerSection />
-        <IntroSection />
-        <ReviewSection />
+        {/* <IntroSection /> */}
+        {/* <ReviewSection /> */}
+        <CodingSection />
         <Footer />
       </div>
     </div>
   );
 };
 const HomePage = memo(HomePageComponent);
-HomePage.displayName = 'HomePage';
+HomePage.displayName = "HomePage";
 export default HomePage;

@@ -28,11 +28,6 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const authUser = atom({
-  key: "authUser",
-  default: {} as User,
-});
-
 const App = () => (
   <StylesProvider generateClassName={generateClassName}>
     <StyledEngineProvider injectFirst>

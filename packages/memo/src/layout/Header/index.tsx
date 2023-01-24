@@ -39,8 +39,8 @@ const Header = () => {
     if (login) {
       setLoggedIn(true);
       console.log("loggedIn ", loggedIn);
-      const user = localStorage.getItem("AuthUser");
-      setLoginedUser(JSON.parse(user!));
+      const user = JSON.parse(localStorage.getItem("AuthUser")!);
+      setLoginedUser(user);
     }
   }, [loggedIn]);
 
@@ -58,16 +58,16 @@ const Header = () => {
         const user = result.user;
         console.log("user ", user);
         setLoggedIn(true);
-        const loginUser = {
+        const loggedUser = {
           uid: user.uid,
           email: user.email,
           name: user.displayName,
           picture: user.photoURL,
           username: user.email?.substring(0, user.email?.indexOf("@")),
         };
-        setLoginedUser(loginUser);
+        setLoginedUser(loggedUser);
         localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("AuthUser", JSON.stringify(loginUser));
+        localStorage.setItem("AuthUser", JSON.stringify(loggedUser));
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
@@ -75,8 +75,9 @@ const Header = () => {
         } else {
           // create new user
           const usersRef = collection(db, "users");
-          await setDoc(doc(usersRef, user.uid), loginUser);
+          await setDoc(doc(usersRef, user.uid), loggedUser);
         }
+        location.href = "/user/" + loggedUser.username;
       })
       .catch((error: any) => {
         console.log("login error ", error.message);

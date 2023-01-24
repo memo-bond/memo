@@ -27,6 +27,16 @@ const AppRouter = () => {
           path="/profile"
           component={lazy(() => import("pages/Profile"))}
         />
+        <Route
+          exact
+          path="/user/*"
+          component={lazy(() => import("pages/User"))}
+        />
+        <Route
+          exact
+          path="/code/*"
+          component={lazy(() => import("pages/Coding"))}
+        />
       </Switch>
     </Suspense>
   );
