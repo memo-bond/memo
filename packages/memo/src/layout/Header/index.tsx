@@ -73,7 +73,6 @@ const Header = () => {
     signInWithPopup(firebaseAuth, new GoogleAuthProvider())
       .then(async (result) => {
         const user = result.user;
-        console.log("user ", user);
         setLoggedIn(true);
         const loggedUser = {
           uid: user.uid,

@@ -32,8 +32,6 @@ const CodingPageComponent = () => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       contentDoc = doc.data();
-      console.log("doc.id ", doc.id);
-
       setContentId(doc.id);
     });
     const memo = contentDoc.memo;
@@ -60,7 +58,6 @@ const CodingPageComponent = () => {
         const a = window.location.pathname.split("-");
         const memoId = a[a.length - 1];
         console.log(memoId);
-
         fetchData(memoId);
         console.log("loggedUser ", Object.keys(loggedUser).length);
       }
@@ -70,9 +67,6 @@ const CodingPageComponent = () => {
   }, [memoContent]);
 
   const save = async () => {
-    console.log("contentId ", contentId);
-    console.log("title ", title);
-    console.log("content ", content);
     // update content
     await updateDoc(doc(db, "contents", contentId!), {
       "memo.title": title,

@@ -25,24 +25,17 @@ const ProfilePageComponent = () => {
   const [displayName, setDisplayName] = useState("");
 
   const saveForm = async () => {
-    // save to firestore
-    // update localstorage
-    // update recoil
-
     let user = {} as User;
     user.username = username;
     user.name = displayName ? displayName : loggedUser.name;
     user.uid = loggedUser.uid;
     user.picture = loggedUser.picture;
     user.email = loggedUser.email;
-    console.log("user ", user);
-
     try {
       const usersRef = collection(db, "users");
       await setDoc(doc(usersRef, loggedUser.uid!), Object.assign({}, user), {
         merge: true,
       });
-      localStorage.setItem("AuthUser", JSON.stringify(user));
       setLoggedUser(user);
       setEdit(false);
     } catch (err: any) {
