@@ -93,7 +93,6 @@ const Header = () => {
           const usersRef = collection(db, "users");
           await setDoc(doc(usersRef, user.uid), loggedUser);
         }
-        navigate.push("/user/" + loggedUser.username);
       })
       .catch((error: any) => {
         console.log("login error ", error.message);
