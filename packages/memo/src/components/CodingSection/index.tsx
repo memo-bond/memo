@@ -40,7 +40,7 @@ const CodingSection = () => {
       try {
         let datas: any = [];
         const fetchData = async () => {
-          const q = query(memosRef, limit(3));
+          const q = query(memosRef, limit(10));
           const querySnapshot = await getDocs(q);
           querySnapshot.forEach((doc) => {
             datas.push(doc.data());

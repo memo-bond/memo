@@ -2,29 +2,37 @@ import Footer from "layout/Footer";
 import Header, { AuthUser } from "layout/Header";
 import { memo, useEffect, useState } from "react";
 import useStyles from "./styles";
+import { Button } from "@mui/material";
 import {
-  getDocs,
-  query,
-  updateDoc,
-  where,
-  doc,
-  Timestamp,
-} from "firebase/firestore";
-import { Button, Card, Grid, TextField, Typography } from "@mui/material";
+  atom,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
+import { AddCell } from "./add-cell";
+import { localStorageEffect } from "services/utils";
+import { CellList } from "./cell-list";
+import { Cell } from "models/cell";
+import { getDocs, query, where } from "firebase/firestore";
 import { contentsRef } from "repository";
-import { MemoContent } from "models/memo";
-import { useRecoilValue } from "recoil";
-import MDEditor from "@uiw/react-md-editor";
-import { db } from "../../index";
+
+export const Cells = atom({
+  key: "cells",
+  default: [] as Cell[],
+  effects_UNSTABLE: [localStorageEffect("cells")],
+});
 
 const CodingPageComponent = () => {
   const css = useStyles();
   const loggedUser = useRecoilValue(AuthUser);
-  const [memoContent, setMemoContent] = useState<MemoContent>();
-  const [edit, setEdit] = useState(false);
-  const [content, setContent] = useState<any>();
-  const [title, setTitle] = useState<String>();
-  const [contentId, setContentId] = useState<string>();
+  const logged = Object.keys(loggedUser).length > 0;
+  const cells = useRecoilValue(Cells);
+  const setCells = useSetRecoilState(Cells);
+  const [editing, setEditing] = useState(false);
+  const resetCells = useResetRecoilState(Cells);
+  const [title, setTitle] = useState();
+  const [memoId, setMemoId] = useState();
+  const [contentId, setContentId] = useState("");
 
   const fetchData = async (memoId) => {
     let contentDoc;
@@ -32,89 +40,40 @@ const CodingPageComponent = () => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       contentDoc = doc.data();
-      setContentId(doc.id);
+      setContentId(doc.id!);
     });
     const memo = contentDoc.memo;
-    setMemoContent({
-      memo: {
-        title: memo.title,
-        author: memo.author,
-        tags: memo.tags,
-        id: memoId,
-        createdAt: memo.createdAt,
-        modifiedAt: memo.modifiedAt,
-      },
-      content: contentDoc.content,
-      createdAt: contentDoc.createdAt,
-      modifiedAt: contentDoc.modifiedAt,
-    });
-    setContent(contentDoc.content);
     setTitle(memo.title);
+    setCells(JSON.parse(contentDoc.content));
+    setMemoId(memoId);
   };
 
   useEffect(() => {
-    try {
-      if (!memoContent) {
-        const a = window.location.pathname.split("-");
-        const memoId = a[a.length - 1];
-        console.log(memoId);
-        fetchData(memoId);
-        console.log("loggedUser ", Object.keys(loggedUser).length);
-      }
-    } catch (err: any) {
-      console.log("err.message ", err.message);
+    const a = window.location.pathname.split("-");
+    const memoId = a[a.length - 1];
+    console.log("memoId ", memoId);
+    if (memoId === "/code/") {
+      // new
+      setEditing(false);
+    } else {
+      // edit
+      setEditing(true);
+      fetchData(memoId);
     }
-  }, [memoContent]);
-
-  const save = async () => {
-    // update content
-    await updateDoc(doc(db, "contents", contentId!), {
-      "memo.title": title,
-      content,
-    });
-    // update memo title
-    await updateDoc(doc(db, "memos", memoContent?.memo.id!), {
-      title,
-    });
-    setEdit(false);
-  };
+  }, [editing]);
 
   return (
     <div className={css.homeRoot}>
       <Header />
-      <Grid>
-        <Grid item xs={8}>
-          {!edit ? (
-            <Card>
-              <Button>
-                <Typography>{memoContent?.memo.title}</Typography>
-              </Button>
-              <MDEditor.Markdown source={content} />
-            </Card>
-          ) : (
-            <>
-              <TextField
-                name="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              >
-                Title
-              </TextField>
-              <MDEditor
-                height={600}
-                value={content}
-                onChange={(e) => setContent(e)}
-              />
-              <Button onClick={save}>Save</Button>
-              <Button onClick={() => setEdit(false)}>Cancel</Button>
-            </>
-          )}
-        </Grid>
-      </Grid>
-      {Object.keys(loggedUser).length > 0 && !edit ? (
-        <>
-          <Button onClick={() => setEdit(true)}>Edit</Button>
-        </>
+      <Button onClick={resetCells}>Reset Cells</Button>
+      {logged ? (
+        <CellList
+          cells={cells}
+          isEdit={editing}
+          title={title}
+          contentId={contentId}
+          memoId={memoId}
+        />
       ) : (
         <></>
       )}

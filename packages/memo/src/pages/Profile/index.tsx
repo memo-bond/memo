@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { db } from "index";
 import { User } from "models/user";
+import { db } from "repository";
 
 const ProfilePageComponent = () => {
   const css = useStyles();

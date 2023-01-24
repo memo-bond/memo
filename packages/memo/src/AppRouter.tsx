@@ -32,9 +32,13 @@ const AppRouter = () => {
           path="/user/*"
           component={lazy(() => import("pages/User"))}
         />
+        {/* <Route
+          path="/code/*"
+          component={lazy(() => import("pages/EditCoding"))}
+        /> */}
         <Route
           exact
-          path="/code/*"
+          path={"/code/*"}
           component={lazy(() => import("pages/Coding"))}
         />
       </Switch>
