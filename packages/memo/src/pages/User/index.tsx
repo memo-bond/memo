@@ -1,5 +1,5 @@
 import Footer from "layout/Footer";
-import Header, { authUser } from "layout/Header";
+import Header, { AuthUser } from "layout/Header";
 import { memo, useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import useStyles from "./styles";

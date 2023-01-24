@@ -10,46 +10,63 @@ import {
   Button,
   Dialog,
 } from "@mui/material";
-
+import { useHistory } from "react-router-dom";
 import logo from "assets/images/logo.svg";
 import useStyles from "./styles";
 import { GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
 import { db, firebaseAuth } from "../../index";
 import { useEffect, useState } from "react";
 import { User } from "../../models/user";
-import { atom, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
 
 export function ListItemLink(props: ListItemProps<"a", { button?: true }>) {
   return <ListItem button component="a" {...props} />;
 }
-export const authUser = atom({
+
+// localstorage persist auth user
+const localStorageEffect =
+  (key) =>
+  ({ setSelf, onSet }) => {
+    const savedValue = localStorage.getItem(key);
+    if (savedValue != null) {
+      setSelf(JSON.parse(savedValue));
+    }
+    onSet((newValue) => {
+      localStorage.setItem(key, JSON.stringify(newValue));
+    });
+  };
+// useRecoilValue(AuthUser) for global state
+export const AuthUser = atom({
   key: "authUser",
   default: {} as User,
+  effects_UNSTABLE: [localStorageEffect("authUser")],
 });
 
 const Header = () => {
-  const setLoginedUser = useSetRecoilState(authUser);
-  const loginedUser = useRecoilValue(authUser);
+  const setAuthUser = useSetRecoilState(AuthUser);
+  const authUser = useRecoilValue(AuthUser);
   const css = useStyles();
   const [loggedIn, setLoggedIn] = useState<boolean>();
+  const resetAuthUser = useResetRecoilState(AuthUser);
+  const navigate = useHistory();
 
   useEffect(() => {
-    const login = localStorage.getItem("loggedIn");
-    if (login) {
+    if (Object.keys(authUser).length > 0) {
       setLoggedIn(true);
-      console.log("loggedIn ", loggedIn);
-      const user = JSON.parse(localStorage.getItem("AuthUser")!);
-      setLoginedUser(user);
+      setAuthUser(authUser);
     }
   }, [loggedIn]);
 
   const logout = () => {
-    // clear local storage
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("AuthUser");
+    resetAuthUser();
     alert("Logout Successful");
-    location.href = "/";
+    navigate.push("/");
   };
 
   const startUi = async () => {
@@ -65,7 +82,7 @@ const Header = () => {
           picture: user.photoURL,
           username: user.email?.substring(0, user.email?.indexOf("@")),
         };
-        setLoginedUser(loggedUser);
+        setAuthUser(loggedUser);
         localStorage.setItem("loggedIn", "true");
         localStorage.setItem("AuthUser", JSON.stringify(loggedUser));
         const userRef = doc(db, "users", user.uid);
@@ -77,7 +94,7 @@ const Header = () => {
           const usersRef = collection(db, "users");
           await setDoc(doc(usersRef, user.uid), loggedUser);
         }
-        location.href = "/user/" + loggedUser.username;
+        navigate.push("/user/" + loggedUser.username);
       })
       .catch((error: any) => {
         console.log("login error ", error.message);
@@ -151,7 +168,7 @@ const Header = () => {
                         variant="text"
                         size="small"
                       >
-                        {loginedUser.name}
+                        {authUser.name}
                       </Button>
                     </Link>
 
