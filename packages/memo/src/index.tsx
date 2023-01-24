@@ -18,9 +18,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const firebaseAuth = getAuth(app);
+export const app = initializeApp(firebaseConfig);
+
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>

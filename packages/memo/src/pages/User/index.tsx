@@ -1,11 +1,8 @@
 import Footer from "layout/Footer";
-import Header, { AuthUser } from "layout/Header";
+import Header from "layout/Header";
 import { memo, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
 import useStyles from "./styles";
 import {
-  addDoc,
-  collection,
   doc,
   getDocs,
   limit,
@@ -14,7 +11,6 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import { db } from "../../index";
 import { Button } from "@mui/material";
 import { Memo, MemoContent } from "models/memo";
 import { contentsRef, memosRef } from "repository";
@@ -34,8 +30,6 @@ const CodingPageComponent = () => {
           );
           let datas: any = [];
           querySnapshot.forEach((doc) => {
-            console.log("Memo ID : ", doc.id);
-            console.log("Memo data : ", doc.data());
             datas.push(doc.data());
           });
           setMemos(datas);

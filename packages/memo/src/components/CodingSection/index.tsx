@@ -36,18 +36,15 @@ const CodingSection = () => {
   const navigate = useHistory();
 
   useEffect(() => {
-    console.log("fetch data 1");
     if (!memos) {
       try {
-        console.log("fetch data 2");
         let datas: any = [];
         const fetchData = async () => {
-          const q = query(memosRef, limit(3));
+          const q = query(memosRef, limit(10));
           const querySnapshot = await getDocs(q);
           querySnapshot.forEach((doc) => {
             datas.push(doc.data());
           });
-          console.log("fetched data : ", JSON.stringify(datas));
           setMemos(datas);
         };
         fetchData();

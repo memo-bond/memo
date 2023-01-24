@@ -8,13 +8,11 @@ import {
   ListItem,
   Typography,
   Button,
-  Dialog,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import logo from "assets/images/logo.svg";
 import useStyles from "./styles";
 import { GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
-import { db, firebaseAuth } from "../../index";
 import { useEffect, useState } from "react";
 import { User } from "../../models/user";
 import {
@@ -23,24 +21,15 @@ import {
   useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
-import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { localStorageEffect } from "services/utils";
+import { db } from "repository";
+import { firebaseAuth } from "services/auth";
 
 export function ListItemLink(props: ListItemProps<"a", { button?: true }>) {
   return <ListItem button component="a" {...props} />;
 }
 
-// localstorage persist auth user
-const localStorageEffect =
-  (key) =>
-  ({ setSelf, onSet }) => {
-    const savedValue = localStorage.getItem(key);
-    if (savedValue != null) {
-      setSelf(JSON.parse(savedValue));
-    }
-    onSet((newValue) => {
-      localStorage.setItem(key, JSON.stringify(newValue));
-    });
-  };
 // useRecoilValue(AuthUser) for global state
 export const AuthUser = atom({
   key: "authUser",
@@ -73,7 +62,6 @@ const Header = () => {
     signInWithPopup(firebaseAuth, new GoogleAuthProvider())
       .then(async (result) => {
         const user = result.user;
-        console.log("user ", user);
         setLoggedIn(true);
         const loggedUser = {
           uid: user.uid,
@@ -94,7 +82,6 @@ const Header = () => {
           const usersRef = collection(db, "users");
           await setDoc(doc(usersRef, user.uid), loggedUser);
         }
-        navigate.push("/user/" + loggedUser.username);
       })
       .catch((error: any) => {
         console.log("login error ", error.message);
@@ -106,12 +93,16 @@ const Header = () => {
         <Grid container className={css.header}>
           <Grid display="flex" item className={css.navLeft}>
             <Grid item className={css.logoContainer}>
-              <Link aria-label="homepage" className={css.logoLink}>
+              <Link aria-label="homepage" className={css.logoLink} href="/">
                 <img src={logo} alt="logo" className={css.logo} />
+                <Typography
+                  component="h3"
+                  className={css.forMemoTxt}
+                  style={{ marginTop: "12px" }}
+                >
+                  Memo
+                </Typography>
               </Link>
-              <Typography component="h3" className={css.forMemoTxt}>
-                Memo
-              </Typography>
             </Grid>
             <Hidden mdDown>
               <Box
@@ -184,7 +175,7 @@ const Header = () => {
                 )}
               </Box>
               <Box display="flex" alignItems="center">
-                <Link href="/code">
+                <Link href="/code/">
                   <Button className={css.codingBtn} variant="text" size="small">
                     Start Coding
                   </Button>
