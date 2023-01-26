@@ -10,6 +10,7 @@ import { Cells } from ".";
 import { Cell } from "../../models/cell";
 import { AddCell } from "./add-cell";
 import { CellListItem } from "./cell-list-item";
+import * as memoService from "../../services/memo";
 
 export interface CellListProps {
   cells: Cell[];
@@ -41,38 +42,9 @@ export const CellList: FC<CellListProps> = ({
   }, [title]);
   const save = async () => {
     if (isEdit) {
-      await updateDoc(doc(db, "contents", contentId!), {
-        "memo.title": bookTitle,
-        "memo.modifiedAt": Timestamp.now(),
-        content: JSON.stringify(savingCells),
-      });
-      // update memo title
-      await updateDoc(doc(db, "memos", memoId!), {
-        title: bookTitle,
-        modifiedAt: Timestamp.now(),
-      });
+      memoService.update(memoId!, contentId!, bookTitle, savingCells);
     } else {
-      // create new memo
-      const memoRef = doc(memosRef);
-      const memoId = memoRef.id;
-      const memo: Memo = {
-        author: loggedUser.username!,
-        title: bookTitle,
-        tags: [],
-        id: memoId,
-        createdAt: Timestamp.now(),
-        modifiedAt: Timestamp.now(),
-      };
-      await setDoc(memoRef, memo);
-      // create new content
-      const contentRef = doc(contentsRef);
-      const content: MemoContent = {
-        memo,
-        content: JSON.stringify(savingCells), // serialize cells
-        createdAt: Timestamp.now(),
-        modifiedAt: Timestamp.now(),
-      };
-      await setDoc(contentRef, content);
+      memoService.create(loggedUser.username!, bookTitle, savingCells);
     }
     resetCells();
     setBookTitle("");
