@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/node:14.19.0
+      - image: cimg/node:19.0
     steps:
       - checkout:
       - restore_cache:
@@ -19,10 +19,10 @@ jobs:
             - ./node_modules
       - run:
           name: Install Firebase Tools
-          command: npm install --prefix=./firebase-deploy firebase-tools 
+          command: npm install --prefix=./firebase-deploy firebase-tools
       - run:
-          name:  Firebase Deploy
-          command:  cd packages/memo && ../../firebase-deploy/node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
+          name: Firebase Deploy
+          command: cd packages/memo && ../../firebase-deploy/node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project "$FIREBASE_PROJECT" --only hosting
 workflows:
   version: 2
   build-deploy:
