@@ -1,11 +1,19 @@
-import { Button, Card, TextField, Typography } from "@mui/material";
-import { doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import {
+  Box,
+  Button,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AuthUser } from "layout/Header";
-import { Memo, MemoContent } from "models/memo";
-import { FC, Fragment, useEffect, useRef, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
-import { contentsRef, db, memosRef } from "repository";
 import { Cells } from ".";
 import { Cell } from "../../models/cell";
 import { AddCell } from "./add-cell";
@@ -33,6 +41,7 @@ export const CellList: FC<CellListProps> = ({
   const [bookTitle, setBookTitle] = useState("");
   const resetCells = useResetRecoilState(Cells);
   const navigate = useHistory();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (title) {
@@ -49,6 +58,11 @@ export const CellList: FC<CellListProps> = ({
     }
     resetCells();
     setBookTitle("");
+    navigate.push("/");
+  };
+  const deleteMemo = async () => {
+    memoService.deleteMemo(contentId!, memoId!);
+    await new Promise((r) => setTimeout(r, 500));
     navigate.push("/");
   };
   const renderedCells = cells.map((cell) => {
@@ -81,6 +95,34 @@ export const CellList: FC<CellListProps> = ({
           {renderedCells}
           <Button onClick={save}>Save</Button>
           <Button onClick={resetCells}>Reset Cells</Button>
+          <Button onClick={() => setIsDeleting(true)}>Delete</Button>
+          <Dialog open={isDeleting} maxWidth="sm" fullWidth>
+            <DialogTitle>Confirm delete</DialogTitle>
+            <Box position="absolute" top={0} right={0}>
+              <IconButton>{/* <Close /> */}</IconButton>
+            </Box>
+            <DialogContent>
+              <Typography>Are you sure to delete this Memo?</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  setIsDeleting(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={deleteMemo}
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       ) : bookTitle ? (
         <>

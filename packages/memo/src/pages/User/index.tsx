@@ -53,6 +53,7 @@ const CodingPageComponent = () => {
       id: memoId,
       createdAt: now,
       modifiedAt: now,
+      delete: false,
     };
     await setDoc(memoRef, memo);
     // add content
@@ -62,6 +63,7 @@ const CodingPageComponent = () => {
       content: "hello the world",
       createdAt: now,
       modifiedAt: now,
+      delete: false,
     };
     await setDoc(contentRef, content);
   };

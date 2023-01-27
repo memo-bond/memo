@@ -45,10 +45,12 @@ const EditCodingPageComponent = () => {
         id: memoId,
         createdAt: memo.createdAt,
         modifiedAt: memo.modifiedAt,
+        delete: false,
       },
       content: contentDoc.content,
       createdAt: contentDoc.createdAt,
       modifiedAt: contentDoc.modifiedAt,
+      delete: false,
     });
     setContent(contentDoc.content);
     setTitle(memo.title);

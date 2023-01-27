@@ -1,15 +1,13 @@
 import Footer from "layout/Footer";
-import Header, { AuthUser } from "layout/Header";
+import Header from "layout/Header";
 import { memo, useEffect, useState } from "react";
 import useStyles from "./styles";
-import { Button } from "@mui/material";
 import {
   atom,
   useRecoilValue,
   useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
-import { AddCell } from "./add-cell";
 import { localStorageEffect } from "services/utils";
 import { CellList } from "./cell-list";
 import { Cell } from "models/cell";
@@ -39,6 +37,7 @@ const CodingPageComponent = () => {
     querySnapshot.forEach((doc) => {
       contentDoc = doc.data();
       setContentId(doc.id!);
+      console.log("logged user content ID: ", doc.id);
     });
     const memo = contentDoc.memo;
     setTitle(memo.title);
