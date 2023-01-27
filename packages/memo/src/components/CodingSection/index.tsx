@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { Box, Grid, Card, Typography, Button } from "@mui/material";
 import useStyles from "./styles";
 import memo from "assets/images/banner.png";
-import { getDocs, limit, orderBy, query } from "firebase/firestore";
-import { memosRef } from "repository";
 import { Memo } from "models/memo";
 import { useHistory } from "react-router-dom";
 import Spin from "ui/Spin";
+import * as memoService from "../../services/memo";
 
 export const paymentCodeFormat = [
   {
@@ -33,13 +32,8 @@ const CodingSection = () => {
   useEffect(() => {
     if (!memos) {
       try {
-        let datas: any = [];
         const fetchData = async () => {
-          const q = query(memosRef, orderBy("modifiedAt", "desc"), limit(10));
-          const querySnapshot = await getDocs(q);
-          querySnapshot.forEach((doc) => {
-            datas.push(doc.data());
-          });
+          let datas = await memoService.getMemos();
           setMemos(datas);
         };
         fetchData();
