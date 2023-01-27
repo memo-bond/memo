@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Button, Card, TextField, Typography } from "@mui/material";
 import { doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { AuthUser } from "layout/Header";
 import { Memo, MemoContent } from "models/memo";
@@ -27,8 +27,9 @@ export const CellList: FC<CellListProps> = ({
   contentId,
   memoId,
 }) => {
-  const savingCells = useRecoilValue(Cells);
   const loggedUser = useRecoilValue(AuthUser);
+  const logged = Object.keys(loggedUser).length > 0;
+  const savingCells = useRecoilValue(Cells);
   const [bookTitle, setBookTitle] = useState("");
   const resetCells = useResetRecoilState(Cells);
   const navigate = useHistory();
@@ -50,7 +51,6 @@ export const CellList: FC<CellListProps> = ({
     setBookTitle("");
     navigate.push("/");
   };
-
   const renderedCells = cells.map((cell) => {
     return (
       <Fragment key={cell.id}>
@@ -58,19 +58,33 @@ export const CellList: FC<CellListProps> = ({
       </Fragment>
     );
   });
+
   return (
     <>
-      <TextField
-        value={bookTitle}
-        name="Title"
-        style={{ width: "500px" }}
-        onChange={(e) => setBookTitle(e.target.value)}
-      >
-        Title
-      </TextField>
-      <AddCell forceVisible={cells.length === 0} previousCellId={null} />
-      {renderedCells}
-      <Button onClick={save}>Save</Button>
+      {logged ? (
+        <>
+          <TextField
+            value={bookTitle}
+            name="Title"
+            style={{ width: "500px" }}
+            onChange={(e) => setBookTitle(e.target.value)}
+          >
+            Title
+          </TextField>
+          <AddCell forceVisible={cells.length === 0} previousCellId={null} />
+          {renderedCells}
+          <Button onClick={save}>Save</Button>
+        </>
+      ) : (
+        <>
+          <Card style={{ padding: "30px", margin: "30px" }}>
+            <Typography style={{ textAlign: "center" }}>
+              <Button style={{ fontSize: "30px" }}>{bookTitle}</Button>
+            </Typography>
+            {renderedCells}
+          </Card>
+        </>
+      )}
     </>
   );
 };
