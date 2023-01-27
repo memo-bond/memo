@@ -7,7 +7,7 @@ import // IconButton,
 
 import useStyles from "./styles";
 import memo from "assets/images/banner.png";
-import { getDocs, limit, query } from "firebase/firestore";
+import { getDocs, limit, orderBy, query } from "firebase/firestore";
 import { memosRef } from "repository";
 import { Memo } from "models/memo";
 import { useHistory } from "react-router-dom";
@@ -40,7 +40,7 @@ const CodingSection = () => {
       try {
         let datas: any = [];
         const fetchData = async () => {
-          const q = query(memosRef, limit(10));
+          const q = query(memosRef, orderBy("modifiedAt", "desc"), limit(10));
           const querySnapshot = await getDocs(q);
           querySnapshot.forEach((doc) => {
             datas.push(doc.data());
