@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/node:19.0
+      - image: cimg/node:14.19.0
     steps:
       - checkout:
       - restore_cache:

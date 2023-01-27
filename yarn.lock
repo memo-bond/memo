@@ -12192,14 +12192,6 @@ env-paths@^2.2.0:
   resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-2.2.1.tgz#420399d416ce1fbe9bc0a07c62fa68d67fd0f8f2"
   integrity sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==
 
-envify@~0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/envify/-/envify-0.2.0.tgz#645091cfaf1279f7f8364a893b0cf81c680ecbe0"
-  integrity sha1-ZFCRz68Seff4NkqJOwz4HGgOy+A=
-  dependencies:
-    falafel "~0.2.1"
-    through "~2.3.4"
-
 envinfo@^7.7.4:
   version "7.8.1"
   resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-7.8.1.tgz#06377e3e5f4d379fea7ac592d5ad8927e0c4d475"
@@ -12893,10 +12885,6 @@ esprima@^4.0.0, esprima@^4.0.1, esprima@~4.0.0:
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
 
-esprima@substack/esprima#is-keyword:
-  version "1.1.0-dev"
-  resolved "https://codeload.github.com/substack/esprima/tar.gz/0a7f8489a11b44b019ce168506f535f22d0be290"
-
 esquery@^1.0.1, esquery@^1.3.1, esquery@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.4.0.tgz#2148ffc38b82e8c7057dfed48425b3e61f0f24a5"
@@ -13375,13 +13363,6 @@ faker@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/faker/-/faker-3.1.0.tgz#0f908faf4e6ec02524e54a57e432c5c013e08c9f"
   integrity sha1-D5CPr05uwCUk5UpX5DLFwBPgjJ8=
-
-falafel@~0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/falafel/-/falafel-0.2.1.tgz#9efc51ce19ec5729086b22ae889e5d7d0e256601"
-  integrity sha1-nvxRzhnsVykIayKuiJ5dfQ4lZgE=
-  dependencies:
-    esprima substack/esprima#is-keyword
 
 fast-deep-equal@3.1.1:
   version "3.1.1"
@@ -24292,14 +24273,6 @@ react-syntax-highlighter@^15.4.4:
     prismjs "^1.25.0"
     refractor "^3.2.0"
 
-react-test-utils@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/react-test-utils/-/react-test-utils-0.0.1.tgz#cd69a37c3e4d726e3497e325462a32785a19c026"
-  integrity sha1-zWmjfD5Ncm40l+MlRioyeFoZwCY=
-  dependencies:
-    envify "~0.2.0"
-    react "~0.8.0"
-
 react-transition-group@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
@@ -24334,11 +24307,6 @@ react@^17.0.0:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-react@~0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-0.8.0.tgz#9aef0dbc3e05b44d96139cdbdaa5d727b0506e1e"
-  integrity sha1-mu8NvD4FtE2WE5zb2qXXJ7BQbh4=
 
 reactcss@^1.2.0:
   version "1.2.3"
