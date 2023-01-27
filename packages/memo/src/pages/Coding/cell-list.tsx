@@ -62,7 +62,7 @@ export const CellList: FC<CellListProps> = ({
   };
   const deleteMemo = async () => {
     memoService.deleteMemo(contentId!, memoId!);
-    await new Promise((r) => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 1000));
     navigate.push("/");
   };
   const renderedCells = cells.map((cell) => {
