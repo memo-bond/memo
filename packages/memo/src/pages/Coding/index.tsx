@@ -27,7 +27,6 @@ const CodingPageComponent = () => {
   const cells = useRecoilValue(Cells);
   const setCells = useSetRecoilState(Cells);
   const [editing, setEditing] = useState(false);
-  const resetCells = useResetRecoilState(Cells);
   const [title, setTitle] = useState();
   const [memoId, setMemoId] = useState();
   const [contentId, setContentId] = useState("");
@@ -63,7 +62,6 @@ const CodingPageComponent = () => {
   return (
     <div className={css.homeRoot}>
       <Header />
-      <Button onClick={resetCells}>Reset Cells</Button>
       <CellList
         cells={cells}
         isEdit={editing}
