@@ -66,6 +66,7 @@ export const CellList: FC<CellListProps> = ({
           <Card>
             <div style={{ textAlign: "center", margin: "20px" }}>
               <TextField
+                required
                 value={bookTitle}
                 label={"Title"}
                 name="Title"
