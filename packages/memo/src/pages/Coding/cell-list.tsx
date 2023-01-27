@@ -63,26 +63,38 @@ export const CellList: FC<CellListProps> = ({
     <>
       {logged ? (
         <>
-          <TextField
-            value={bookTitle}
-            name="Title"
-            style={{ width: "500px" }}
-            onChange={(e) => setBookTitle(e.target.value)}
-          >
-            Title
-          </TextField>
+          <Card>
+            <div style={{ textAlign: "center", margin: "20px" }}>
+              <TextField
+                value={bookTitle}
+                label={"Title"}
+                name="Title"
+                style={{ width: "500px" }}
+                onChange={(e) => setBookTitle(e.target.value)}
+              >
+                Title
+              </TextField>
+            </div>
+          </Card>
           <AddCell forceVisible={cells.length === 0} previousCellId={null} />
           {renderedCells}
           <Button onClick={save}>Save</Button>
           <Button onClick={resetCells}>Reset Cells</Button>
         </>
-      ) : (
+      ) : bookTitle ? (
         <>
+          {" "}
           <Card style={{ padding: "30px", margin: "30px" }}>
             <Typography style={{ textAlign: "center" }}>
               <Button style={{ fontSize: "30px" }}>{bookTitle}</Button>
             </Typography>
             {renderedCells}
+          </Card>
+        </>
+      ) : (
+        <>
+          <Card style={{ padding: "50px", margin: "50px" }}>
+            <Typography>Please Sign In</Typography>
           </Card>
         </>
       )}

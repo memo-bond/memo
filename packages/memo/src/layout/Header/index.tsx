@@ -177,7 +177,7 @@ const Header = () => {
               <Box display="flex" alignItems="center">
                 <Link href="/code/">
                   <Button className={css.codingBtn} variant="text" size="small">
-                    Start Coding
+                    Start Memo
                   </Button>
                 </Link>
               </Box>

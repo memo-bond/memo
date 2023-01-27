@@ -1,21 +1,11 @@
-import React, { createContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { RecoilRoot } from "recoil";
 import App from "App";
 import reportWebVitals from "reportWebVitals";
 import "./index.css";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyD3IzAH-FOh3_SDOBecJZtv4LRjwHfvc0s",
-  authDomain: "memo-9b895.firebaseapp.com",
-  projectId: "memo-9b895",
-  storageBucket: "memo-9b895.appspot.com",
-  messagingSenderId: "701798161487",
-  appId: "1:701798161487:web:48dd766a316c63911bde3a",
-};
+import firebaseConfig from "config/firebase.config";
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);

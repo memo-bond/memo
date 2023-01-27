@@ -36,11 +36,11 @@ export const AddCell: FC<AddCellProps> = ({ previousCellId }) => {
   return (
     <>
       <div>
-        <Button onClick={() => insertCellAfter(previousCellId, "code")}>
+        {/* <Button onClick={() => insertCellAfter(previousCellId, "code")}>
           Code
-        </Button>
+        </Button> */}
         <Button onClick={() => insertCellAfter(previousCellId, "text")}>
-          Text
+          Add Text
         </Button>
       </div>
       <div id={previousCellId == null ? "cell-001" : previousCellId}></div>
