@@ -1,7 +1,6 @@
 import { Button } from "@mui/material";
 import { Cell } from "models/cell";
 import { FC, useRef } from "react";
-import CodeEditor from "./code-editor";
 import { TextEditor } from "./text-editor";
 
 export interface CellListItemProps {
@@ -13,7 +12,6 @@ export const CellListItem: FC<CellListItemProps> = ({ cell }) => {
   let child: JSX.Element;
 
   const updateCell = (id, content) => {
-    console.log("cell1111 ", cell);
     cell.id = id;
     cell.content = content;
   };
@@ -21,10 +19,10 @@ export const CellListItem: FC<CellListItemProps> = ({ cell }) => {
   if (cell.type == "code") {
     child = (
       <div>
-        <CodeEditor
+        {/* <CodeEditor
           initialValue={cell.content!}
           onChange={(value) => updateCell(cell.id, value)}
-        />
+        /> */}
       </div>
     );
   } else {
