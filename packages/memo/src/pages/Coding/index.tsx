@@ -26,6 +26,7 @@ const CodingPageComponent = () => {
   const css = useStyles();
   const cells = useRecoilValue(Cells);
   const setCells = useSetRecoilState(Cells);
+  const resetCells = useResetRecoilState(Cells);
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState();
   const [memoId, setMemoId] = useState();
@@ -52,6 +53,7 @@ const CodingPageComponent = () => {
     if (memoId === "/code/") {
       // new
       setEditing(false);
+      resetCells();
     } else {
       // edit
       setEditing(true);
