@@ -24,8 +24,6 @@ export const Cells = atom({
 
 const CodingPageComponent = () => {
   const css = useStyles();
-  const loggedUser = useRecoilValue(AuthUser);
-  const logged = Object.keys(loggedUser).length > 0;
   const cells = useRecoilValue(Cells);
   const setCells = useSetRecoilState(Cells);
   const [editing, setEditing] = useState(false);
@@ -66,17 +64,13 @@ const CodingPageComponent = () => {
     <div className={css.homeRoot}>
       <Header />
       <Button onClick={resetCells}>Reset Cells</Button>
-      {logged ? (
-        <CellList
-          cells={cells}
-          isEdit={editing}
-          title={title}
-          contentId={contentId}
-          memoId={memoId}
-        />
-      ) : (
-        <></>
-      )}
+      <CellList
+        cells={cells}
+        isEdit={editing}
+        title={title}
+        contentId={contentId}
+        memoId={memoId}
+      />
       <Footer />
     </div>
   );

@@ -80,8 +80,8 @@ const CodingSection = () => {
         {memos ? (
           memos.map((m: Memo, i) => (
             <>
-              <Grid item xs={16} key={i}>
-                <Card>
+              <Grid item xs={16} key={i} style={{ padding: "20px" }}>
+                <Card style={{ padding: "30px" }}>
                   <Typography
                     sx={{ fontSize: 14 }}
                     color="text.secondary"
