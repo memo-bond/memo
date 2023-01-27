@@ -74,6 +74,7 @@ export const CellList: FC<CellListProps> = ({
           <AddCell forceVisible={cells.length === 0} previousCellId={null} />
           {renderedCells}
           <Button onClick={save}>Save</Button>
+          <Button onClick={resetCells}>Reset Cells</Button>
         </>
       ) : (
         <>
