@@ -3,7 +3,11 @@
 }
 
 .action-bar-wrapper {
-  height: 30px;
   width: 100%;
+  height: 30px;
   background-color: #37414b;
+}
+
+.card-content {
+  color: white;
 }
