@@ -89,3 +89,14 @@ export const getMemos = async (): Promise<Memo[]> => {
   });
   return datas;
 };
+
+export const getMemo = async (memoId: string): Promise<MemoContent> => {
+  let data: any = {};
+  const queryContent = query(contentsRef, where("memo.id", "==", memoId));
+  const queryContentSnapshot = await getDocs(queryContent);
+  queryContentSnapshot.forEach((doc) => {
+    console.log("coding section fetch memo content ID : ", doc.data());
+    data = doc.data();
+  });
+  return data;
+};

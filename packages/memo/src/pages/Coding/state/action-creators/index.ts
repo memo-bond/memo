@@ -1,5 +1,5 @@
-import { Dispatch } from 'redux';
-import { ActionType } from '../action-types';
+import { Dispatch } from "redux";
+import { ActionType } from "../action-types";
 import {
   UpdateCellAction,
   DeleteCellAction,
@@ -7,9 +7,10 @@ import {
   InsertCellAfterAction,
   Direction,
   Action,
-} from '../actions';
-import { CellTypes } from '../cell';
-import bundle from '../../bundler';
+} from "../actions";
+import { Cell, CellTypes } from "../cell";
+import bundle from "../../bundler";
+import * as memoService from "../../../../services/memo";
 
 export const updateCell = (id: string, content: string): UpdateCellAction => {
   return {
@@ -69,5 +70,24 @@ export const createBundle = (cellId: string, input: string) => {
         bundle: result,
       },
     });
+  };
+};
+
+export const getMemo = (memoId: string) => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.FETCH_CELLS });
+    try {
+      const memoContent = await memoService.getMemo(memoId);
+      const data = JSON.parse(memoContent.content) as Cell[];
+      dispatch({
+        type: ActionType.FETCH_CELLS_COMPLETE,
+        payload: data,
+      });
+    } catch (err: any) {
+      dispatch({
+        type: ActionType.FETCH_CELLS_ERROR,
+        payload: err.message,
+      });
+    }
   };
 };
