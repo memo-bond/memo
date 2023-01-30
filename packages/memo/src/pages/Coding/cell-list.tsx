@@ -13,7 +13,7 @@ import {
 import { AuthUser } from "layout/Header";
 import { FC, Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { Cells } from ".";
 import { Cell } from "../../models/cell";
 import { AddCell } from "./add-cell";
@@ -42,6 +42,7 @@ export const CellList: FC<CellListProps> = ({
   const resetCells = useResetRecoilState(Cells);
   const navigate = useHistory();
   const [isDeleting, setIsDeleting] = useState(false);
+  const setCells = useSetRecoilState(Cells);
 
   useEffect(() => {
     if (title) {
@@ -65,9 +66,28 @@ export const CellList: FC<CellListProps> = ({
     await new Promise((r) => setTimeout(r, 1000));
     navigate.push("/");
   };
+
+  const remove = (id: number) => {
+    let newCells: Cell[] = [];
+    // remove by id
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i].id === id) {
+        continue;
+      } else {
+        newCells.push(cells[i]);
+      }
+    }
+    // update id
+    // for (let i = 0; i < newCells.length; i++) {
+    //   newCells[i].id = i + 1;
+    // }
+    setCells(newCells);
+  };
+
   const renderedCells = cells.map((cell) => {
     return (
       <Fragment key={cell.id}>
+        <Button onClick={() => remove(cell.id)}>Remove</Button>
         <CellListItem cell={cell} />
       </Fragment>
     );

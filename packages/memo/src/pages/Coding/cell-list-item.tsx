@@ -1,12 +1,15 @@
-import { Button } from "@mui/material";
-import { Cell } from "models/cell";
+import { Cell } from "../../models/cell";
 import { FC, useRef } from "react";
 import { TextEditor } from "./text-editor";
+import useStyles from "./cell-list-item-style";
+import React from "react";
+import { Button } from "@mui/material";
 
 export interface CellListItemProps {
   cell: Cell;
 }
 export const CellListItem: FC<CellListItemProps> = ({ cell }) => {
+  const style = useStyles();
   console.log("cell.content ", cell.content);
   const iframe = useRef<any>();
   let child: JSX.Element;
