@@ -1,76 +1,24 @@
-import Footer from "layout/Footer";
+import { memo } from "react";
+import { Provider } from "react-redux";
+import { store } from "./state";
+import CellList from "./components/cell-list";
 import Header from "layout/Header";
-import { memo, useEffect, useState } from "react";
+import Footer from "layout/Footer";
 import useStyles from "./styles";
-import {
-  atom,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
-import { localStorageEffect } from "services/utils";
-import { CellList } from "./cell-list";
-import { Cell } from "models/cell";
-import { getDocs, query, where } from "firebase/firestore";
-import { contentsRef } from "repository";
-
-export const Cells = atom({
-  key: "cells",
-  default: [] as Cell[],
-  effects_UNSTABLE: [localStorageEffect("cells")],
-});
 
 const CodingPageComponent = () => {
   const css = useStyles();
-  const cells = useRecoilValue(Cells);
-  const setCells = useSetRecoilState(Cells);
-  const resetCells = useResetRecoilState(Cells);
-  const [editing, setEditing] = useState(false);
-  const [title, setTitle] = useState();
-  const [memoId, setMemoId] = useState();
-  const [contentId, setContentId] = useState("");
-
-  const fetchData = async (memoId) => {
-    let contentDoc;
-    const q = query(contentsRef, where("memo.id", "==", memoId));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      contentDoc = doc.data();
-      setContentId(doc.id!);
-      console.log("logged user content ID: ", doc.id);
-    });
-    const memo = contentDoc.memo;
-    setTitle(memo.title);
-    setCells(JSON.parse(contentDoc.content));
-    setMemoId(memoId);
-  };
-
-  useEffect(() => {
-    const a = window.location.pathname.split("-");
-    const memoId = a[a.length - 1];
-    console.log("memoId ", memoId);
-    if (memoId === "/code/") {
-      // new
-      setEditing(false);
-      resetCells();
-    } else {
-      // edit
-      setEditing(true);
-      fetchData(memoId);
-    }
-  }, [editing]);
-
   return (
     <div className={css.homeRoot}>
-      <Header />
-      <CellList
-        cells={cells}
-        isEdit={editing}
-        title={title}
-        contentId={contentId}
-        memoId={memoId}
-      />
-      <Footer />
+      <div id="sectionBody" className={css.landingBody}>
+        <Header />
+        <Provider store={store}>
+          <div>
+            <CellList />
+          </div>
+        </Provider>
+        <Footer />
+      </div>
     </div>
   );
 };
