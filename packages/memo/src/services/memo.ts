@@ -1,5 +1,7 @@
 import {
+  collection,
   doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -9,8 +11,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { Cell } from "models/cell";
 import { Memo, MemoContent } from "models/memo";
+import { Cell } from "pages/Coding/state/cell";
 import { contentsRef, db, memosRef } from "repository";
 
 export const create = async (
@@ -95,8 +97,12 @@ export const getMemo = async (memoId: string): Promise<MemoContent> => {
   const queryContent = query(contentsRef, where("memo.id", "==", memoId));
   const queryContentSnapshot = await getDocs(queryContent);
   queryContentSnapshot.forEach((doc) => {
-    console.log("coding section fetch memo content ID : ", doc.data());
     data = doc.data();
   });
   return data;
+};
+
+export const getMemoTitle = async (memoId: string): Promise<Memo> => {
+  const memoSnap = await getDoc(doc(db, "memos", memoId));
+  return memoSnap.data() as Memo;
 };
