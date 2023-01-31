@@ -4,12 +4,12 @@ interface Base {
   createdAt: Timestamp;
   modifiedAt: Timestamp;
   delete: boolean;
+  id: string | undefined;
 }
 export interface Memo extends Base {
   author: string;
   title: string;
   tags: string[];
-  id: string | undefined;
 }
 
 export interface MemoContent extends Base {

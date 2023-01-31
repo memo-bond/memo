@@ -64,6 +64,7 @@ const CodingPageComponent = () => {
       createdAt: now,
       modifiedAt: now,
       delete: false,
+      id: contentRef.id,
     };
     await setDoc(contentRef, content);
   };
