@@ -55,6 +55,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     if (memoId) {
       // update
       memoService.update(memoId, contentId, title, cells);
+      alert("Saved");
     } else {
       // create
       memoService.create(loggedUser.username!, title, cells);
