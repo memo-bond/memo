@@ -4,7 +4,14 @@ import { useTypedSelector } from "../hooks/use-typed-selector";
 import CellListItem from "./cell-list-item";
 import AddCell from "./add-cell";
 import { useActions } from "../hooks/use-actions";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilValue } from "recoil";
@@ -22,6 +29,8 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
 
   const [contentId, setContentId] = useState("");
   const [title, setTitle] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [isCreate, setIsCreate] = useState(true);
   const loggedUser = useRecoilValue(AuthUser);
   const logged = loggedUser.uid !== undefined;
   const { getMemo } = useActions();
@@ -36,6 +45,9 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
         setContentId(content.id!);
       };
       fetch();
+      setIsCreate(false);
+    } else {
+      setIsCreate(true);
     }
   }, [memoId]);
 
@@ -46,6 +58,16 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     } else {
       // create
       memoService.create(loggedUser.username!, title, cells);
+      navigate.push("/");
+    }
+  };
+
+  const deleteMemo = async () => {
+    if (memoId) {
+      // soft delete
+      memoService.deleteMemo(contentId, memoId);
+      // wait 1 second for firestore update :(
+      await new Promise((r) => setTimeout(r, 1000));
       navigate.push("/");
     }
   };
@@ -68,11 +90,38 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
         <AddCell forceVisible={cells.length === 0} previousCellId={null} />
         {renderedCells}
       </div>
-      <Button onClick={() => console.log(JSON.stringify(cells))}>Test</Button>
       {logged ? (
         <>
           <Button onClick={save}>Save</Button>
-          <Button>Delete</Button>
+
+          {isCreate ? (
+            <></>
+          ) : (
+            <>
+              <Button
+                onClick={() => {
+                  setDeleting(true);
+                }}
+              >
+                Delete
+              </Button>
+              <Dialog open={deleting}>
+                <DialogContent>
+                  <Typography>Are you sure to delete this memo?</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {
+                      setDeleting(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button onClick={deleteMemo}>Confirm</Button>
+                </DialogActions>
+              </Dialog>
+            </>
+          )}
         </>
       ) : (
         <></>
