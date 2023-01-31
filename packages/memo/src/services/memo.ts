@@ -1,3 +1,4 @@
+import { MemoDto } from "dtos";
 import {
   collection,
   doc,
@@ -13,18 +14,16 @@ import {
 } from "firebase/firestore";
 import { Memo, MemoContent } from "models/memo";
 import { Cell } from "pages/Coding/state/cell";
-import { contentsRef, db, memosRef } from "repository";
+import { memo } from "react";
+import { contentsRef, db, memosRef, usersRef } from "repository";
+import * as userService from "./user";
 
-export const create = async (
-  username: string,
-  bookTitle: string,
-  cells: Cell[]
-) => {
+export const create = async (uid: string, bookTitle: string, cells: Cell[]) => {
   // create new memo
   const memoRef = doc(memosRef);
   const memo: Memo = {
     id: memoRef.id,
-    author: username,
+    authorId: uid,
     title: bookTitle,
     tags: [],
     createdAt: Timestamp.now(),
@@ -76,20 +75,49 @@ export const deleteMemo = async (contentId: string, memoId: string) => {
   const myTimeout = setTimeout("", 500);
 };
 
-export const getMemos = async (): Promise<Memo[]> => {
-  let datas: any = [];
-  const q = query(
+const getHomepageMemos = async () => {
+  let memos: any = [];
+  const queryMemo = query(
     memosRef,
     where("delete", "==", false),
     orderBy("modifiedAt", "desc"),
     limit(10)
   );
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    console.log("coding section fetch memo ID : ", doc.id);
-    datas.push(doc.data());
+  const queryMemoSnapshot = await getDocs(queryMemo);
+  queryMemoSnapshot.forEach((doc) => {
+    memos.push(doc.data());
   });
-  return datas;
+  return memos;
+};
+
+const getMapAuthorByIds = async (memos) => {
+  const authorIds = new Map();
+  for (let i = 0; i < memos.length; i++) {
+    authorIds.set(memos[i].authorId, "");
+  }
+  const keys = Array.from(authorIds.keys());
+  const queryUser = query(usersRef, where("uid", "in", keys));
+  const queryUserSnapshot = await getDocs(queryUser);
+  queryUserSnapshot.forEach((doc) => {
+    authorIds.set(doc.data().uid, doc.data().username);
+  });
+  return authorIds;
+};
+
+export const getMemos = async (): Promise<MemoDto[]> => {
+  const memos = await getHomepageMemos();
+  const authorIds = await getMapAuthorByIds(memos);
+  const memoDtos: MemoDto[] = [];
+  for (let i = 0; i < memos.length; i++) {
+    const memoDto: MemoDto = {
+      author: authorIds.get(memos[i].authorId),
+      title: memos[i].title,
+      tags: memos[i].tags,
+      id: memos[i].id,
+    };
+    memoDtos.push(memoDto);
+  }
+  return memoDtos;
 };
 
 export const getMemo = async (memoId: string): Promise<MemoContent> => {

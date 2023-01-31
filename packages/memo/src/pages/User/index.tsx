@@ -48,7 +48,7 @@ const CodingPageComponent = () => {
     const memoId = memoRef.id;
     const memo: Memo = {
       title: "How to use Spring Boot Web Starter",
-      author: "memo",
+      authorId: "memo",
       tags: ["java", "spring boot", "starter"],
       id: memoId,
       createdAt: now,
