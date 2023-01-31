@@ -22,12 +22,11 @@ export const create = async (
 ) => {
   // create new memo
   const memoRef = doc(memosRef);
-  const memoId = memoRef.id;
   const memo: Memo = {
+    id: memoRef.id,
     author: username,
     title: bookTitle,
     tags: [],
-    id: memoId,
     createdAt: Timestamp.now(),
     modifiedAt: Timestamp.now(),
     delete: false,
@@ -41,6 +40,7 @@ export const create = async (
     createdAt: Timestamp.now(),
     modifiedAt: Timestamp.now(),
     delete: false,
+    id: contentRef.id,
   };
   await setDoc(contentRef, content);
 };
@@ -48,17 +48,17 @@ export const create = async (
 export const update = async (
   memoId: string,
   contentId: string,
-  bookTitle: string,
+  title: string,
   cells: Cell[]
 ) => {
   await updateDoc(doc(db, "contents", contentId), {
-    "memo.title": bookTitle,
+    "memo.title": title,
     "memo.modifiedAt": Timestamp.now(),
     content: JSON.stringify(cells),
   });
   // update memo title
   await updateDoc(doc(db, "memos", memoId), {
-    title: bookTitle,
+    title: title,
     modifiedAt: Timestamp.now(),
   });
 };
@@ -94,15 +94,20 @@ export const getMemos = async (): Promise<Memo[]> => {
 
 export const getMemo = async (memoId: string): Promise<MemoContent> => {
   let data: any = {};
-  const queryContent = query(contentsRef, where("memo.id", "==", memoId));
-  const queryContentSnapshot = await getDocs(queryContent);
-  queryContentSnapshot.forEach((doc) => {
+  const q = query(contentsRef, where("memo.id", "==", memoId));
+  const snapshot = await getDocs(q);
+  snapshot.forEach((doc) => {
     data = doc.data();
   });
   return data;
 };
 
-export const getMemoTitle = async (memoId: string): Promise<Memo> => {
-  const memoSnap = await getDoc(doc(db, "memos", memoId));
-  return memoSnap.data() as Memo;
+export const getMemoContent = async (memoId: string): Promise<MemoContent> => {
+  let data: any = {};
+  const q = query(contentsRef, where("memo.id", "==", memoId));
+  const snapshot = await getDocs(q);
+  snapshot.forEach((doc) => {
+    data = doc.data();
+  });
+  return data;
 };

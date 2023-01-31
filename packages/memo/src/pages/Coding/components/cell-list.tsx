@@ -20,6 +20,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     order.map((id) => data[id])
   );
 
+  const [contentId, setContentId] = useState("");
   const [title, setTitle] = useState("");
   const loggedUser = useRecoilValue(AuthUser);
   const logged = loggedUser.uid !== undefined;
@@ -30,8 +31,9 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     if (memoId) {
       getMemo(memoId);
       const fetch = async () => {
-        const memo = await memoService.getMemoTitle(memoId);
-        setTitle(memo.title);
+        const content = await memoService.getMemoContent(memoId);
+        setTitle(content.memo.title);
+        setContentId(content.id!);
       };
       fetch();
     }
@@ -40,6 +42,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
   const save = async () => {
     if (memoId) {
       // update
+      memoService.update(memoId, contentId, title, cells);
     } else {
       // create
       memoService.create(loggedUser.username!, title, cells);
