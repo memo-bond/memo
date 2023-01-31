@@ -21,7 +21,7 @@ const ProfilePageComponent = () => {
   const loggedUser = useRecoilValue(AuthUser);
   const setLoggedUser = useSetRecoilState(AuthUser);
   const [edit, setEdit] = useState<boolean>(false);
-  const [username, setUsername] = useState();
+  const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
 
   const saveForm = async () => {
@@ -51,6 +51,7 @@ const ProfilePageComponent = () => {
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <TextField
+                required
                 color="primary"
                 label="Username"
                 name="username"
@@ -59,6 +60,7 @@ const ProfilePageComponent = () => {
             </Grid>
             <Grid item xs={8}>
               <TextField
+                required
                 color="primary"
                 label="Display Name"
                 name="displayName"

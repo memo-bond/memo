@@ -32,6 +32,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
   const [deleting, setDeleting] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
   const loggedUser = useRecoilValue(AuthUser);
+  const [canUpdate, setCanUpdate] = useState(false);
   const logged = loggedUser.uid !== undefined;
   const { getMemo } = useActions();
   const navigate = useHistory();
@@ -43,6 +44,9 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
         const content = await memoService.getMemoContent(memoId);
         setTitle(content.memo.title);
         setContentId(content.id!);
+        if (content.memo.authorId === loggedUser.uid) {
+          setCanUpdate(true);
+        }
       };
       fetch();
       setIsCreate(false);
@@ -58,7 +62,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
       alert("Saved");
     } else {
       // create
-      memoService.create(loggedUser.username!, title, cells);
+      memoService.create(loggedUser.uid, title, cells);
       navigate.push("/");
     }
   };
@@ -93,12 +97,9 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
       </div>
       {logged ? (
         <>
-          <Button onClick={save}>Save</Button>
-
-          {isCreate ? (
-            <></>
-          ) : (
+          {canUpdate ? (
             <>
+              <Button onClick={save}>Save</Button>
               <Button
                 onClick={() => {
                   setDeleting(true);
@@ -106,27 +107,36 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
               >
                 Delete
               </Button>
-              <Dialog open={deleting}>
-                <DialogContent>
-                  <Typography>Are you sure to delete this memo?</Typography>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={() => {
-                      setDeleting(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button onClick={deleteMemo}>Confirm</Button>
-                </DialogActions>
-              </Dialog>
             </>
+          ) : (
+            <></>
+          )}
+          {isCreate ? (
+            <>
+              <Button onClick={save}>Save</Button>
+            </>
+          ) : (
+            <></>
           )}
         </>
       ) : (
         <></>
       )}
+      <Dialog open={deleting}>
+        <DialogContent>
+          <Typography>Are you sure to delete this memo?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setDeleting(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button onClick={deleteMemo}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

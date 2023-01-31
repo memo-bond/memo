@@ -8,6 +8,10 @@ import {
   ListItem,
   Typography,
   Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import logo from "assets/images/logo.svg";
@@ -25,6 +29,7 @@ import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { localStorageEffect } from "services/utils";
 import { db } from "repository";
 import { firebaseAuth } from "services/auth";
+import * as userService from "../../services/user";
 
 export function ListItemLink(props: ListItemProps<"a", { button?: true }>) {
   return <ListItem button component="a" {...props} />;
@@ -42,6 +47,9 @@ const Header = () => {
   const authUser = useRecoilValue(AuthUser);
   const css = useStyles();
   const [loggedIn, setLoggedIn] = useState<boolean>();
+  const [isCreateUser, setIsCreateUser] = useState(false);
+  const [username, setUsername] = useState("");
+  const [googleLoggedUser, setGoogleLoggedUser] = useState<any>();
   const resetAuthUser = useResetRecoilState(AuthUser);
   const navigate = useHistory();
 
@@ -61,32 +69,54 @@ const Header = () => {
   const startUi = async () => {
     signInWithPopup(firebaseAuth, new GoogleAuthProvider())
       .then(async (result) => {
-        const user = result.user;
-        setLoggedIn(true);
-        const loggedUser = {
-          uid: user.uid,
-          email: user.email,
-          name: user.displayName,
-          picture: user.photoURL,
-          username: user.email?.substring(0, user.email?.indexOf("@")),
-        };
-        setAuthUser(loggedUser);
-        localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("AuthUser", JSON.stringify(loggedUser));
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          console.log("Document data:", userSnap.data());
+        const userResult = result.user;
+        const user = await userService.getUser(userResult.uid);
+        if (user.uid !== undefined) {
+          const loggedUser = {
+            uid: user.uid,
+            email: user.email,
+            name: user.name,
+            picture: user.picture,
+            username: user.username,
+          };
+          setAuthUser(loggedUser);
+          setLoggedIn(true);
         } else {
-          // create new user
-          const usersRef = collection(db, "users");
-          await setDoc(doc(usersRef, user.uid), loggedUser);
+          // create new user with data from Google Account
+          setGoogleLoggedUser(userResult);
+          setIsCreateUser(true);
         }
       })
       .catch((error: any) => {
         console.log("login error ", error.message);
       });
   };
+
+  const createUser = async () => {
+    // validate unique username
+    const snapUsername = await getDoc(doc(db, "users", username));
+
+    // create new user
+    if (snapUsername.data() === undefined) {
+      const newUser = {
+        uid: googleLoggedUser.uid,
+        email: googleLoggedUser.email,
+        name: googleLoggedUser.displayName,
+        picture: googleLoggedUser.photoURL,
+        username,
+      };
+      // add unique username
+      await setDoc(doc(db, "users", username), {
+        ...newUser,
+      });
+      setAuthUser(newUser);
+      setLoggedIn(true);
+      setIsCreateUser(false);
+    } else {
+      alert("Username is unvailable, please choose other Username");
+    }
+  };
+
   return (
     <header className={css.root}>
       <Container maxWidth="lg" fixed>
@@ -159,7 +189,7 @@ const Header = () => {
                         variant="text"
                         size="small"
                       >
-                        {authUser.name}
+                        {authUser.username}
                       </Button>
                     </Link>
 
@@ -184,6 +214,28 @@ const Header = () => {
             </Hidden>
           </Grid>
           <div id="firebaseui-auth-container"></div>
+          <Dialog open={isCreateUser}>
+            <DialogContent>
+              <Typography>Please choose your username</Typography>
+            </DialogContent>
+            <TextField
+              required
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  setIsCreateUser(false);
+                  logout();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button onClick={createUser}>Confirm</Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Container>
     </header>

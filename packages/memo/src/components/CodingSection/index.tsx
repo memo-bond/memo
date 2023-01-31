@@ -6,6 +6,7 @@ import { Memo } from "models/memo";
 import { useHistory } from "react-router-dom";
 import Spin from "ui/Spin";
 import * as memoService from "../../services/memo";
+import { MemoDto } from "dtos";
 
 export const paymentCodeFormat = [
   {
@@ -27,7 +28,7 @@ export const paymentCodeFormat = [
 
 const CodingSection = () => {
   const css = useStyles();
-  const [memos, setMemos] = useState<Memo[]>();
+  const [memos, setMemos] = useState<MemoDto[]>();
   const navigate = useHistory();
   useEffect(() => {
     if (!memos) {
@@ -43,7 +44,7 @@ const CodingSection = () => {
     }
   }, [memos]);
 
-  const goToBlog = (memo: Memo) => {
+  const goToBlog = (memo: MemoDto) => {
     navigate.push(
       "/code/" + memo.title.toLowerCase().replaceAll(" ", "-") + "-" + memo.id
     );
@@ -68,7 +69,7 @@ const CodingSection = () => {
           spacing={2}
         >
           {memos ? (
-            memos.map((m: Memo, i) => (
+            memos.map((m: MemoDto, i) => (
               <>
                 <Grid item xs={16} key={i} style={{ padding: "20px" }}>
                   <Card style={{ padding: "30px" }}>

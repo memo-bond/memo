@@ -7,7 +7,7 @@ interface Base {
   id: string | undefined;
 }
 export interface Memo extends Base {
-  author: string;
+  authorId: string;
   title: string;
   tags: string[];
 }
