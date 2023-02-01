@@ -8,24 +8,6 @@ import Spin from "ui/Spin";
 import * as memoService from "../../services/memo";
 import { MemoDto } from "dtos";
 
-export const paymentCodeFormat = [
-  {
-    image: memo,
-  },
-  {
-    image: memo,
-  },
-  {
-    image: memo,
-  },
-  {
-    image: memo,
-  },
-  {
-    image: memo,
-  },
-];
-
 const CodingSection = () => {
   const css = useStyles();
   const [memos, setMemos] = useState<MemoDto[]>();
@@ -44,7 +26,7 @@ const CodingSection = () => {
     }
   }, [memos]);
 
-  const goToBlog = (memo: MemoDto) => {
+  const goToMemo = (memo: MemoDto) => {
     navigate.push(
       "/code/" + memo.title.toLowerCase().replaceAll(" ", "-") + "-" + memo.id
     );
@@ -69,7 +51,7 @@ const CodingSection = () => {
           spacing={2}
         >
           {memos ? (
-            memos.map((m: MemoDto, i) => (
+            memos.map((memo: MemoDto, i) => (
               <>
                 <Grid item xs={16} key={i} style={{ padding: "20px" }}>
                   <Card style={{ padding: "30px" }}>
@@ -78,10 +60,14 @@ const CodingSection = () => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      <Button onClick={() => goToBlog(m)}>{m.title}</Button>
+                      <Button onClick={() => goToMemo(memo)}>
+                        {memo.title}
+                      </Button>
                     </Typography>
-                    <Typography className={css.navBtn}>{m.author}</Typography>
-                    <Typography className={css.navBtn}>{m.tags}</Typography>
+                    <Typography className={css.navBtn}>
+                      {memo.author}
+                    </Typography>
+                    <Typography className={css.navBtn}>{memo.tags}</Typography>
                   </Card>
                 </Grid>
               </>

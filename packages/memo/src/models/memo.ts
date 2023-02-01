@@ -4,7 +4,7 @@ interface Base {
   createdAt: Timestamp;
   modifiedAt: Timestamp;
   delete: boolean;
-  id: string | undefined;
+  id: string;
 }
 export interface Memo extends Base {
   authorId: string;
