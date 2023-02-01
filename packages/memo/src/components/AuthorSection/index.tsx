@@ -8,15 +8,17 @@ import { User } from "models/user";
 
 const AuthorSection = () => {
   const css = useStyles();
-  const [authors, setAuthors] = useState([]);
+  const [authors, setAuthors] = useState<any[]>();
   const navigate = useHistory();
   useEffect(() => {
     try {
-      const fetchData = async () => {
-        let datas = await userService.getTopAuthor();
-        setAuthors(datas);
-      };
-      fetchData();
+      if (!authors) {
+        const fetchData = async () => {
+          let datas = await userService.getTopAuthor();
+          setAuthors(datas);
+        };
+        fetchData();
+      }
     } catch (err: any) {
       console.log("Fetch memos ", err.message);
     }
