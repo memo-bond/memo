@@ -139,3 +139,15 @@ export const getMemoContent = async (memoId: string): Promise<MemoContent> => {
   });
   return data;
 };
+
+export const getMemosByAuthorId = async (authorId: string) => {
+  let memos: Memo[] = [];
+  const q = query(memosRef, where("authorId", "==", authorId));
+  const snapshot = await getDocs(q);
+  snapshot.forEach((doc) => {
+    memos.push(doc.data() as Memo);
+  });
+  console.log("memos ", JSON.stringify(memos));
+
+  return memos;
+};

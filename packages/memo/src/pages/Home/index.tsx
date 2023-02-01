@@ -1,12 +1,11 @@
 import BannerSection from "components/BannerSection";
-import IntroSection from "components/IntroSection";
-import ReviewSection from "components/ReviewSection";
 import Footer from "layout/Footer";
 import Header from "layout/Header";
-import React, { memo } from "react";
+import { memo } from "react";
 import useStyles from "./styles";
-import logo from "assets/images/logo.svg";
 import CodingSection from "components/CodingSection";
+import AuthorSection from "components/AuthorSection";
+import { Button, Grid, Typography } from "@mui/material";
 
 const HomePageComponent = () => {
   const css = useStyles();
@@ -15,9 +14,28 @@ const HomePageComponent = () => {
       <div id="sectionBody" className={css.landingBody}>
         <Header />
         <BannerSection />
-        {/* <IntroSection /> */}
-        {/* <ReviewSection /> */}
-        <CodingSection />
+        <Grid
+          style={{
+            display: "flex",
+            maxWidth: "120rem",
+            margin: "auto",
+            borderRadius: "16px",
+          }}
+          alignItems="center"
+          justifyContent="center"
+          container
+          spacing={2}
+        >
+          <Grid item>
+            <Button>Top Memo</Button>
+            <CodingSection />
+          </Grid>
+          <Grid item>
+            <Button>Top Author</Button>
+            <AuthorSection />
+          </Grid>
+        </Grid>
+
         <Footer />
       </div>
     </div>

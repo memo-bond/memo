@@ -1,35 +1,31 @@
 import { useEffect, useState } from "react";
 import { Box, Grid, Card, Typography, Button } from "@mui/material";
 import useStyles from "./styles";
-import memo from "assets/images/banner.png";
-import { Memo } from "models/memo";
 import { useHistory } from "react-router-dom";
 import Spin from "ui/Spin";
 import * as memoService from "../../services/memo";
+import * as userService from "../../services/user";
 import { MemoDto } from "dtos";
+import { User } from "models/user";
 
-const CodingSection = () => {
+const AuthorSection = () => {
   const css = useStyles();
-  const [memos, setMemos] = useState<MemoDto[]>();
+  const [authors, setAuthors] = useState([]);
   const navigate = useHistory();
   useEffect(() => {
-    if (!memos) {
-      try {
-        const fetchData = async () => {
-          let datas = await memoService.getMemos();
-          setMemos(datas);
-        };
-        fetchData();
-      } catch (err: any) {
-        console.log("Fetch memos ", err.message);
-      }
+    try {
+      const fetchData = async () => {
+        let datas = await userService.getTopAuthor();
+        setAuthors(datas);
+      };
+      fetchData();
+    } catch (err: any) {
+      console.log("Fetch memos ", err.message);
     }
-  }, [memos]);
+  }, [authors]);
 
-  const goToMemo = (memo: MemoDto) => {
-    navigate.push(
-      "/code/" + memo.title.toLowerCase().replaceAll(" ", "-") + "-" + memo.id
-    );
+  const goToAuthor = (memo: User) => {
+    navigate.push("/author/" + memo.username);
   };
 
   return (
@@ -50,8 +46,8 @@ const CodingSection = () => {
           container
           spacing={2}
         >
-          {memos ? (
-            memos.map((memo: MemoDto, i) => (
+          {authors ? (
+            authors.map((m: User, i) => (
               <>
                 <Grid item xs={16} key={i} style={{ padding: "20px" }}>
                   <Card style={{ padding: "30px" }}>
@@ -60,14 +56,11 @@ const CodingSection = () => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      <Button onClick={() => goToMemo(memo)}>
-                        {memo.title}
+                      <Button onClick={() => goToAuthor(m)}>
+                        {m.username}
                       </Button>
                     </Typography>
-                    <Typography className={css.navBtn}>
-                      {memo.author}
-                    </Typography>
-                    <Typography className={css.navBtn}>{memo.tags}</Typography>
+                    <Typography className={css.navBtn}>{m.name}</Typography>
                   </Card>
                 </Grid>
               </>
@@ -83,4 +76,4 @@ const CodingSection = () => {
   );
 };
 
-export default CodingSection;
+export default AuthorSection;
