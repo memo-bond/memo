@@ -9,8 +9,6 @@ export const getUser = async (uid: string): Promise<User> => {
   snapshot.forEach((doc) => {
     user = doc.data();
   });
-  console.log("user ", user);
-
   return user;
 };
 

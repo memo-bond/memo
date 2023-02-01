@@ -3,9 +3,7 @@ import { Box, Grid, Card, Typography, Button } from "@mui/material";
 import useStyles from "./styles";
 import { useHistory } from "react-router-dom";
 import Spin from "ui/Spin";
-import * as memoService from "../../services/memo";
 import * as userService from "../../services/user";
-import { MemoDto } from "dtos";
 import { User } from "models/user";
 
 const AuthorSection = () => {
