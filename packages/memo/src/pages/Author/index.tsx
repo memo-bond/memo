@@ -18,7 +18,7 @@ const AuthorPageComponent = () => {
     const author = window.location.pathname.split("/")[2];
     const fetch = async () => {
       const authorId = await userService.getUserIdByUsername(author);
-      if (authorId) {
+      if (authorId && memos.length === 0) {
         const memos = await memoService.getMemosByAuthorId(authorId);
         const memoDtos: MemoDto[] = [];
         memos.forEach((m) => {
@@ -29,12 +29,12 @@ const AuthorPageComponent = () => {
             id: m.id,
           };
           memoDtos.push(memoDto);
-          setMemos(memoDtos);
         });
+        setMemos(memoDtos);
       }
     };
     fetch();
-  }, []);
+  }, [memos]);
 
   const goToMemo = (memo: MemoDto) => {
     navigate.push(
@@ -61,27 +61,31 @@ const AuthorPageComponent = () => {
             >
               {memos ? (
                 memos.map((m: MemoDto, i) => {
+                  console.log("memo ", m);
+
                   return (
                     <>
-                      <Grid item xs={24} key={i} style={{ padding: "20px" }}>
-                        <Card style={{ padding: "30px" }}>
-                          <Typography
-                            sx={{ fontSize: 14 }}
-                            color="text.secondary"
-                            gutterBottom
-                          >
-                            <Button onClick={() => goToMemo(m)}>
-                              {m.title}
-                            </Button>
-                          </Typography>
-                          <Typography className={css.navBtn}>
-                            {m.author}
-                          </Typography>
-                          <Typography className={css.navBtn}>
-                            {m.tags}
-                          </Typography>
-                        </Card>
-                      </Grid>
+                      <div className={css.memoBlock}>
+                        <Grid item xs={24} key={i} style={{ padding: "20px" }}>
+                          <Card style={{ padding: "30px" }}>
+                            <Typography
+                              sx={{ fontSize: 14 }}
+                              color="text.secondary"
+                              gutterBottom
+                            >
+                              <Button onClick={() => goToMemo(m)}>
+                                {m.title}
+                              </Button>
+                            </Typography>
+                            <Typography className={css.navBtn}>
+                              {m.author}
+                            </Typography>
+                            <Typography className={css.navBtn}>
+                              {m.tags}
+                            </Typography>
+                          </Card>
+                        </Grid>
+                      </div>
                     </>
                   );
                 })

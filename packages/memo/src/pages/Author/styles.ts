@@ -12,6 +12,9 @@ const colorText = alpha(white01, 0.87);
 
 const styles = ({ spacing, breakpoints }: Theme) =>
   createStyles({
+    memoBlock: {
+      width: "500px",
+    },
     homeRoot: {
       overflowX: "hidden",
       overflowY: "hidden",
