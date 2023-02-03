@@ -42,9 +42,12 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
       getMemo(memoId);
       const fetch = async () => {
         const content = await memoService.getMemoContent(memoId);
+        console.log("content ", content);
+        console.log("loggedUser.username ", loggedUser.username);
+
         setTitle(content.memo.title);
         setContentId(content.id!);
-        if (content.memo.authorId === loggedUser.uid) {
+        if (content.memo.author === loggedUser.username) {
           setCanUpdate(true);
         }
       };
@@ -62,7 +65,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
       alert("Saved");
     } else {
       // create
-      memoService.create(loggedUser.uid, title, cells);
+      memoService.create(loggedUser.username, title, cells);
       navigate.push("/");
     }
   };

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Grid, Card, Typography, Button } from "@mui/material";
 import useStyles from "./styles";
-import memo from "assets/images/banner.png";
-import { Memo } from "models/memo";
 import { useHistory } from "react-router-dom";
 import Spin from "ui/Spin";
 import * as memoService from "../../services/memo";

@@ -2,7 +2,6 @@ import Footer from "layout/Footer";
 import Header from "layout/Header";
 import { memo, useEffect } from "react";
 import useStyles from "./styles";
-import * as userService from "../../services/user";
 import * as memoService from "../../services/memo";
 import { useHistory } from "react-router-dom";
 import { Box, Button, Card, Grid, Typography } from "@mui/material";
@@ -13,24 +12,13 @@ import { MemoDto } from "dtos";
 const AuthorPageComponent = () => {
   const css = useStyles();
   const navigate = useHistory();
-  const [memos, setMemos] = useState<MemoDto[]>([]);
+  const [memos, setMemos] = useState<MemoDto[]>();
   useEffect(() => {
     const author = window.location.pathname.split("/")[2];
     const fetch = async () => {
-      const authorId = await userService.getUserIdByUsername(author);
-      if (authorId && memos.length === 0) {
-        const memos = await memoService.getMemosByAuthorId(authorId);
-        const memoDtos: MemoDto[] = [];
-        memos.forEach((m) => {
-          const memoDto: MemoDto = {
-            author: author,
-            title: m.title,
-            tags: m.tags,
-            id: m.id,
-          };
-          memoDtos.push(memoDto);
-        });
-        setMemos(memoDtos);
+      if (!memos) {
+        const memos = await memoService.getMemosByAuthor(author);
+        setMemos(memos);
       }
     };
     fetch();
@@ -61,11 +49,9 @@ const AuthorPageComponent = () => {
             >
               {memos ? (
                 memos.map((m: MemoDto, i) => {
-                  console.log("memo ", m);
-
                   return (
                     <>
-                      <div className={css.memoBlock}>
+                      <div className={css.memoBlock} key={i}>
                         <Grid item xs={24} key={i} style={{ padding: "20px" }}>
                           <Card style={{ padding: "30px" }}>
                             <Typography
@@ -106,7 +92,3 @@ const AuthorPageComponent = () => {
 const Author = memo(AuthorPageComponent);
 Author.displayName = "Author";
 export default Author;
-
-const MemoSection = () => {
-  return <></>;
-};
