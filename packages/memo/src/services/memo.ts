@@ -18,12 +18,16 @@ import { memo } from "react";
 import { contentsRef, db, memosRef, usersRef } from "repository";
 import * as userService from "./user";
 
-export const create = async (uid: string, bookTitle: string, cells: Cell[]) => {
+export const create = async (
+  username: string,
+  bookTitle: string,
+  cells: Cell[]
+) => {
   // create new memo
   const memoRef = doc(memosRef);
   const memo: Memo = {
     id: memoRef.id,
-    authorId: uid,
+    author: username,
     title: bookTitle,
     tags: [],
     createdAt: Timestamp.now(),
@@ -90,27 +94,12 @@ const getHomepageMemos = async () => {
   return memos;
 };
 
-const getMapAuthorByIds = async (memos) => {
-  const authorIds = new Map();
-  for (let i = 0; i < memos.length; i++) {
-    authorIds.set(memos[i].authorId, "");
-  }
-  const keys = Array.from(authorIds.keys());
-  const queryUser = query(usersRef, where("uid", "in", keys));
-  const queryUserSnapshot = await getDocs(queryUser);
-  queryUserSnapshot.forEach((doc) => {
-    authorIds.set(doc.data().uid, doc.data().username);
-  });
-  return authorIds;
-};
-
 export const getMemos = async (): Promise<MemoDto[]> => {
   const memos = await getHomepageMemos();
-  const authorIds = await getMapAuthorByIds(memos);
   const memoDtos: MemoDto[] = [];
   for (let i = 0; i < memos.length; i++) {
     const memoDto: MemoDto = {
-      author: authorIds.get(memos[i].authorId),
+      author: memos[i].author,
       title: memos[i].title,
       tags: memos[i].tags,
       id: memos[i].id,
@@ -140,14 +129,26 @@ export const getMemoContent = async (memoId: string): Promise<MemoContent> => {
   return data;
 };
 
-export const getMemosByAuthorId = async (authorId: string) => {
+export const getMemosByAuthor = async (author: string): Promise<MemoDto[]> => {
   let memos: Memo[] = [];
-  const q = query(memosRef, where("authorId", "==", authorId));
+  const q = query(
+    memosRef,
+    where("author", "==", author),
+    where("delete", "==", false)
+  );
   const snapshot = await getDocs(q);
   snapshot.forEach((doc) => {
     memos.push(doc.data() as Memo);
   });
-  console.log("memos ", JSON.stringify(memos));
-
-  return memos;
+  const memoDtos: MemoDto[] = [];
+  memos.forEach((m) => {
+    const memoDto: MemoDto = {
+      author: author,
+      title: m.title,
+      tags: m.tags,
+      id: m.id,
+    };
+    memoDtos.push(memoDto);
+  });
+  return memoDtos;
 };
