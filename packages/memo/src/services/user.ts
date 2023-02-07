@@ -31,6 +31,11 @@ export const getUserIdByUsername = async (username: string) => {
 };
 
 export const getTopAuthor = async () => {
+  const res = await axios(API + "/v1/authors");
+  return res.data;
+};
+
+export const getTopAuthorFirestore = async () => {
   let authors: any = [];
   const q = query(usersRef, limit(10));
   const snapshot = await getDocs(q);
