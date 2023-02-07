@@ -1,54 +1,64 @@
+import { async } from "@firebase/util";
+import axios from "axios";
 import { MemoDto } from "dtos";
 import {
-  collection,
   doc,
-  getDoc,
+  endBefore,
+  getCountFromServer,
   getDocs,
   limit,
+  limitToLast,
   orderBy,
   query,
-  setDoc,
+  startAfter,
   Timestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { Memo, MemoContent } from "models/memo";
 import { Cell } from "pages/Coding/state/cell";
-import { memo } from "react";
-import { contentsRef, db, memosRef, usersRef } from "repository";
-import * as userService from "./user";
+import { contentsRef, db, memosRef } from "repository";
+import { API, createHeaders } from "services";
 
 export const create = async (
-  username: string,
-  bookTitle: string,
-  cells: Cell[]
+  token: string,
+  title: string,
+  cells: Cell[],
+  tags: string | undefined
 ) => {
-  // create new memo
-  const memoRef = doc(memosRef);
-  const memo: Memo = {
-    id: memoRef.id,
-    author: username,
-    title: bookTitle,
-    tags: [],
-    createdAt: Timestamp.now(),
-    modifiedAt: Timestamp.now(),
-    delete: false,
-  };
-  await setDoc(memoRef, memo);
-  // create new content
-  const contentRef = doc(contentsRef);
-  const content: MemoContent = {
-    memo,
-    content: JSON.stringify(cells),
-    createdAt: Timestamp.now(),
-    modifiedAt: Timestamp.now(),
-    delete: false,
-    id: contentRef.id,
-  };
-  await setDoc(contentRef, content);
+  const headers = createHeaders(token);
+  const result = await axios.post(
+    API + "/v1/memos",
+    {
+      title,
+      tags,
+      content: JSON.stringify(cells),
+    },
+    { headers }
+  );
 };
 
 export const update = async (
+  token: string,
+  id: string,
+  title: string,
+  cells: Cell[],
+  tags: string | undefined
+) => {
+  const headers = createHeaders(token);
+  const res = await axios.put(
+    API + "/v1/memos/" + id,
+    {
+      title,
+      content: JSON.stringify(cells),
+      tags,
+    },
+    { headers }
+  );
+  return res.data;
+};
+
+export const updateFirestore = async (
   memoId: string,
   contentId: string,
   title: string,
@@ -66,7 +76,15 @@ export const update = async (
   });
 };
 
-export const deleteMemo = async (contentId: string, memoId: string) => {
+export const deleteMemo = async (token: string, memoId: string) => {
+  const headers = createHeaders(token);
+  const res = await axios.delete(API + "/v1/memos/" + memoId, { headers });
+  return res;
+};
+export const deleteMemoFirestore = async (
+  contentId: string,
+  memoId: string
+) => {
   // soft delete
   await updateDoc(doc(db, "contents", contentId), {
     "memo.modifiedAt": Timestamp.now(),
@@ -94,6 +112,11 @@ const getHomepageMemos = async () => {
   return memos;
 };
 
+export const getBeMemos = async () => {
+  const res = await axios.get(API + "/v1/memos?page=1&pageSize=10");
+  return res.data;
+};
+
 export const getMemos = async (): Promise<MemoDto[]> => {
   const memos = await getHomepageMemos();
   const memoDtos: MemoDto[] = [];
@@ -109,6 +132,11 @@ export const getMemos = async (): Promise<MemoDto[]> => {
   return memoDtos;
 };
 
+export const getBeMemo = async (memoId: string) => {
+  const res = await axios.get(API + "/v1/memos/" + memoId);
+  return res.data;
+};
+
 export const getMemo = async (memoId: string): Promise<MemoContent> => {
   let data: any = {};
   const q = query(contentsRef, where("memo.id", "==", memoId));
@@ -117,6 +145,11 @@ export const getMemo = async (memoId: string): Promise<MemoContent> => {
     data = doc.data();
   });
   return data;
+};
+
+export const getBeMemoContent = async (memoId: string) => {
+  const res = await axios.get(API + "/v1/memos/" + memoId);
+  return res.data;
 };
 
 export const getMemoContent = async (memoId: string): Promise<MemoContent> => {
@@ -129,17 +162,79 @@ export const getMemoContent = async (memoId: string): Promise<MemoContent> => {
   return data;
 };
 
-export const getMemosByAuthor = async (author: string): Promise<MemoDto[]> => {
-  let memos: Memo[] = [];
-  const q = query(
-    memosRef,
-    where("author", "==", author),
-    where("delete", "==", false)
+export const getMemosByAuthor = async (
+  author: string,
+  page: number,
+  pageSize: number
+) => {
+  const res = await axios.get(
+    API + `/v1/memos?page=${page}&pageSize=${pageSize}&author=${author}`
   );
-  const snapshot = await getDocs(q);
-  snapshot.forEach((doc) => {
-    memos.push(doc.data() as Memo);
-  });
+  return res.data;
+};
+
+export const getMemosByAuthorFirestore = async (
+  author: string,
+  pageSize: number,
+  firstSnapshot: any,
+  lastSnapshot: any
+): Promise<MemoDto[]> => {
+  let memos: Memo[] = [];
+  if (firstSnapshot === undefined && lastSnapshot === undefined) {
+    console.log("first page");
+    const q = query(
+      memosRef,
+      where("author", "==", author),
+      where("delete", "==", false),
+      orderBy("modifiedAt", "desc"),
+      limit(pageSize)
+    );
+    const snapshot = await getDocs(q);
+    firstSnapshot = snapshot.docs[0];
+    lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
+    snapshot.forEach((doc) => {
+      memos.push(doc.data() as Memo);
+    });
+  } else if (lastSnapshot) {
+    // next page
+    console.log("next");
+
+    const q = query(
+      memosRef,
+      where("author", "==", author),
+      where("delete", "==", false),
+      orderBy("modifiedAt", "desc"),
+      startAfter(lastSnapshot),
+      limit(pageSize)
+    );
+    const snapshot = await getDocs(q);
+    firstSnapshot = snapshot.docs[0];
+    lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
+    snapshot.forEach((doc) => {
+      memos.push(doc.data() as Memo);
+    });
+  } else if (firstSnapshot) {
+    // previous page
+    console.log("previous");
+
+    const q = query(
+      memosRef,
+      where("author", "==", author),
+      where("delete", "==", false),
+      orderBy("modifiedAt", "desc"),
+      endBefore(firstSnapshot),
+      limitToLast(pageSize)
+    );
+    const snapshot = await getDocs(q);
+    firstSnapshot = snapshot.docs[0];
+    lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
+    snapshot.forEach((doc) => {
+      console.log("doc ", doc.data());
+
+      memos.push(doc.data() as Memo);
+    });
+  }
+
   const memoDtos: MemoDto[] = [];
   memos.forEach((m) => {
     const memoDto: MemoDto = {
@@ -151,4 +246,14 @@ export const getMemosByAuthor = async (author: string): Promise<MemoDto[]> => {
     memoDtos.push(memoDto);
   });
   return memoDtos;
+};
+
+export const countMemosByAuthor = async (author: string): Promise<number> => {
+  const q = query(
+    memosRef,
+    where("author", "==", author),
+    where("delete", "==", false)
+  );
+  const snapshot = await getCountFromServer(q);
+  return snapshot.data().count;
 };

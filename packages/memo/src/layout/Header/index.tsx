@@ -30,6 +30,8 @@ import { localStorageEffect } from "services/utils";
 import { db } from "repository";
 import { firebaseAuth } from "services/auth";
 import * as userService from "../../services/user";
+import { log } from "console";
+import axios from "axios";
 
 export function ListItemLink(props: ListItemProps<"a", { button?: true }>) {
   return <ListItem button component="a" {...props} />;
@@ -57,6 +59,12 @@ const Header = () => {
     if (Object.keys(authUser).length > 0) {
       setLoggedIn(true);
       setAuthUser(authUser);
+      // try to get current user token
+      const fetch = async () => {
+        const userToken = await firebaseAuth.currentUser?.getIdToken();
+        console.log("userToken ", userToken);
+      };
+      fetch();
     }
   }, [loggedIn]);
 
@@ -70,19 +78,28 @@ const Header = () => {
     signInWithPopup(firebaseAuth, new GoogleAuthProvider())
       .then(async (result) => {
         const userResult = result.user;
-        const user = await userService.getUser(userResult.uid);
-        if (user.uid !== undefined) {
-          const loggedUser = {
-            uid: user.uid,
-            email: user.email,
-            name: user.name,
-            picture: user.picture,
-            username: user.username,
-          };
-          setAuthUser(loggedUser);
-          setLoggedIn(true);
-        } else {
-          // create new user with data from Google Account
+        const token = await result.user.getIdToken();
+        console.log("Token ", token);
+        // backend request for authentication
+        // 401 not found -> create new user
+        // 200 ok with user dto -> mapping
+        try {
+          const user = await userService.login(token);
+          if (user.status === 200) {
+            console.log("user ", user.data);
+            const loggedUser = {
+              uid: user.data.id,
+              email: user.data.email,
+              name: user.data.name,
+              picture: user.data.picture,
+              username: user.data.username,
+            };
+            console.log("loggedUser ", loggedUser);
+            setAuthUser(loggedUser);
+            setLoggedIn(true);
+          }
+        } catch (err: any) {
+          console.log("not found create new user");
           setGoogleLoggedUser(userResult);
           setIsCreateUser(true);
         }
@@ -93,26 +110,21 @@ const Header = () => {
   };
 
   const createUser = async () => {
-    // validate unique username
-    const snapUsername = await getDoc(doc(db, "users", username));
-
-    // create new user
-    if (snapUsername.data() === undefined) {
+    const token = await firebaseAuth.currentUser?.getIdToken();
+    try {
+      const result = await userService.register(token!, username);
+      const user = result.data;
       const newUser = {
-        uid: googleLoggedUser.uid,
-        email: googleLoggedUser.email,
-        name: googleLoggedUser.displayName,
-        picture: googleLoggedUser.photoURL,
-        username,
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName,
+        picture: user.photoURL,
+        username: user.username,
       };
-      // add unique username
-      await setDoc(doc(db, "users", username), {
-        ...newUser,
-      });
       setAuthUser(newUser);
       setLoggedIn(true);
       setIsCreateUser(false);
-    } else {
+    } catch (err: any) {
       alert("Username is unvailable, please choose other Username");
     }
   };

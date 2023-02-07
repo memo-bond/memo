@@ -77,8 +77,9 @@ export const getMemo = (memoId: string) => {
   return async (dispatch: Dispatch<Action>) => {
     dispatch({ type: ActionType.FETCH_CELLS });
     try {
-      const memoContent = await memoService.getMemo(memoId);
-      const data = JSON.parse(memoContent.content) as Cell[];
+      // const memoContent = await memoService.getMemo(memoId);
+      const res = await memoService.getBeMemo(memoId);
+      const data = JSON.parse(res.content) as Cell[];
       dispatch({
         type: ActionType.FETCH_CELLS_COMPLETE,
         payload: data,

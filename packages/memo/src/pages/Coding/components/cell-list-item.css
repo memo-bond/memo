@@ -11,3 +11,8 @@
 .card-content {
   color: white;
 }
+
+.card-content code {
+  color: rgb(250, 0, 216);
+  font-weight: 600;
+}

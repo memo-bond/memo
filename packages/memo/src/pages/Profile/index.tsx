@@ -15,27 +15,30 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { User } from "models/user";
 import { db } from "repository";
+import { firebaseAuth } from "services/auth";
+import * as userService from "../../services/user";
 
 const ProfilePageComponent = () => {
   const css = useStyles();
   const loggedUser = useRecoilValue(AuthUser);
   const setLoggedUser = useSetRecoilState(AuthUser);
   const [edit, setEdit] = useState<boolean>(false);
-  const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
 
   const saveForm = async () => {
     let user = {} as User;
-    user.username = username;
     user.name = displayName ? displayName : loggedUser.name;
     user.uid = loggedUser.uid;
     user.picture = loggedUser.picture;
     user.email = loggedUser.email;
     try {
-      const usersRef = collection(db, "users");
-      await setDoc(doc(usersRef, loggedUser.uid!), Object.assign({}, user), {
-        merge: true,
-      });
+      const token = await firebaseAuth.currentUser?.getIdToken();
+      userService.update(
+        token!,
+        loggedUser.uid,
+        displayName,
+        loggedUser.picture!
+      );
       setLoggedUser(user);
       setEdit(false);
     } catch (err: any) {
@@ -49,15 +52,6 @@ const ProfilePageComponent = () => {
       {edit ? (
         <div>
           <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <TextField
-                required
-                color="primary"
-                label="Username"
-                name="username"
-                onChange={(e: any) => setUsername(e.target.value)}
-              />
-            </Grid>
             <Grid item xs={8}>
               <TextField
                 required
@@ -88,13 +82,7 @@ const ProfilePageComponent = () => {
             <CardContent>
               <Grid>
                 <Grid item xs={8}>
-                  Email: {loggedUser.email}
-                </Grid>
-                <Grid item xs={8}>
                   Name: {loggedUser.name}
-                </Grid>
-                <Grid item xs={8}>
-                  User Name: {loggedUser.username}
                 </Grid>
               </Grid>
             </CardContent>
