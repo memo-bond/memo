@@ -59,12 +59,6 @@ const Header = () => {
     if (Object.keys(authUser).length > 0) {
       setLoggedIn(true);
       setAuthUser(authUser);
-      // try to get current user token
-      const fetch = async () => {
-        const userToken = await firebaseAuth.currentUser?.getIdToken();
-        console.log("userToken ", userToken);
-      };
-      fetch();
     }
   }, [loggedIn]);
 
@@ -79,14 +73,12 @@ const Header = () => {
       .then(async (result) => {
         const userResult = result.user;
         const token = await result.user.getIdToken();
-        console.log("Token ", token);
         // backend request for authentication
         // 401 not found -> create new user
         // 200 ok with user dto -> mapping
         try {
           const user = await userService.login(token);
           if (user.status === 200) {
-            console.log("user ", user.data);
             const loggedUser = {
               uid: user.data.id,
               email: user.data.email,
@@ -94,7 +86,6 @@ const Header = () => {
               picture: user.data.picture,
               username: user.data.username,
             };
-            console.log("loggedUser ", loggedUser);
             setAuthUser(loggedUser);
             setLoggedIn(true);
           }
