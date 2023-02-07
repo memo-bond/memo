@@ -12,6 +12,9 @@ const colorText = alpha(white01, 0.87);
 
 const styles = ({ spacing, breakpoints }: Theme) =>
   createStyles({
+    contentBody: {
+      "& nav li": {},
+    },
     memoBlock: {
       width: "500px",
     },

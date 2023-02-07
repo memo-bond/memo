@@ -17,6 +17,8 @@ import { useHistory } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { AuthUser } from "layout/Header";
 import * as memoService from "../../../services/memo";
+import { firebaseAuth } from "services/auth";
+import { log } from "console";
 
 interface CellListProps {
   memoId?: string;
@@ -41,12 +43,13 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     if (memoId) {
       getMemo(memoId);
       const fetch = async () => {
-        const content = await memoService.getMemoContent(memoId);
-        console.log("content ", content);
+        // const content = await memoService.getMemoContent(memoId);
+        const content = await memoService.getBeMemoContent(memoId);
+        console.log("content.memo.author ", content.memo.author);
         console.log("loggedUser.username ", loggedUser.username);
-
+        console.log("logged ", logged);
         setTitle(content.memo.title);
-        setContentId(content.id!);
+        setContentId(content.memo.id!);
         if (content.memo.author === loggedUser.username) {
           setCanUpdate(true);
         }
@@ -59,23 +62,26 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
   }, [memoId]);
 
   const save = async () => {
+    const token = await firebaseAuth.currentUser?.getIdToken();
     if (memoId) {
       // update
-      memoService.update(memoId, contentId, title, cells);
+      // memoService.update(memoId, contentId, title, cells);
+      memoService.update(token!, memoId, title, cells, undefined);
       alert("Saved");
     } else {
       // create
-      memoService.create(loggedUser.username, title, cells);
+      memoService.create(token!, title, cells, undefined);
       navigate.push("/");
     }
   };
 
   const deleteMemo = async () => {
     if (memoId) {
-      // soft delete
-      memoService.deleteMemo(contentId, memoId);
-      // wait 1 second for firestore update :(
-      await new Promise((r) => setTimeout(r, 1000));
+      const token = await firebaseAuth.currentUser?.getIdToken();
+      const res = await memoService.deleteMemo(token!, memoId);
+      if (res.status === 200) {
+        alert("Delete successful");
+      }
       navigate.push("/");
     }
   };

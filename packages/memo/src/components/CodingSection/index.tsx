@@ -14,8 +14,9 @@ const CodingSection = () => {
     if (!memos) {
       try {
         const fetchData = async () => {
-          let datas = await memoService.getMemos();
-          setMemos(datas);
+          // let datas = await memoService.getMemos();
+          let res = await memoService.getBeMemos();
+          setMemos(res.datas as MemoDto[]);
         };
         fetchData();
       } catch (err: any) {
