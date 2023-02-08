@@ -36,7 +36,7 @@ const CodingPageComponent = () => {
         };
         fetchData();
       } catch (err: any) {
-        console.log("err.message ", err.message);
+        console.error("err.message ", err.message);
       }
     }
   }, [memos]);

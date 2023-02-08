@@ -43,11 +43,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     if (memoId) {
       getMemo(memoId);
       const fetch = async () => {
-        // const content = await memoService.getMemoContent(memoId);
         const content = await memoService.getBeMemoContent(memoId);
-        console.log("content.memo.author ", content.memo.author);
-        console.log("loggedUser.username ", loggedUser.username);
-        console.log("logged ", logged);
         setTitle(content.memo.title);
         setContentId(content.memo.id!);
         if (content.memo.author === loggedUser.username) {

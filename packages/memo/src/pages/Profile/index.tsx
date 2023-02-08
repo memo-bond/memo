@@ -42,7 +42,7 @@ const ProfilePageComponent = () => {
       setLoggedUser(user);
       setEdit(false);
     } catch (err: any) {
-      console.log(err.message);
+      console.error(err.message);
     }
   };
   return (
