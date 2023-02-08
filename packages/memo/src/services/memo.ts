@@ -113,7 +113,7 @@ const getHomepageMemos = async () => {
 };
 
 export const getBeMemos = async () => {
-  const res = await axios.get(API + "/v1/memos?page=1&pageSize=10");
+  const res = await axios.get(API + "/v1/memos");
   return res.data;
 };
 
