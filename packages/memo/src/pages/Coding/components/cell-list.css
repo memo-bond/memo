@@ -5,3 +5,20 @@
 .react-draggable-transparent-selection .cell-list {
   margin-bottom: 100vh;
 }
+
+.section-title {
+  position: relative;
+  padding: 20px;
+}
+
+.section-title div {
+  padding: 10px;
+}
+
+.field-title div {
+  width: 500px;
+}
+
+.field-share {
+  color: white;
+}

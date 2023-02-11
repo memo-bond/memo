@@ -62,8 +62,9 @@ const Header = () => {
     }
   }, [loggedIn]);
 
-  const logout = () => {
+  const logout = async () => {
     resetAuthUser();
+    await firebaseAuth.signOut();
     alert("Logout Successful");
     navigate.push("/");
   };

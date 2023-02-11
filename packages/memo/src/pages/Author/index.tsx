@@ -24,7 +24,7 @@ const AuthorPageComponent = () => {
   const [memos, setMemos] = useState<MemoDto[]>();
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
+  const [pageSize, setPageSize] = useState(3);
   const [count, setCount] = useState<number>(0);
   const [author, setAuthor] = useState("");
 
@@ -84,7 +84,7 @@ const AuthorPageComponent = () => {
                 spacing={2}
               >
                 {memos ? (
-                  memos.map((m: MemoDto, i) => {
+                  memos.map((memo: MemoDto, i) => {
                     return (
                       <>
                         <div className={css.memoBlock} key={i}>
@@ -100,15 +100,18 @@ const AuthorPageComponent = () => {
                                 color="text.secondary"
                                 gutterBottom
                               >
-                                <Button onClick={() => goToMemo(m)}>
-                                  {m.title}
+                                <Button onClick={() => goToMemo(memo)}>
+                                  {memo.title}
                                 </Button>
                               </Typography>
                               <Typography className={css.navBtn}>
-                                {m.author}
+                                {memo.author}
                               </Typography>
                               <Typography className={css.navBtn}>
-                                {m.tags}
+                                {memo.sharing ? "Public" : "Private"}
+                              </Typography>
+                              <Typography className={css.navBtn}>
+                                {memo.tags}
                               </Typography>
                             </Card>
                           </Grid>
