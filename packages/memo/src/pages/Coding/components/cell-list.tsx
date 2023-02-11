@@ -6,6 +6,7 @@ import AddCell from "./add-cell";
 import { useActions } from "../hooks/use-actions";
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -33,6 +34,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
   const [title, setTitle] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
+  const [sharing, setSharing] = useState(true);
   const loggedUser = useRecoilValue(AuthUser);
   const [canUpdate, setCanUpdate] = useState(false);
   const logged = loggedUser.uid !== undefined;
@@ -43,12 +45,16 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     if (memoId) {
       getMemo(memoId);
       const fetch = async () => {
-        const content = await memoService.getBeMemoContent(memoId);
-        setTitle(content.memo.title);
-        setContentId(content.memo.id!);
-        if (content.memo.author === loggedUser.username) {
-          setCanUpdate(true);
-        }
+        firebaseAuth.onAuthStateChanged(async (user) => {
+          const token = user ? await user.getIdToken() : undefined;
+          const content = await memoService.getBeMemoContent(memoId, token!);
+          setTitle(content.memo.title);
+          setContentId(content.memo.id!);
+          setSharing(content.memo.sharing);
+          if (content.memo.author === loggedUser.username) {
+            setCanUpdate(true);
+          }
+        });
       };
       fetch();
       setIsCreate(false);
@@ -59,14 +65,19 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
 
   const save = async () => {
     const token = await firebaseAuth.currentUser?.getIdToken();
+    const form: memoService.MemoForm = {
+      title,
+      sharing,
+      cells,
+      tags: undefined,
+    };
     if (memoId) {
       // update
-      // memoService.update(memoId, contentId, title, cells);
-      memoService.update(token!, memoId, title, cells, undefined);
+      memoService.update(token!, memoId, form);
       alert("Saved");
     } else {
       // create
-      memoService.create(token!, title, cells, undefined);
+      memoService.create(token!, form);
       navigate.push("/");
     }
   };
@@ -91,11 +102,22 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
 
   return (
     <>
-      <TextField
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        label="Title"
-      />
+      <div className="section-title">
+        <div className="field-title">
+          <TextField
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            label="Title"
+          />
+        </div>
+        <div className="field-share">
+          Sharing
+          <Checkbox
+            checked={sharing}
+            onChange={(e) => setSharing(e.target.checked)}
+          />
+        </div>
+      </div>
       <div className="cell-list">
         <AddCell forceVisible={cells.length === 0} previousCellId={null} />
         {renderedCells}

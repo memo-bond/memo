@@ -14,7 +14,6 @@ const CodingSection = () => {
     if (!memos) {
       try {
         const fetchData = async () => {
-          // let datas = await memoService.getMemos();
           let res = await memoService.getBeMemos();
           setMemos(res.datas as MemoDto[]);
         };
@@ -65,6 +64,9 @@ const CodingSection = () => {
                     </Typography>
                     <Typography className={css.navBtn}>
                       {memo.author}
+                    </Typography>
+                    <Typography className={css.navBtn}>
+                      {memo.sharing ? "Public" : "Private"}
                     </Typography>
                     <Typography className={css.navBtn}>{memo.tags}</Typography>
                   </Card>

@@ -3,4 +3,5 @@ export interface MemoDto {
   title: string;
   tags: string[];
   id: string;
+  sharing: boolean;
 }
