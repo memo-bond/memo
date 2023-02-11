@@ -6,6 +6,7 @@ import useStyles from "./styles";
 import CodingSection from "components/CodingSection";
 import AuthorSection from "components/AuthorSection";
 import { Button, Grid, Typography } from "@mui/material";
+import IntroSection from "components/IntroSection";
 
 const HomePageComponent = () => {
   const css = useStyles();
@@ -14,6 +15,7 @@ const HomePageComponent = () => {
       <div id="sectionBody" className={css.landingBody}>
         <Header />
         <BannerSection />
+        <IntroSection />
         <Grid
           style={{
             display: "flex",
