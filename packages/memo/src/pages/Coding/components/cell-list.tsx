@@ -93,6 +93,18 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     }
   };
 
+  const copy = async () => {
+    const token = await firebaseAuth.currentUser?.getIdToken();
+    const form: memoService.MemoForm = {
+      title,
+      sharing,
+      cells,
+      tags: undefined,
+    };
+    memoService.create(token!, form);
+    navigate.push("/");
+  };
+
   const renderedCells = cells.map((cell) => (
     <Fragment key={cell.id}>
       <CellListItem cell={cell} />
@@ -136,7 +148,7 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
               </Button>
             </>
           ) : (
-            <></>
+            <Button onClick={copy}>Copy</Button>
           )}
           {isCreate ? (
             <>
