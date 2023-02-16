@@ -7,18 +7,50 @@ import {
   black01,
   white01,
 } from "constants/colorsAndSize";
+
 const colorText = alpha(white01, 0.87);
 
 const styles = ({ spacing, breakpoints }: Theme) =>
   createStyles({
+    contentBody: {
+      "& nav li": {},
+    },
+    memoBlock: {
+      width: "500px",
+    },
+    homeRoot: {
+      overflowX: "hidden",
+      overflowY: "hidden",
+      backgroundColor: "#28293D",
+      paddingTop: "68px",
+      [breakpoints.down("sm")]: {
+        paddingTop: "52px",
+      },
+      "& button": {
+        textTransform: "none",
+        fontWeight: "bold",
+      },
+      "& .btn-small": {
+        fontWeight: "normal",
+        height: 28,
+
+        "& svg": {
+          width: 16,
+          height: 16,
+        },
+      },
+    },
+    landingBody: {
+      transition: "all 0.3s ease-in-out",
+    },
     root: {
       backgroundColor: blue01,
       width: "100%",
-      position: "fixed",
       top: 0,
       left: 0,
+      paddingTop: "5rem",
       zIndex: 1000,
-      borderTop: "2px solid #8F90A6",
+      color: "white",
     },
     header: {
       display: "flex",
@@ -101,10 +133,6 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       marginRight: "1rem",
       alignSelf: "center",
       color: white01,
-      height: "32px",
-      lineHeight: "22px",
-      minWidth: "8rem",
-      maxWidth: "10rem",
       padding: "0 20px",
       marginLeft: "40px",
       ".MuiButton-root:hover": {
@@ -115,10 +143,6 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       color: "#fff",
       fontWeight: "500 !important",
       fontSize: 14,
-      height: "32px",
-      lineHeight: "22px",
-      minWidth: "8rem",
-      maxWidth: "9rem",
       padding: "15px 20px",
       borderRadius: "8px",
       textTransform: "none",
@@ -176,13 +200,9 @@ const styles = ({ spacing, breakpoints }: Theme) =>
         fontSize: "16px",
       },
     },
-    link: {
-      textDecoration: "none",
-      color: "#8F90A6",
-    },
   });
 const useStyles = makeStyles(styles, {
   index: 1,
-  classNamePrefix: "HeaderLanding",
+  classNamePrefix: "ReviewSection",
 });
 export default useStyles;

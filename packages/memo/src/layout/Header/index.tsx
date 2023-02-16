@@ -154,7 +154,9 @@ const Header = () => {
                 sx={{ flexGrow: 1, ml: "2rem" }}
               >
                 <Button className={css.navBtn} variant="text" size="small">
-                  Update
+                  <Link className={css.link} href="/teams">
+                    Team
+                  </Link>
                 </Button>
               </Box>
               <Box

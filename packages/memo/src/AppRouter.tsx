@@ -36,6 +36,7 @@ const AppRouter = () => {
           path="/author/*"
           component={lazy(() => import("pages/Author"))}
         />
+        <Route path="/teams" component={lazy(() => import("pages/Team"))} />
         <Route
           exact
           path={"/code/*"}
