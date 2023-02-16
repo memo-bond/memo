@@ -30,7 +30,6 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
     order.map((id) => data[id])
   );
 
-  const [contentId, setContentId] = useState("");
   const [title, setTitle] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
@@ -47,13 +46,10 @@ const CellList: React.FC<CellListProps> = ({ memoId }) => {
       const fetch = async () => {
         firebaseAuth.onAuthStateChanged(async (user) => {
           const token = user ? await user.getIdToken() : undefined;
-          const content = await memoService.getBeMemoContent(memoId, token!);
+          const content = await memoService.getMemoContent(memoId, token!);
           setTitle(content.memo.title);
-          setContentId(content.memo.id!);
           setSharing(content.memo.sharing);
-          if (content.memo.author === loggedUser.username) {
-            setCanUpdate(true);
-          }
+          setCanUpdate(content.canUpdate);
         });
       };
       fetch();

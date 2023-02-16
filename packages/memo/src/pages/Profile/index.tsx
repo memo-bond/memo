@@ -1,6 +1,6 @@
 import Footer from "layout/Footer";
 import Header, { AuthUser } from "layout/Header";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import useStyles from "./styles";
 import {
   Button,
@@ -8,15 +8,19 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { collection, setDoc, doc } from "firebase/firestore";
 import { User } from "models/user";
-import { db } from "repository";
 import { firebaseAuth } from "services/auth";
 import * as userService from "../../services/user";
+import * as teamService from "../../services/team";
 
 const ProfilePageComponent = () => {
   const css = useStyles();
@@ -24,7 +28,18 @@ const ProfilePageComponent = () => {
   const setLoggedUser = useSetRecoilState(AuthUser);
   const [edit, setEdit] = useState<boolean>(false);
   const [displayName, setDisplayName] = useState("");
+  const [openCreateTeam, setOpenCreateTeam] = useState(false);
+  const [teams, setTeams] = useState<any>();
 
+  useEffect(() => {
+    if (!teams) {
+      const fetch = async () => {
+        const res = await teamService.getTeam(loggedUser.uid);
+        setTeams(res.data);
+      };
+      fetch();
+    }
+  }, []);
   const saveForm = async () => {
     let user = {} as User;
     user.name = displayName ? displayName : loggedUser.name;
@@ -45,10 +60,82 @@ const ProfilePageComponent = () => {
       console.error(err.message);
     }
   };
+  const create = async (e) => {
+    e.preventDefault();
+    const token = await firebaseAuth.currentUser?.getIdToken();
+    const { name, description, emails } = e.target.elements;
+    const form: teamService.TeamForm = {
+      name: name.value,
+      description: description.value,
+      emails: emails.value.replaceAll(" ", "").split(","),
+    };
+    const res = teamService.createTeam(token!, form);
+    setOpenCreateTeam(false);
+  };
   return (
     <div className={css.homeRoot}>
       <Header />
+      <Grid>
+        <Button onClick={() => setOpenCreateTeam(true)}>Create Team</Button>
+        <Dialog open={openCreateTeam} onClose={() => setOpenCreateTeam(false)}>
+          <form onSubmit={create}>
+            <DialogTitle>Create Team</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                name="name"
+                label="Name"
+                fullWidth
+                variant="standard"
+                required
+              />
+              <TextField
+                name="description"
+                label="Description"
+                fullWidth
+                variant="standard"
+              />
+              <TextField
+                name="emails"
+                label="Team member's Email, separate by comma"
+                fullWidth
+                variant="standard"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpenCreateTeam(false)}>Cancel</Button>
+              <Button type="submit">Create</Button>
+            </DialogActions>
+          </form>
+        </Dialog>
+      </Grid>
 
+      {teams ? (
+        teams.map((team, i) => {
+          return (
+            <>
+              <Card key={i} style={{ padding: "30px" }}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Team:
+                  <Button>{team.name}</Button>
+                </Typography>
+                <Typography color="text.secondary">
+                  {team.description}
+                </Typography>
+                <Typography color="text.secondary">
+                  Owner: {team.username}
+                </Typography>
+              </Card>
+            </>
+          );
+        })
+      ) : (
+        <></>
+      )}
       {edit ? (
         <div>
           <Grid container spacing={2}>
@@ -92,7 +179,6 @@ const ProfilePageComponent = () => {
           </Button>
         </div>
       )}
-
       <Footer />
     </div>
   );
