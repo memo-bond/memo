@@ -36,9 +36,10 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       paddingTop: "3px",
     },
     navRight: {
+        marginLeft: "auto",
       paddingTop: "2px",
       display: "flex",
-      alignItems: "center",
+      alignItems: "center"
     },
     navLink: {
       alignItems: "center",
@@ -180,6 +181,9 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       textDecoration: "none",
       color: "#8F90A6",
     },
+      logined: {
+
+    }
   });
 const useStyles = makeStyles(styles, {
   index: 1,

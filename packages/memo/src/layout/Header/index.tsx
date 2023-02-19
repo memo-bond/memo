@@ -32,6 +32,7 @@ import { firebaseAuth } from "services/auth";
 import * as userService from "../../services/user";
 import { log } from "console";
 import axios from "axios";
+import LoginedDropdown from "components/LoginedDropdown";
 
 export function ListItemLink(props: ListItemProps<"a", { button?: true }>) {
   return <ListItem button component="a" {...props} />;
@@ -176,40 +177,6 @@ const Header = () => {
                 {/* <Menu Mobile /> */}
               </Grid>
             </Hidden>
-            <Hidden smDown>
-              <Box display="flex" alignItems="center">
-                {!loggedIn ? (
-                  <Button
-                    className={css.signup}
-                    variant="text"
-                    size="small"
-                    onClick={startUi}
-                  >
-                    Sign in
-                  </Button>
-                ) : (
-                  <>
-                    <Link href="/profile">
-                      <Button
-                        className={css.signup}
-                        variant="text"
-                        size="small"
-                      >
-                        {authUser.username}
-                      </Button>
-                    </Link>
-
-                    <Button
-                      className={css.signup}
-                      variant="text"
-                      size="small"
-                      onClick={logout}
-                    >
-                      Logout
-                    </Button>
-                  </>
-                )}
-              </Box>
               <Box display="flex" alignItems="center">
                 <Link href="/code/">
                   <Button className={css.codingBtn} variant="text" size="small">
@@ -217,6 +184,40 @@ const Header = () => {
                   </Button>
                 </Link>
               </Box>
+              <Hidden smDown>
+                  <Box display="flex" alignItems="center">
+                      {!loggedIn ? (
+                              <Button
+                                  className={css.signup}
+                                  variant="text"
+                                  size="small"
+                                  onClick={startUi}
+                                  >
+                                  Sign in
+                              </Button>
+                              ) : (
+                                      <>
+                                      <LoginedDropdown/>
+                                      <Link href="/profile">
+                                          <Button
+                                              className={css.signup}
+                                              variant="text"
+                                              size="small"
+                                              >
+                                              {authUser.username}
+                                          </Button>
+                                      </Link>
+                                      <Button
+                                          className={css.signup}
+                                          variant="text"
+                                          size="small"
+                                          onClick={logout}
+                                          >
+                                          Logout
+                                      </Button>
+                                      </>
+                                      )}
+                  </Box>
             </Hidden>
           </Grid>
           <div id="firebaseui-auth-container"></div>
