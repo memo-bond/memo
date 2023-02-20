@@ -9,29 +9,6 @@ import {
 } from "constants/colorsAndSize";
 const styles = ({ spacing, breakpoints }: Theme) =>
 	createStyles({
-
-		logoLink: {
-			display: "flex",
-		},
-		logo: {
-			marginLeft: "auto",
-			marginRight: "auto",
-			display: "block",
-			// width: "40px",
-			// height: "40px",
-			// overflow: "hidden",
-			border: 10,
-			borderWidth: 10,
-			borderColor: "white"
-		},
-		logoContainer: {
-			display: "flex",
-			alignItems: "center",
-		},
-		dropdownBtn: {
-			marginLeft: 10,
-			position: "relative"
-		},
 		dropdownMenuPaper: {
 			backgroundColor: blue01
 		},
