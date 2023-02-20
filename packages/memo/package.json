@@ -5,9 +5,10 @@
   "author": "white",
   "description": "Code Platform",
   "dependencies": {
-    "@emotion/react": "^11.8.2",
-    "@emotion/styled": "^11.8.1",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@monaco-editor/react": "3.7.5",
+    "@mui/icons-material": "^5.11.9",
     "@mui/lab": "^5.0.0-alpha.73",
     "@mui/material": "^5.5.1",
     "@mui/styles": "^5.5.1",

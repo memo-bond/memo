@@ -1,15 +1,96 @@
 import useStyles from './styles';
-import { useEffect, useState } from "react";
-import {AuthenticatedUser} from "../../dtos";
+import { useEffect, useState, useRef } from "react";
+import { AuthUser } from 'recoil/authUserState';
+import { Avatar, Box, Button, ClickAwayListener, Divider, Grow, ListItemIcon, Menu, MenuItem, Paper, Popper, Tooltip, Typography, MenuList, Link } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { firebaseAuth } from "services/auth";
+import { useHistory } from "react-router-dom";
+import { Logout, Settings, Groups2 } from '@mui/icons-material';
 
 const LoginedDropdown = () => {
     const style = useStyles();
-    const [user, setUser] = useState<AuthenticatedUser>();
+    const authUser = useRecoilValue(AuthUser);
+    const resetAuthUser = useResetRecoilState(AuthUser);
+    const navigate = useHistory();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleLogout = async () => {
+        resetAuthUser();
+        await firebaseAuth.signOut();
+        alert("Logout Successful");
+        navigate.push("/");
+    };
     return (
         <>
-        <img src={'https://scontent.fsgn5-6.fna.fbcdn.net/v/t39.30808-1/326400997_1639439686475613_655039213323653602_n.jpg?stp=cp0_dst-jpg_p80x80&_nc_cat=108&ccb=1-7&_nc_sid=7206a8&_nc_ohc=25VbFQtWvpIAX_6XfS5&_nc_ht=scontent.fsgn5-6.fna&oh=00_AfBOJssfkrqlTNzvNVaNjgtUoSN1QNxTws0JJx-kCBc2PA&oe=63F75280'} alt="logo" className={style.logo} />
+            <Button aria-controls={open ? 'account-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}>
+                <Box display="flex" borderRadius={2} borderColor="whitesmoke" paddingY={1.5}>
+                    {typeof authUser.picture != 'undefined' && authUser.picture ? (<Avatar src={authUser.picture} />) : (<Avatar />)}
+                </Box>
+            </Button>
+            <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                classes={{ paper: style.dropdownMenuPaper }}
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                PaperProps={{
+                    elevation: 10,
+                    sx: {
+                        overflow: 'revert',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                        },
+                    },
+                }}
+            >
+                <Paper className={style.dropdownUserInfoItem} elevation={4}>
+                    <MenuItem>
+                        <Box display="flex" borderRadius={2} borderColor="whitesmoke" paddingY={1.5}>
+                            {typeof authUser.picture != 'undefined' && authUser.picture ? (<Avatar src={authUser.picture} />) : (<Avatar />)}
+                            <Typography display="flex" alignItems="center" marginX={2} variant="subtitle1" color="white">{authUser?.name}</Typography>
+                        </Box>
+                    </MenuItem>
+                    <Box textAlign='center' justifyContent="center">
+                        <Link href="/">
+                            <Button >
+                                <Typography variant="subtitle2" color='burlywood'>
+                                    Update Info
+                                </Typography>
+                            </Button>
+                        </Link>
+                    </Box>
+                </Paper>
+                <MenuItem>
+                    <Groups2 color="disabled" />
+                    <Typography alignItems="center" marginX={2} variant="subtitle1" color="white">My Teams</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                    <Logout color="disabled" />
+                    <Typography display="flex" alignItems="center" marginX={2} variant="subtitle1" color="white">Log Out</Typography>
+                </MenuItem>
+            </Menu>
         </>
     );
 }
 
-export default  LoginedDropdown;
+export default LoginedDropdown;

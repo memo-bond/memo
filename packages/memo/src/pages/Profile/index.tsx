@@ -1,5 +1,6 @@
 import Footer from "layout/Footer";
-import Header, { AuthUser } from "layout/Header";
+import Header from "layout/Header";
+import { AuthUser } from "recoil/authUserState";
 import { memo, useEffect, useState } from "react";
 import useStyles from "./styles";
 import {
@@ -16,7 +17,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { User } from "models/user";
 import { firebaseAuth } from "services/auth";
 import * as userService from "../../services/user";
@@ -24,8 +25,7 @@ import * as teamService from "../../services/team";
 
 const ProfilePageComponent = () => {
   const css = useStyles();
-  const loggedUser = useRecoilValue(AuthUser);
-  const setLoggedUser = useSetRecoilState(AuthUser);
+  const [loggedUser, setLoggedUser] = useRecoilState(AuthUser);
   const [edit, setEdit] = useState<boolean>(false);
   const [displayName, setDisplayName] = useState("");
   const [openCreateTeam, setOpenCreateTeam] = useState(false);
