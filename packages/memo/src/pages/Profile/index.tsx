@@ -16,12 +16,17 @@ import {
   Grid,
   TextField,
   Typography,
+  Tab,
+  Tabs,
+  Container
 } from "@mui/material";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { User } from "models/user";
 import { firebaseAuth } from "services/auth";
 import * as userService from "../../services/user";
 import * as teamService from "../../services/team";
+import SettingSection from "components/Settingsection";
+import { Box } from "@mui/system";
 
 const ProfilePageComponent = () => {
   const css = useStyles();
@@ -75,7 +80,11 @@ const ProfilePageComponent = () => {
   return (
     <div className={css.homeRoot}>
       <Header />
-      <Grid>
+      <Container>
+        <SettingSection/>
+      </Container>
+      <Grid container spacing={2}>
+        <Grid xs={3}>
         <Button onClick={() => setOpenCreateTeam(true)}>Create Team</Button>
         <Dialog open={openCreateTeam} onClose={() => setOpenCreateTeam(false)}>
           <form onSubmit={create}>
@@ -108,6 +117,7 @@ const ProfilePageComponent = () => {
             </DialogActions>
           </form>
         </Dialog>
+        </Grid>
       </Grid>
 
       {teams ? (
