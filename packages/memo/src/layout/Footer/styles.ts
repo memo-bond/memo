@@ -6,22 +6,20 @@ const styles = ({ spacing, breakpoints }: Theme) =>
   createStyles({
     root: {
       backgroundColor: '#1C1C28',
-      position: "static",
-      top: 0,
-      left: 0,
+      position: "fixed",
+      width: '100%',
+      bottom: 0,
       // borderTop: "2px solid #8F90A6",
     },
 
     navLeft: {
       maxWidth: "calc(100% - 80px)",
       lineHeight: "100%",
-      paddingTop: "30px",
       justifyContent: 'flex-start',
 
     },
 
     navRight: {
-      paddingTop: '30px',
       display: 'flex',
       justifyContent: 'flex-end',
       // marginRight: '2px',
@@ -92,8 +90,8 @@ const styles = ({ spacing, breakpoints }: Theme) =>
       letterSpacing: '-0.03px',
       lineHeight: '17px',
       marginLeft: spacing(2),
-      marginBottom: '22px',
-      marginTop: '30px',
+      marginBottom: '10px',
+      marginTop: '10px',
       textAlign: 'left',
       [breakpoints.down('sm')]: {
         fontSize: '10px',
@@ -123,12 +121,13 @@ const styles = ({ spacing, breakpoints }: Theme) =>
         width: "36px",
         height: "36px",
       },
+      marginTop: '15px'
     },
 
     navRightButtom: {
-      display:"flex",
-       justifyContent: "flex-end",
-       
+      display: "flex",
+      justifyContent: "flex-end",
+
     }
   });
 

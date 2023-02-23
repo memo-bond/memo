@@ -11,36 +11,38 @@ import IntroSection from "components/IntroSection";
 const HomePageComponent = () => {
   const css = useStyles();
   return (
-    <div className={css.homeRoot}>
-      <div id="sectionBody" className={css.landingBody}>
-        <Header />
-        <BannerSection />
-        <IntroSection />
-        <Grid
-          style={{
-            display: "flex",
-            maxWidth: "120rem",
-            margin: "auto",
-            borderRadius: "16px",
-          }}
-          alignItems="center"
-          justifyContent="center"
-          container
-          spacing={2}
-        >
-          <Grid item>
-            <Button>Top Memo</Button>
-            <CodingSection />
+    <>
+      <div className={css.homeRoot}>
+        <div id="sectionBody" className={css.landingBody}>
+          <Header />
+          <BannerSection />
+          <IntroSection />
+          <Grid
+            style={{
+              display: "flex",
+              maxWidth: "120rem",
+              margin: "auto",
+              borderRadius: "16px",
+            }}
+            alignItems="center"
+            justifyContent="center"
+            container
+            spacing={2}
+          >
+            <Grid item>
+              <Button>Top Memo</Button>
+              <CodingSection />
+            </Grid>
+            <Grid item>
+              <Button>Top Author</Button>
+              <AuthorSection />
+            </Grid>
           </Grid>
-          <Grid item>
-            <Button>Top Author</Button>
-            <AuthorSection />
-          </Grid>
-        </Grid>
 
-        <Footer />
+          <Footer />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 const HomePage = memo(HomePageComponent);

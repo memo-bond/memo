@@ -6,7 +6,7 @@ export const colorText = '#000000';
 
 export const colorSidebar = '#a5006480';
 
-export const colorBg = '#ebebeb';
+export const colorBg = '#28293D';
 
 export const white01 = '#fff';
 

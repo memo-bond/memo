@@ -18,7 +18,7 @@ const Footer = () => {
     <footer className={css.root}>
       <Container maxWidth="lg" fixed>
         <Grid container className={css.footer} spacing={3} >
-          <Grid container md={4} xs={5} lg={4}  className={css.footerContainerLeft}>
+          <Grid container md={4} xs={5} lg={4} className={css.footerContainerLeft}>
             <Grid display="flex" item className={css.navLeft}>
               <Grid item className={css.logoContainer} >
                 <Link aria-label="homepage" className={css.logoLink}>

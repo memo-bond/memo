@@ -81,9 +81,9 @@ const ProfilePageComponent = () => {
     <div className={css.homeRoot}>
       <Header />
       <Container>
-        <SettingSection/>
+        <SettingSection />
       </Container>
-      <Grid container spacing={2}>
+      {/* <Grid container spacing={2}>
         <Grid xs={3}>
         <Button onClick={() => setOpenCreateTeam(true)}>Create Team</Button>
         <Dialog open={openCreateTeam} onClose={() => setOpenCreateTeam(false)}>
@@ -188,7 +188,7 @@ const ProfilePageComponent = () => {
             Edit
           </Button>
         </div>
-      )}
+      )} */}
       <Footer />
     </div>
   );

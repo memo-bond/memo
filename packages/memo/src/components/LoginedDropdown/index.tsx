@@ -69,12 +69,12 @@ const LoginedDropdown = () => {
   };
   return (
     <>
-        <Box display="flex" marginX={1.5}>
-      <IconButton aria-label="cart">
-        <Badge badgeContent={4} color="success">
-          <NotificationsNone color="disabled" />
-        </Badge>
-      </IconButton>
+      <Box display="flex" marginX={1.5}>
+        <IconButton aria-label="cart">
+          <Badge badgeContent={4} color="success">
+            <NotificationsNone color="disabled" />
+          </Badge>
+        </IconButton>
       </Box>
       <IconButton
         ref={anchorRef}
@@ -137,7 +137,7 @@ const LoginedDropdown = () => {
                     <MenuItem>
                       <Box display="flex" flexDirection="row">
                         {typeof authUser.picture != "undefined" &&
-                        authUser.picture ? (
+                          authUser.picture ? (
                           <Avatar src={authUser.picture} />
                         ) : (
                           <Avatar />
@@ -155,7 +155,7 @@ const LoginedDropdown = () => {
                       </Box>
                     </MenuItem>
                     <Box textAlign="center" justifyContent="center">
-                      <Link href="/">
+                      <Link href="/profile">
                         <Button>
                           <Typography variant="subtitle2" color="burlywood">
                             Update Info
