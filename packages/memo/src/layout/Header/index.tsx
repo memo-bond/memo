@@ -184,7 +184,7 @@ const Header = () => {
               </Link>
             </Box>
             <Hidden smDown>
-              <Box display="flex" alignItems="center">
+              <Box alignItems="center">
                 {!loggedIn ? (
                   <Button
                     className={css.signup}
