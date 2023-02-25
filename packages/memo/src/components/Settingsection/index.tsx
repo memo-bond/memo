@@ -69,85 +69,15 @@ const SettingSection = () => {
           borderRight: 3, borderColor: 'divider', width: '20%'
         }}
       >
-        <Tab sx={{ alignSelf: 'flex-start', marginX: '5%' }} icon={<AccountCircle color='disabled' />} iconPosition="start" label="General" {...a11yProps(0)} />
-        <Tab sx={{ alignSelf: 'flex-start', marginX: '5%' }} icon={<Groups2 color='disabled' />} iconPosition="start" label="Teams" {...a11yProps(1)} />
-        <Tab sx={{ alignSelf: 'flex-start', marginX: '5%' }} icon={<Notifications color='disabled' />} iconPosition="start" label="Notification" {...a11yProps(2)} />
-        <Tab sx={{ alignSelf: 'flex-start', marginX: '5%' }} icon={<Wallet color='disabled' />} iconPosition="start" label="Subscription" {...a11yProps(3)} />
+        <Tab sx={{ alignSelf: 'flex-start', marginX: '5%' }} icon={<Groups2 color='disabled' />} iconPosition="start" label="Teams" {...a11yProps(0)} />
+        <Tab sx={{ alignSelf: 'flex-start', marginX: '5%' }} icon={<Notifications color='disabled' />} iconPosition="start" label="Notification" {...a11yProps(1)} />
+        <Tab sx={{ alignSelf: 'flex-start', marginX: '5%' }} icon={<Wallet color='disabled' />} iconPosition="start" label="Subscription" {...a11yProps(2)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
         <Box padding={2} height='100%' width='100%'>
-          <Paper sx={{ paddingY: 3, backgroundColor: 'seashell', width: '100%', height: 'max-content' }} elevation={10} >
-            <Grid container alignItems='center' justifyContent='flex-start' display='flex' justifyItems='self-start' paddingX={5}>
-              <Grid xs={4}>
-                <input
-                  accept="image/*"
-                  id="upload-profile-img-button"
-                  type="file"
-                  hidden
-                />
-                <label htmlFor="upload-profile-img-button">
-                  <IconButton>
-                    {authUser.picture ? (
-                      <Avatar
-                        src={authUser.picture}
-                        style={{
-                          margin: "10px",
-                          width: "150px",
-                          height: "150px",
-                        }}
-                      />) : <Avatar />}
-                  </IconButton>
-                </label>
-              </Grid>
-              <Grid xs={8}>
-                <Grid xs={4.8} container marginY={3}>
-                  <TextField
-                    label="ID"
-                    fullWidth
-                    defaultValue={authUser.uid}
-                    disabled
-                    size="small"
-                  />
-                </Grid>
-                <Grid container alignItems='center' justifyContent='flex-start' marginY={3}>
-                  <Grid xs={4.8} alignItems='center'>
-                    <TextField
-                      fullWidth
-                      label="Name"
-                      defaultValue={authUser.name}
-                      size="small"
-                    />
-                  </Grid>
-                  <Grid marginLeft={5} xs={4} alignItems='center'>
-                    <TextField
-                      fullWidth
-                      label="Email"
-                      defaultValue={authUser.email}
-                      size="small"
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container alignItems='center' justifyContent='flex-start' marginY={3}>
-                  <Grid xs={4.8} alignItems='center'>
-                    <TextField
-                      fullWidth
-                      label="Name"
-                      defaultValue={authUser.name}
-                      size="small"
-                    />
-                  </Grid>
-                  <Grid marginLeft={5} xs={4} alignItems='center'>
-                    <TextField
-                      fullWidth
-                      label="Email"
-                      defaultValue={authUser.email}
-                      size="small"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+          <Paper sx={{ paddingY: 3, backgroundColor: 'seashell', width: '100%', height: '100%' }} elevation={10} >
+
           </Paper>
         </Box>
       </TabPanel>
@@ -159,13 +89,6 @@ const SettingSection = () => {
         </Box>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Box padding={2} height='100%' width='100%'>
-          <Paper sx={{ paddingY: 3, backgroundColor: 'seashell', width: '100%', height: '100%' }} elevation={10} >
-
-          </Paper>
-        </Box>
-      </TabPanel>
-      <TabPanel value={value} index={3}>
         <Box padding={2} height='100%' width='100%'>
           <Paper sx={{ paddingY: 3, backgroundColor: 'seashell', width: '100%', height: '100%' }} elevation={10} >
 

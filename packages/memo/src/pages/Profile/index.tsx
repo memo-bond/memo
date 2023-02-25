@@ -18,7 +18,8 @@ import {
   Typography,
   Tab,
   Tabs,
-  Container
+  Container,
+  Paper
 } from "@mui/material";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { User } from "models/user";
@@ -27,6 +28,8 @@ import * as userService from "../../services/user";
 import * as teamService from "../../services/team";
 import SettingSection from "components/Settingsection";
 import { Box } from "@mui/system";
+import UserInfoSection from "../../components/UserInfoSection";
+import { colorBg } from "constants/colorsAndSize";
 
 const ProfilePageComponent = () => {
   const css = useStyles();
@@ -81,7 +84,12 @@ const ProfilePageComponent = () => {
     <div className={css.homeRoot}>
       <Header />
       <Container>
-        <SettingSection />
+        <Paper elevation={10} sx={{marginY: 10}}>
+          <UserInfoSection />
+        </Paper>
+        <Paper elevation={10} sx={{marginY: 10}}>
+          <SettingSection />
+        </Paper>
       </Container>
       {/* <Grid container spacing={2}>
         <Grid xs={3}>
