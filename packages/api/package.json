@@ -20,7 +20,6 @@
         "type": "git",
         "url": "git+ssh://git@github.com/memo-bond/memo.git"
     },
-    "scripts": {},
     "bugs": {
         "url": "https://github.com/memo-bond/memo/issues"
     },

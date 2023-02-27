@@ -5,3 +5,8 @@ export interface MemoDto {
   id: string;
   sharing: boolean;
 }
+
+export interface AuthenticatedUser {
+    logo: string;
+    name: string;
+}

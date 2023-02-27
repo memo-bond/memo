@@ -18,41 +18,40 @@ import logo from "assets/images/logo.svg";
 import useStyles from "./styles";
 import { GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
 import { useEffect, useState } from "react";
-import { User } from "../../models/user";
 import {
   atom,
+  useRecoilState,
   useRecoilValue,
   useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
-import { localStorageEffect } from "services/utils";
+import { AuthUser } from "recoil/authUserState";
 import { db } from "repository";
 import { firebaseAuth } from "services/auth";
 import * as userService from "../../services/user";
 import { log } from "console";
 import axios from "axios";
+import LoginedDropdown from "components/LoginedDropdown";
 
 export function ListItemLink(props: ListItemProps<"a", { button?: true }>) {
   return <ListItem button component="a" {...props} />;
 }
 
 // useRecoilValue(AuthUser) for global state
-export const AuthUser = atom({
-  key: "authUser",
-  default: {} as User,
-  effects_UNSTABLE: [localStorageEffect("authUser")],
-});
+
 
 const Header = () => {
-  const setAuthUser = useSetRecoilState(AuthUser);
-  const authUser = useRecoilValue(AuthUser);
   const css = useStyles();
+
+
+  const [authUser, setAuthUser] = useRecoilState(AuthUser);
+  const resetAuthUser = useResetRecoilState(AuthUser);
   const [loggedIn, setLoggedIn] = useState<boolean>();
   const [isCreateUser, setIsCreateUser] = useState(false);
   const [username, setUsername] = useState("");
   const [googleLoggedUser, setGoogleLoggedUser] = useState<any>();
-  const resetAuthUser = useResetRecoilState(AuthUser);
+
   const navigate = useHistory();
 
   useEffect(() => {
@@ -79,6 +78,7 @@ const Header = () => {
         // 200 ok with user dto -> mapping
         try {
           const user = await userService.login(token);
+          console.log(user);
           if (user.status === 200) {
             const loggedUser = {
               uid: user.data.id,
@@ -176,8 +176,15 @@ const Header = () => {
                 {/* <Menu Mobile /> */}
               </Grid>
             </Hidden>
+            <Box display="flex" alignItems="center">
+              <Link href="/code/">
+                <Button className={css.codingBtn} variant="text" size="small">
+                  Start Memo
+                </Button>
+              </Link>
+            </Box>
             <Hidden smDown>
-              <Box display="flex" alignItems="center">
+              <Box alignItems="center">
                 {!loggedIn ? (
                   <Button
                     className={css.signup}
@@ -188,34 +195,8 @@ const Header = () => {
                     Sign in
                   </Button>
                 ) : (
-                  <>
-                    <Link href="/profile">
-                      <Button
-                        className={css.signup}
-                        variant="text"
-                        size="small"
-                      >
-                        {authUser.username}
-                      </Button>
-                    </Link>
-
-                    <Button
-                      className={css.signup}
-                      variant="text"
-                      size="small"
-                      onClick={logout}
-                    >
-                      Logout
-                    </Button>
-                  </>
+                  <LoginedDropdown />
                 )}
-              </Box>
-              <Box display="flex" alignItems="center">
-                <Link href="/code/">
-                  <Button className={css.codingBtn} variant="text" size="small">
-                    Start Memo
-                  </Button>
-                </Link>
               </Box>
             </Hidden>
           </Grid>
