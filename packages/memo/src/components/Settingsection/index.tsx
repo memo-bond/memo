@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { AccountCircle, Groups2, Notifications, Wallet } from '@mui/icons-material';
 import { Container, Divider, Grid, Paper, TextField, IconButton, Avatar } from '@mui/material';
 import { AuthUser } from 'recoil/authUserState';
+import SubscriptionSettingSection from 'components/SubcriptionSection';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,8 +49,6 @@ function a11yProps(index: number) {
 
 const SettingSection = () => {
   const [value, setValue] = useState(0);
-  const [authUser, setAuthUser] = useRecoilState(AuthUser);
-
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -91,7 +90,7 @@ const SettingSection = () => {
       <TabPanel value={value} index={2}>
         <Box padding={2} height='100%' width='100%'>
           <Paper sx={{ paddingY: 3, backgroundColor: 'seashell', width: '100%', height: '100%' }} elevation={10} >
-
+            <SubscriptionSettingSection />
           </Paper>
         </Box>
       </TabPanel>
